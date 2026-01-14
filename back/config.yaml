@@ -1,0 +1,46 @@
+# App Configuration
+app:
+  name: '2054'
+  bundle_id: 'com.fields2054.soccer'
+  number: '2054'
+  app_id: 'fields2054'
+  domain: 'fields2054.click'
+  localization: EN
+
+# AppsFlyer API Token, filled in manually
+appsflyer:
+  appsflyer_token: ''
+  appsflyer_dev_key: ''
+
+# Appmetrica settings, filled in manually
+appmetrica:
+  app_id: ''
+  post_api_key: ''
+  sdk_key: ''
+
+# Tracking Configuration
+tracking:
+  link_id: 'fields2054'
+  traffle_link_id: 'fields2054'
+
+# Privacy Settings (auto-generated: camelCase)
+privacy:
+  callback: 'privacyCallback'
+  accepted_param: 'privacyStatus'
+  developer_name: ''
+  server: 'traffle'
+
+# Notification Settings (auto-generated)
+notifications:
+  skip_param: 'bypassNotification'
+  token_param: 'deviceToken'
+
+# Request Parameters (auto-generated)
+request_params:
+  installer_param: 'installSource'
+  user_id_param: 'uid'
+  oaid_param: 'androidId'
+  google_ad_id_param: 'googleIdentifier'
+  appsflyer_id_param: 'appsflyerIdentifier'
+  appsflyer_source_param: 'afMediaSource'
+  appsflyer_campaign_param: 'appsflyerCampaign'

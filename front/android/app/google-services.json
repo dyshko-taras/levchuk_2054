@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "149747998246",
+    "project_id": "project-7377227821077525956",
+    "storage_bucket": "project-7377227821077525956.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:149747998246:android:3a93a12ef392f778b850e7",
+        "android_client_info": {
+          "package_name": "com.fields2054.soccer"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAa2auKPPMqFryOeO5uAu8Y1mqtST4qneg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
