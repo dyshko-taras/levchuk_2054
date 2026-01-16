@@ -99,10 +99,11 @@
 - [x] `front/lib/ui/pages/onboarding_page.dart` (3 слайди, Back/Skip, dots, Next, Privacy на останньому слайді)
 - [x] Reusable buttons: `front/lib/ui/widgets/buttons/app_buttons.dart`
 
-### - [ ] Phase 7 — Screen: Hub (`/hub`)
+### - [x] Phase 7 — Screen: Hub (`/hub`)
 
-- [ ] `front/lib/ui/pages/hub_page.dart` (quick bar, next match card, my squad snapshot, fields snapshot)
-- [ ] За потреби: `front/lib/ui/widgets/` (hub cards, quick bar button)
+- [x] `front/lib/ui/pages/hub_page.dart` (quick bar, next match card, my squad snapshot, fields snapshot)
+- [x] `front/lib/ui/widgets/navigation/quick_bar.dart` (2–3 items: full width, без scroll; 4+: scroll)
+- [x] `front/lib/ui/widgets/hub/hub_cards.dart` (hub cards)
 
 ### - [ ] Phase 8 — Screen: Team Studio (`/team-studio`)
 

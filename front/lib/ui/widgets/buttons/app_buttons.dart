@@ -104,3 +104,65 @@ class AppTopBarTextButton extends StatelessWidget {
     );
   }
 }
+
+class AppPillButton extends StatelessWidget {
+  const AppPillButton({
+    super.key,
+    required this.label,
+    required this.onPressed,
+    this.backgroundColor = AppColors.whiteOverlay10,
+    this.textColor = AppColors.white,
+  });
+
+  final String label;
+  final VoidCallback onPressed;
+  final Color backgroundColor;
+  final Color textColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return FilledButton(
+      style: FilledButton.styleFrom(
+        backgroundColor: backgroundColor,
+        shape: const StadiumBorder(),
+        padding: EdgeInsets.zero,
+      ),
+      onPressed: onPressed,
+      child: Text(
+        label,
+        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+          color: textColor,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    );
+  }
+}
+
+class AppIconCircleButton extends StatelessWidget {
+  const AppIconCircleButton({
+    super.key,
+    required this.icon,
+    required this.onPressed,
+  });
+
+  final Widget icon;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: AppSizes.iconButtonSize,
+      width: AppSizes.iconButtonSize,
+      child: FilledButton(
+        style: FilledButton.styleFrom(
+          backgroundColor: AppColors.whiteOverlay10,
+          shape: const CircleBorder(),
+          padding: EdgeInsets.zero,
+        ),
+        onPressed: onPressed,
+        child: icon,
+      ),
+    );
+  }
+}

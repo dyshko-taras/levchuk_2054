@@ -21,7 +21,25 @@ class AppStrings {
       'Plan matches, store results, prepare lineups.';
 
   static const String hubAppTitle = 'FieldCaptain';
+  static const String hubTabMatch = '+ Match';
+  static const String hubTabMySquad = 'My Squad';
+  static const String hubTabFields = 'Fields';
+  static const String hubTabStats = 'Stats';
+  static const String hubTabAvailability = 'Availability';
+
+  static const String hubSectionNextMatch = 'Next Match';
+  static const String hubChipStatus = 'Status';
+  static const String hubActionOpen = 'Open';
+  static const String hubCtaAddMatch = '+ Match';
   static const String hubEmptyNoMatchPlanned = 'No match planned.';
+
+  static const String hubSectionMySquad = 'My Squad';
+  static const String hubLabelTeamName = 'Team name';
+  static String hubLabelPlayersCount(int count) => 'Players: $count';
+  static const String hubActionLineup = 'Lineup';
+
+  static const String hubSectionFieldsSnapshot = 'Fields Snapshot';
+  static const String hubLinkAllFields = 'All Fields';
 
   static const String settingsTitle = 'Settings';
 }

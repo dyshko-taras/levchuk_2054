@@ -175,8 +175,6 @@ class _TopBar extends StatelessWidget {
             onPressed: onBack,
             leading: SvgPicture.asset(
               AppIcons.back,
-              width: AppSizes.iconMd,
-              height: AppSizes.iconMd,
               colorFilter: const ColorFilter.mode(
                 AppColors.white,
                 BlendMode.srcIn,
