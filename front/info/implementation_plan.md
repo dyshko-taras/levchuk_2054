@@ -48,13 +48,13 @@
 - [x] `front/lib/app.dart`: `MultiProvider` (поки провайдери можна підключати порожнім списком) + `MaterialApp` + `routes: AppRoutes.routes` + `theme: appTheme`
 - [x] Підключений variable font `OpenSans-VariableFont_wdth,wght.ttf` у `front/pubspec.yaml`.
 
-### - [ ] Phase 2 — Local storage: Drift DB + Prefs + Models
+### - [x] Phase 2 — Local storage: Drift DB + Prefs + Models
 
 #### Файли БД/Prefs
-- [ ] `front/lib/data/local/prefs_store.dart` (first launch, local reminders enabled, default team id тощо)
-- [ ] `front/lib/data/local/database/app_database.dart`
-- [ ] `front/lib/data/local/database/schema/` (таблиці/entitites для MVP)
-- [ ] `front/lib/data/local/database/dao/` (typed queries)
+- [x] `front/lib/data/local/prefs_store.dart` (first launch, local reminders enabled, default team id тощо)
+- [x] `front/lib/data/local/database/app_database.dart`
+- [x] `front/lib/data/local/database/schema/` (таблиці/entitites для MVP)
+- [x] `front/lib/data/local/database/dao/` (typed queries)
 
 #### Models (за потреби для UI/DTO, без вигадування полів)
 - [ ] `front/lib/data/models/` (моделі, які реально потрібні; якщо все локально — можна обійтись drift-типами)
@@ -69,23 +69,25 @@
 
 ### - [ ] Phase 3 — Repositories (Data access layer)
 
-- [ ] `front/lib/data/repositories/settings_repository.dart`
-- [ ] `front/lib/data/repositories/teams_repository.dart`
-- [ ] `front/lib/data/repositories/fields_repository.dart`
-- [ ] `front/lib/data/repositories/matches_repository.dart`
-- [ ] `front/lib/data/repositories/lineup_repository.dart`
-- [ ] `front/lib/data/repositories/tactics_repository.dart`
-- [ ] `front/lib/data/repositories/stats_repository.dart` (тільки якщо Stats реально визначені в спеці)
+### - [x] Phase 3 — Repositories (Data access layer)
 
-### - [ ] Phase 4 — Providers (Business logic layer)
+- [x] `front/lib/data/repositories/settings_repository.dart`
+- [x] `front/lib/data/repositories/teams_repository.dart`
+- [x] `front/lib/data/repositories/fields_repository.dart`
+- [x] `front/lib/data/repositories/matches_repository.dart`
+- [x] `front/lib/data/repositories/lineup_repository.dart`
+- [x] `front/lib/data/repositories/tactics_repository.dart`
+- [x] `front/lib/data/repositories/stats_repository.dart` (поки stub; реалізуємо коли Stats будуть чітко визначені у спеці)
 
-- [ ] `front/lib/providers/settings_provider.dart`
-- [ ] `front/lib/providers/teams_provider.dart`
-- [ ] `front/lib/providers/fields_provider.dart`
-- [ ] `front/lib/providers/matches_provider.dart`
-- [ ] `front/lib/providers/lineup_provider.dart`
-- [ ] `front/lib/providers/tactics_provider.dart`
-- [ ] `front/lib/providers/stats_provider.dart` (за наявності чітких вимог)
+### - [x] Phase 4 — Providers (Business logic layer)
+
+- [x] `front/lib/providers/settings_provider.dart`
+- [x] `front/lib/providers/teams_provider.dart`
+- [x] `front/lib/providers/fields_provider.dart`
+- [x] `front/lib/providers/matches_provider.dart`
+- [x] `front/lib/providers/lineup_provider.dart`
+- [x] `front/lib/providers/tactics_provider.dart`
+- [x] `front/lib/providers/stats_provider.dart` (поки stub; розширимо коли Stats будуть чітко визначені у спеці)
 
 ### - [ ] Phase 5 — Screen: Splash (`/`)
 

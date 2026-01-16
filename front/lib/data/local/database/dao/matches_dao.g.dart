@@ -1,0 +1,16 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'matches_dao.dart';
+
+// ignore_for_file: type=lint
+mixin _$MatchesDaoMixin on DatabaseAccessor<AppDatabase> {
+  $MatchesTable get matches => attachedDatabase.matches;
+  MatchesDaoManager get managers => MatchesDaoManager(this);
+}
+
+class MatchesDaoManager {
+  final _$MatchesDaoMixin _db;
+  MatchesDaoManager(this._db);
+  $$MatchesTableTableManager get matches =>
+      $$MatchesTableTableManager(_db.attachedDatabase, _db.matches);
+}

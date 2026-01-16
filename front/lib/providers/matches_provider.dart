@@ -1,0 +1,55 @@
+import 'dart:async';
+
+import 'package:drift/drift.dart';
+import 'package:flutter/foundation.dart';
+
+import '../data/local/database/app_database.dart';
+import '../data/repositories/matches_repository.dart';
+
+class MatchesProvider extends ChangeNotifier {
+  MatchesProvider({required MatchesRepository repository})
+    : _repository = repository {
+    _matchesSubscription = _repository.watchMatches().listen((value) {
+      _matches = value;
+      notifyListeners();
+    });
+  }
+
+  final MatchesRepository _repository;
+
+  StreamSubscription<List<Fixture>>? _matchesSubscription;
+  List<Fixture> _matches = const [];
+
+  List<Fixture> get matches => _matches;
+
+  Future<int> createMatch({
+    required DateTime startAt,
+    int? fieldId,
+    int? teamAId,
+    int? teamBId,
+    String status = 'planned',
+    String? notes,
+  }) {
+    return _repository.createMatch(
+      MatchesCompanion.insert(
+        startAt: startAt,
+        fieldId: Value(fieldId),
+        teamAId: Value(teamAId),
+        teamBId: Value(teamBId),
+        status: Value(status),
+        notes: Value(notes),
+      ),
+    );
+  }
+
+  Future<void> updateMatch(Fixture fixture) => _repository.updateMatch(fixture);
+
+  Future<void> deleteMatchById(int matchId) =>
+      _repository.deleteMatchById(matchId);
+
+  @override
+  void dispose() {
+    _matchesSubscription?.cancel();
+    super.dispose();
+  }
+}

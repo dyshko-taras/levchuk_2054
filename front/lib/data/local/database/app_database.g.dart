@@ -1,0 +1,6509 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'app_database.dart';
+
+// ignore_for_file: type=lint
+class $TeamsTable extends Teams with TableInfo<$TeamsTable, Team> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $TeamsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _badgeIconMeta = const VerificationMeta(
+    'badgeIcon',
+  );
+  @override
+  late final GeneratedColumn<String> badgeIcon = GeneratedColumn<String>(
+    'badge_icon',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _homeColorMeta = const VerificationMeta(
+    'homeColor',
+  );
+  @override
+  late final GeneratedColumn<int> homeColor = GeneratedColumn<int>(
+    'home_color',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _awayColorMeta = const VerificationMeta(
+    'awayColor',
+  );
+  @override
+  late final GeneratedColumn<int> awayColor = GeneratedColumn<int>(
+    'away_color',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _isDefaultMeta = const VerificationMeta(
+    'isDefault',
+  );
+  @override
+  late final GeneratedColumn<bool> isDefault = GeneratedColumn<bool>(
+    'is_default',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_default" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    name,
+    badgeIcon,
+    homeColor,
+    awayColor,
+    isDefault,
+    createdAt,
+    updatedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'teams';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<Team> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('badge_icon')) {
+      context.handle(
+        _badgeIconMeta,
+        badgeIcon.isAcceptableOrUnknown(data['badge_icon']!, _badgeIconMeta),
+      );
+    }
+    if (data.containsKey('home_color')) {
+      context.handle(
+        _homeColorMeta,
+        homeColor.isAcceptableOrUnknown(data['home_color']!, _homeColorMeta),
+      );
+    }
+    if (data.containsKey('away_color')) {
+      context.handle(
+        _awayColorMeta,
+        awayColor.isAcceptableOrUnknown(data['away_color']!, _awayColorMeta),
+      );
+    }
+    if (data.containsKey('is_default')) {
+      context.handle(
+        _isDefaultMeta,
+        isDefault.isAcceptableOrUnknown(data['is_default']!, _isDefaultMeta),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Team map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Team(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      badgeIcon: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}badge_icon'],
+      ),
+      homeColor: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}home_color'],
+      ),
+      awayColor: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}away_color'],
+      ),
+      isDefault: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_default'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      ),
+    );
+  }
+
+  @override
+  $TeamsTable createAlias(String alias) {
+    return $TeamsTable(attachedDatabase, alias);
+  }
+}
+
+class Team extends DataClass implements Insertable<Team> {
+  final int id;
+  final String name;
+  final String? badgeIcon;
+  final int? homeColor;
+  final int? awayColor;
+  final bool isDefault;
+  final DateTime createdAt;
+  final DateTime? updatedAt;
+  const Team({
+    required this.id,
+    required this.name,
+    this.badgeIcon,
+    this.homeColor,
+    this.awayColor,
+    required this.isDefault,
+    required this.createdAt,
+    this.updatedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['name'] = Variable<String>(name);
+    if (!nullToAbsent || badgeIcon != null) {
+      map['badge_icon'] = Variable<String>(badgeIcon);
+    }
+    if (!nullToAbsent || homeColor != null) {
+      map['home_color'] = Variable<int>(homeColor);
+    }
+    if (!nullToAbsent || awayColor != null) {
+      map['away_color'] = Variable<int>(awayColor);
+    }
+    map['is_default'] = Variable<bool>(isDefault);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    if (!nullToAbsent || updatedAt != null) {
+      map['updated_at'] = Variable<DateTime>(updatedAt);
+    }
+    return map;
+  }
+
+  TeamsCompanion toCompanion(bool nullToAbsent) {
+    return TeamsCompanion(
+      id: Value(id),
+      name: Value(name),
+      badgeIcon: badgeIcon == null && nullToAbsent
+          ? const Value.absent()
+          : Value(badgeIcon),
+      homeColor: homeColor == null && nullToAbsent
+          ? const Value.absent()
+          : Value(homeColor),
+      awayColor: awayColor == null && nullToAbsent
+          ? const Value.absent()
+          : Value(awayColor),
+      isDefault: Value(isDefault),
+      createdAt: Value(createdAt),
+      updatedAt: updatedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(updatedAt),
+    );
+  }
+
+  factory Team.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Team(
+      id: serializer.fromJson<int>(json['id']),
+      name: serializer.fromJson<String>(json['name']),
+      badgeIcon: serializer.fromJson<String?>(json['badgeIcon']),
+      homeColor: serializer.fromJson<int?>(json['homeColor']),
+      awayColor: serializer.fromJson<int?>(json['awayColor']),
+      isDefault: serializer.fromJson<bool>(json['isDefault']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime?>(json['updatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'name': serializer.toJson<String>(name),
+      'badgeIcon': serializer.toJson<String?>(badgeIcon),
+      'homeColor': serializer.toJson<int?>(homeColor),
+      'awayColor': serializer.toJson<int?>(awayColor),
+      'isDefault': serializer.toJson<bool>(isDefault),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime?>(updatedAt),
+    };
+  }
+
+  Team copyWith({
+    int? id,
+    String? name,
+    Value<String?> badgeIcon = const Value.absent(),
+    Value<int?> homeColor = const Value.absent(),
+    Value<int?> awayColor = const Value.absent(),
+    bool? isDefault,
+    DateTime? createdAt,
+    Value<DateTime?> updatedAt = const Value.absent(),
+  }) => Team(
+    id: id ?? this.id,
+    name: name ?? this.name,
+    badgeIcon: badgeIcon.present ? badgeIcon.value : this.badgeIcon,
+    homeColor: homeColor.present ? homeColor.value : this.homeColor,
+    awayColor: awayColor.present ? awayColor.value : this.awayColor,
+    isDefault: isDefault ?? this.isDefault,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt.present ? updatedAt.value : this.updatedAt,
+  );
+  Team copyWithCompanion(TeamsCompanion data) {
+    return Team(
+      id: data.id.present ? data.id.value : this.id,
+      name: data.name.present ? data.name.value : this.name,
+      badgeIcon: data.badgeIcon.present ? data.badgeIcon.value : this.badgeIcon,
+      homeColor: data.homeColor.present ? data.homeColor.value : this.homeColor,
+      awayColor: data.awayColor.present ? data.awayColor.value : this.awayColor,
+      isDefault: data.isDefault.present ? data.isDefault.value : this.isDefault,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('Team(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('badgeIcon: $badgeIcon, ')
+          ..write('homeColor: $homeColor, ')
+          ..write('awayColor: $awayColor, ')
+          ..write('isDefault: $isDefault, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    name,
+    badgeIcon,
+    homeColor,
+    awayColor,
+    isDefault,
+    createdAt,
+    updatedAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Team &&
+          other.id == this.id &&
+          other.name == this.name &&
+          other.badgeIcon == this.badgeIcon &&
+          other.homeColor == this.homeColor &&
+          other.awayColor == this.awayColor &&
+          other.isDefault == this.isDefault &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt);
+}
+
+class TeamsCompanion extends UpdateCompanion<Team> {
+  final Value<int> id;
+  final Value<String> name;
+  final Value<String?> badgeIcon;
+  final Value<int?> homeColor;
+  final Value<int?> awayColor;
+  final Value<bool> isDefault;
+  final Value<DateTime> createdAt;
+  final Value<DateTime?> updatedAt;
+  const TeamsCompanion({
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+    this.badgeIcon = const Value.absent(),
+    this.homeColor = const Value.absent(),
+    this.awayColor = const Value.absent(),
+    this.isDefault = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+  });
+  TeamsCompanion.insert({
+    this.id = const Value.absent(),
+    required String name,
+    this.badgeIcon = const Value.absent(),
+    this.homeColor = const Value.absent(),
+    this.awayColor = const Value.absent(),
+    this.isDefault = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+  }) : name = Value(name);
+  static Insertable<Team> custom({
+    Expression<int>? id,
+    Expression<String>? name,
+    Expression<String>? badgeIcon,
+    Expression<int>? homeColor,
+    Expression<int>? awayColor,
+    Expression<bool>? isDefault,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (name != null) 'name': name,
+      if (badgeIcon != null) 'badge_icon': badgeIcon,
+      if (homeColor != null) 'home_color': homeColor,
+      if (awayColor != null) 'away_color': awayColor,
+      if (isDefault != null) 'is_default': isDefault,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+    });
+  }
+
+  TeamsCompanion copyWith({
+    Value<int>? id,
+    Value<String>? name,
+    Value<String?>? badgeIcon,
+    Value<int?>? homeColor,
+    Value<int?>? awayColor,
+    Value<bool>? isDefault,
+    Value<DateTime>? createdAt,
+    Value<DateTime?>? updatedAt,
+  }) {
+    return TeamsCompanion(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      badgeIcon: badgeIcon ?? this.badgeIcon,
+      homeColor: homeColor ?? this.homeColor,
+      awayColor: awayColor ?? this.awayColor,
+      isDefault: isDefault ?? this.isDefault,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (badgeIcon.present) {
+      map['badge_icon'] = Variable<String>(badgeIcon.value);
+    }
+    if (homeColor.present) {
+      map['home_color'] = Variable<int>(homeColor.value);
+    }
+    if (awayColor.present) {
+      map['away_color'] = Variable<int>(awayColor.value);
+    }
+    if (isDefault.present) {
+      map['is_default'] = Variable<bool>(isDefault.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('TeamsCompanion(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('badgeIcon: $badgeIcon, ')
+          ..write('homeColor: $homeColor, ')
+          ..write('awayColor: $awayColor, ')
+          ..write('isDefault: $isDefault, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $PlayersTable extends Players with TableInfo<$PlayersTable, Player> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $PlayersTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _teamIdMeta = const VerificationMeta('teamId');
+  @override
+  late final GeneratedColumn<int> teamId = GeneratedColumn<int>(
+    'team_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _positionMeta = const VerificationMeta(
+    'position',
+  );
+  @override
+  late final GeneratedColumn<String> position = GeneratedColumn<String>(
+    'position',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _isCaptainMeta = const VerificationMeta(
+    'isCaptain',
+  );
+  @override
+  late final GeneratedColumn<bool> isCaptain = GeneratedColumn<bool>(
+    'is_captain',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_captain" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    teamId,
+    name,
+    position,
+    isCaptain,
+    createdAt,
+    updatedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'players';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<Player> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('team_id')) {
+      context.handle(
+        _teamIdMeta,
+        teamId.isAcceptableOrUnknown(data['team_id']!, _teamIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_teamIdMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('position')) {
+      context.handle(
+        _positionMeta,
+        position.isAcceptableOrUnknown(data['position']!, _positionMeta),
+      );
+    }
+    if (data.containsKey('is_captain')) {
+      context.handle(
+        _isCaptainMeta,
+        isCaptain.isAcceptableOrUnknown(data['is_captain']!, _isCaptainMeta),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Player map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Player(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      teamId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}team_id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      position: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}position'],
+      ),
+      isCaptain: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_captain'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      ),
+    );
+  }
+
+  @override
+  $PlayersTable createAlias(String alias) {
+    return $PlayersTable(attachedDatabase, alias);
+  }
+}
+
+class Player extends DataClass implements Insertable<Player> {
+  final int id;
+  final int teamId;
+  final String name;
+  final String? position;
+  final bool isCaptain;
+  final DateTime createdAt;
+  final DateTime? updatedAt;
+  const Player({
+    required this.id,
+    required this.teamId,
+    required this.name,
+    this.position,
+    required this.isCaptain,
+    required this.createdAt,
+    this.updatedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['team_id'] = Variable<int>(teamId);
+    map['name'] = Variable<String>(name);
+    if (!nullToAbsent || position != null) {
+      map['position'] = Variable<String>(position);
+    }
+    map['is_captain'] = Variable<bool>(isCaptain);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    if (!nullToAbsent || updatedAt != null) {
+      map['updated_at'] = Variable<DateTime>(updatedAt);
+    }
+    return map;
+  }
+
+  PlayersCompanion toCompanion(bool nullToAbsent) {
+    return PlayersCompanion(
+      id: Value(id),
+      teamId: Value(teamId),
+      name: Value(name),
+      position: position == null && nullToAbsent
+          ? const Value.absent()
+          : Value(position),
+      isCaptain: Value(isCaptain),
+      createdAt: Value(createdAt),
+      updatedAt: updatedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(updatedAt),
+    );
+  }
+
+  factory Player.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Player(
+      id: serializer.fromJson<int>(json['id']),
+      teamId: serializer.fromJson<int>(json['teamId']),
+      name: serializer.fromJson<String>(json['name']),
+      position: serializer.fromJson<String?>(json['position']),
+      isCaptain: serializer.fromJson<bool>(json['isCaptain']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime?>(json['updatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'teamId': serializer.toJson<int>(teamId),
+      'name': serializer.toJson<String>(name),
+      'position': serializer.toJson<String?>(position),
+      'isCaptain': serializer.toJson<bool>(isCaptain),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime?>(updatedAt),
+    };
+  }
+
+  Player copyWith({
+    int? id,
+    int? teamId,
+    String? name,
+    Value<String?> position = const Value.absent(),
+    bool? isCaptain,
+    DateTime? createdAt,
+    Value<DateTime?> updatedAt = const Value.absent(),
+  }) => Player(
+    id: id ?? this.id,
+    teamId: teamId ?? this.teamId,
+    name: name ?? this.name,
+    position: position.present ? position.value : this.position,
+    isCaptain: isCaptain ?? this.isCaptain,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt.present ? updatedAt.value : this.updatedAt,
+  );
+  Player copyWithCompanion(PlayersCompanion data) {
+    return Player(
+      id: data.id.present ? data.id.value : this.id,
+      teamId: data.teamId.present ? data.teamId.value : this.teamId,
+      name: data.name.present ? data.name.value : this.name,
+      position: data.position.present ? data.position.value : this.position,
+      isCaptain: data.isCaptain.present ? data.isCaptain.value : this.isCaptain,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('Player(')
+          ..write('id: $id, ')
+          ..write('teamId: $teamId, ')
+          ..write('name: $name, ')
+          ..write('position: $position, ')
+          ..write('isCaptain: $isCaptain, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(id, teamId, name, position, isCaptain, createdAt, updatedAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Player &&
+          other.id == this.id &&
+          other.teamId == this.teamId &&
+          other.name == this.name &&
+          other.position == this.position &&
+          other.isCaptain == this.isCaptain &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt);
+}
+
+class PlayersCompanion extends UpdateCompanion<Player> {
+  final Value<int> id;
+  final Value<int> teamId;
+  final Value<String> name;
+  final Value<String?> position;
+  final Value<bool> isCaptain;
+  final Value<DateTime> createdAt;
+  final Value<DateTime?> updatedAt;
+  const PlayersCompanion({
+    this.id = const Value.absent(),
+    this.teamId = const Value.absent(),
+    this.name = const Value.absent(),
+    this.position = const Value.absent(),
+    this.isCaptain = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+  });
+  PlayersCompanion.insert({
+    this.id = const Value.absent(),
+    required int teamId,
+    required String name,
+    this.position = const Value.absent(),
+    this.isCaptain = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+  }) : teamId = Value(teamId),
+       name = Value(name);
+  static Insertable<Player> custom({
+    Expression<int>? id,
+    Expression<int>? teamId,
+    Expression<String>? name,
+    Expression<String>? position,
+    Expression<bool>? isCaptain,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (teamId != null) 'team_id': teamId,
+      if (name != null) 'name': name,
+      if (position != null) 'position': position,
+      if (isCaptain != null) 'is_captain': isCaptain,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+    });
+  }
+
+  PlayersCompanion copyWith({
+    Value<int>? id,
+    Value<int>? teamId,
+    Value<String>? name,
+    Value<String?>? position,
+    Value<bool>? isCaptain,
+    Value<DateTime>? createdAt,
+    Value<DateTime?>? updatedAt,
+  }) {
+    return PlayersCompanion(
+      id: id ?? this.id,
+      teamId: teamId ?? this.teamId,
+      name: name ?? this.name,
+      position: position ?? this.position,
+      isCaptain: isCaptain ?? this.isCaptain,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (teamId.present) {
+      map['team_id'] = Variable<int>(teamId.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (position.present) {
+      map['position'] = Variable<String>(position.value);
+    }
+    if (isCaptain.present) {
+      map['is_captain'] = Variable<bool>(isCaptain.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PlayersCompanion(')
+          ..write('id: $id, ')
+          ..write('teamId: $teamId, ')
+          ..write('name: $name, ')
+          ..write('position: $position, ')
+          ..write('isCaptain: $isCaptain, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $FieldsTable extends Fields with TableInfo<$FieldsTable, Field> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $FieldsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _addressMeta = const VerificationMeta(
+    'address',
+  );
+  @override
+  late final GeneratedColumn<String> address = GeneratedColumn<String>(
+    'address',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _notesMeta = const VerificationMeta('notes');
+  @override
+  late final GeneratedColumn<String> notes = GeneratedColumn<String>(
+    'notes',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _photoPathMeta = const VerificationMeta(
+    'photoPath',
+  );
+  @override
+  late final GeneratedColumn<String> photoPath = GeneratedColumn<String>(
+    'photo_path',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    name,
+    address,
+    notes,
+    photoPath,
+    createdAt,
+    updatedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'fields';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<Field> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('address')) {
+      context.handle(
+        _addressMeta,
+        address.isAcceptableOrUnknown(data['address']!, _addressMeta),
+      );
+    }
+    if (data.containsKey('notes')) {
+      context.handle(
+        _notesMeta,
+        notes.isAcceptableOrUnknown(data['notes']!, _notesMeta),
+      );
+    }
+    if (data.containsKey('photo_path')) {
+      context.handle(
+        _photoPathMeta,
+        photoPath.isAcceptableOrUnknown(data['photo_path']!, _photoPathMeta),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Field map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Field(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      address: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}address'],
+      ),
+      notes: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}notes'],
+      ),
+      photoPath: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}photo_path'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      ),
+    );
+  }
+
+  @override
+  $FieldsTable createAlias(String alias) {
+    return $FieldsTable(attachedDatabase, alias);
+  }
+}
+
+class Field extends DataClass implements Insertable<Field> {
+  final int id;
+  final String name;
+  final String? address;
+  final String? notes;
+  final String? photoPath;
+  final DateTime createdAt;
+  final DateTime? updatedAt;
+  const Field({
+    required this.id,
+    required this.name,
+    this.address,
+    this.notes,
+    this.photoPath,
+    required this.createdAt,
+    this.updatedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['name'] = Variable<String>(name);
+    if (!nullToAbsent || address != null) {
+      map['address'] = Variable<String>(address);
+    }
+    if (!nullToAbsent || notes != null) {
+      map['notes'] = Variable<String>(notes);
+    }
+    if (!nullToAbsent || photoPath != null) {
+      map['photo_path'] = Variable<String>(photoPath);
+    }
+    map['created_at'] = Variable<DateTime>(createdAt);
+    if (!nullToAbsent || updatedAt != null) {
+      map['updated_at'] = Variable<DateTime>(updatedAt);
+    }
+    return map;
+  }
+
+  FieldsCompanion toCompanion(bool nullToAbsent) {
+    return FieldsCompanion(
+      id: Value(id),
+      name: Value(name),
+      address: address == null && nullToAbsent
+          ? const Value.absent()
+          : Value(address),
+      notes: notes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(notes),
+      photoPath: photoPath == null && nullToAbsent
+          ? const Value.absent()
+          : Value(photoPath),
+      createdAt: Value(createdAt),
+      updatedAt: updatedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(updatedAt),
+    );
+  }
+
+  factory Field.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Field(
+      id: serializer.fromJson<int>(json['id']),
+      name: serializer.fromJson<String>(json['name']),
+      address: serializer.fromJson<String?>(json['address']),
+      notes: serializer.fromJson<String?>(json['notes']),
+      photoPath: serializer.fromJson<String?>(json['photoPath']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime?>(json['updatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'name': serializer.toJson<String>(name),
+      'address': serializer.toJson<String?>(address),
+      'notes': serializer.toJson<String?>(notes),
+      'photoPath': serializer.toJson<String?>(photoPath),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime?>(updatedAt),
+    };
+  }
+
+  Field copyWith({
+    int? id,
+    String? name,
+    Value<String?> address = const Value.absent(),
+    Value<String?> notes = const Value.absent(),
+    Value<String?> photoPath = const Value.absent(),
+    DateTime? createdAt,
+    Value<DateTime?> updatedAt = const Value.absent(),
+  }) => Field(
+    id: id ?? this.id,
+    name: name ?? this.name,
+    address: address.present ? address.value : this.address,
+    notes: notes.present ? notes.value : this.notes,
+    photoPath: photoPath.present ? photoPath.value : this.photoPath,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt.present ? updatedAt.value : this.updatedAt,
+  );
+  Field copyWithCompanion(FieldsCompanion data) {
+    return Field(
+      id: data.id.present ? data.id.value : this.id,
+      name: data.name.present ? data.name.value : this.name,
+      address: data.address.present ? data.address.value : this.address,
+      notes: data.notes.present ? data.notes.value : this.notes,
+      photoPath: data.photoPath.present ? data.photoPath.value : this.photoPath,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('Field(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('address: $address, ')
+          ..write('notes: $notes, ')
+          ..write('photoPath: $photoPath, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(id, name, address, notes, photoPath, createdAt, updatedAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Field &&
+          other.id == this.id &&
+          other.name == this.name &&
+          other.address == this.address &&
+          other.notes == this.notes &&
+          other.photoPath == this.photoPath &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt);
+}
+
+class FieldsCompanion extends UpdateCompanion<Field> {
+  final Value<int> id;
+  final Value<String> name;
+  final Value<String?> address;
+  final Value<String?> notes;
+  final Value<String?> photoPath;
+  final Value<DateTime> createdAt;
+  final Value<DateTime?> updatedAt;
+  const FieldsCompanion({
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+    this.address = const Value.absent(),
+    this.notes = const Value.absent(),
+    this.photoPath = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+  });
+  FieldsCompanion.insert({
+    this.id = const Value.absent(),
+    required String name,
+    this.address = const Value.absent(),
+    this.notes = const Value.absent(),
+    this.photoPath = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+  }) : name = Value(name);
+  static Insertable<Field> custom({
+    Expression<int>? id,
+    Expression<String>? name,
+    Expression<String>? address,
+    Expression<String>? notes,
+    Expression<String>? photoPath,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (name != null) 'name': name,
+      if (address != null) 'address': address,
+      if (notes != null) 'notes': notes,
+      if (photoPath != null) 'photo_path': photoPath,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+    });
+  }
+
+  FieldsCompanion copyWith({
+    Value<int>? id,
+    Value<String>? name,
+    Value<String?>? address,
+    Value<String?>? notes,
+    Value<String?>? photoPath,
+    Value<DateTime>? createdAt,
+    Value<DateTime?>? updatedAt,
+  }) {
+    return FieldsCompanion(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      address: address ?? this.address,
+      notes: notes ?? this.notes,
+      photoPath: photoPath ?? this.photoPath,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (address.present) {
+      map['address'] = Variable<String>(address.value);
+    }
+    if (notes.present) {
+      map['notes'] = Variable<String>(notes.value);
+    }
+    if (photoPath.present) {
+      map['photo_path'] = Variable<String>(photoPath.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('FieldsCompanion(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('address: $address, ')
+          ..write('notes: $notes, ')
+          ..write('photoPath: $photoPath, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $MatchesTable extends Matches with TableInfo<$MatchesTable, Fixture> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $MatchesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _startAtMeta = const VerificationMeta(
+    'startAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> startAt = GeneratedColumn<DateTime>(
+    'start_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _fieldIdMeta = const VerificationMeta(
+    'fieldId',
+  );
+  @override
+  late final GeneratedColumn<int> fieldId = GeneratedColumn<int>(
+    'field_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _teamAIdMeta = const VerificationMeta(
+    'teamAId',
+  );
+  @override
+  late final GeneratedColumn<int> teamAId = GeneratedColumn<int>(
+    'team_a_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _teamBIdMeta = const VerificationMeta(
+    'teamBId',
+  );
+  @override
+  late final GeneratedColumn<int> teamBId = GeneratedColumn<int>(
+    'team_b_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('planned'),
+  );
+  static const VerificationMeta _notesMeta = const VerificationMeta('notes');
+  @override
+  late final GeneratedColumn<String> notes = GeneratedColumn<String>(
+    'notes',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    startAt,
+    fieldId,
+    teamAId,
+    teamBId,
+    status,
+    notes,
+    createdAt,
+    updatedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'matches';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<Fixture> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('start_at')) {
+      context.handle(
+        _startAtMeta,
+        startAt.isAcceptableOrUnknown(data['start_at']!, _startAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_startAtMeta);
+    }
+    if (data.containsKey('field_id')) {
+      context.handle(
+        _fieldIdMeta,
+        fieldId.isAcceptableOrUnknown(data['field_id']!, _fieldIdMeta),
+      );
+    }
+    if (data.containsKey('team_a_id')) {
+      context.handle(
+        _teamAIdMeta,
+        teamAId.isAcceptableOrUnknown(data['team_a_id']!, _teamAIdMeta),
+      );
+    }
+    if (data.containsKey('team_b_id')) {
+      context.handle(
+        _teamBIdMeta,
+        teamBId.isAcceptableOrUnknown(data['team_b_id']!, _teamBIdMeta),
+      );
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    }
+    if (data.containsKey('notes')) {
+      context.handle(
+        _notesMeta,
+        notes.isAcceptableOrUnknown(data['notes']!, _notesMeta),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Fixture map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Fixture(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      startAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}start_at'],
+      )!,
+      fieldId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}field_id'],
+      ),
+      teamAId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}team_a_id'],
+      ),
+      teamBId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}team_b_id'],
+      ),
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      notes: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}notes'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      ),
+    );
+  }
+
+  @override
+  $MatchesTable createAlias(String alias) {
+    return $MatchesTable(attachedDatabase, alias);
+  }
+}
+
+class Fixture extends DataClass implements Insertable<Fixture> {
+  final int id;
+  final DateTime startAt;
+  final int? fieldId;
+  final int? teamAId;
+  final int? teamBId;
+  final String status;
+  final String? notes;
+  final DateTime createdAt;
+  final DateTime? updatedAt;
+  const Fixture({
+    required this.id,
+    required this.startAt,
+    this.fieldId,
+    this.teamAId,
+    this.teamBId,
+    required this.status,
+    this.notes,
+    required this.createdAt,
+    this.updatedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['start_at'] = Variable<DateTime>(startAt);
+    if (!nullToAbsent || fieldId != null) {
+      map['field_id'] = Variable<int>(fieldId);
+    }
+    if (!nullToAbsent || teamAId != null) {
+      map['team_a_id'] = Variable<int>(teamAId);
+    }
+    if (!nullToAbsent || teamBId != null) {
+      map['team_b_id'] = Variable<int>(teamBId);
+    }
+    map['status'] = Variable<String>(status);
+    if (!nullToAbsent || notes != null) {
+      map['notes'] = Variable<String>(notes);
+    }
+    map['created_at'] = Variable<DateTime>(createdAt);
+    if (!nullToAbsent || updatedAt != null) {
+      map['updated_at'] = Variable<DateTime>(updatedAt);
+    }
+    return map;
+  }
+
+  MatchesCompanion toCompanion(bool nullToAbsent) {
+    return MatchesCompanion(
+      id: Value(id),
+      startAt: Value(startAt),
+      fieldId: fieldId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(fieldId),
+      teamAId: teamAId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(teamAId),
+      teamBId: teamBId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(teamBId),
+      status: Value(status),
+      notes: notes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(notes),
+      createdAt: Value(createdAt),
+      updatedAt: updatedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(updatedAt),
+    );
+  }
+
+  factory Fixture.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Fixture(
+      id: serializer.fromJson<int>(json['id']),
+      startAt: serializer.fromJson<DateTime>(json['startAt']),
+      fieldId: serializer.fromJson<int?>(json['fieldId']),
+      teamAId: serializer.fromJson<int?>(json['teamAId']),
+      teamBId: serializer.fromJson<int?>(json['teamBId']),
+      status: serializer.fromJson<String>(json['status']),
+      notes: serializer.fromJson<String?>(json['notes']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime?>(json['updatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'startAt': serializer.toJson<DateTime>(startAt),
+      'fieldId': serializer.toJson<int?>(fieldId),
+      'teamAId': serializer.toJson<int?>(teamAId),
+      'teamBId': serializer.toJson<int?>(teamBId),
+      'status': serializer.toJson<String>(status),
+      'notes': serializer.toJson<String?>(notes),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime?>(updatedAt),
+    };
+  }
+
+  Fixture copyWith({
+    int? id,
+    DateTime? startAt,
+    Value<int?> fieldId = const Value.absent(),
+    Value<int?> teamAId = const Value.absent(),
+    Value<int?> teamBId = const Value.absent(),
+    String? status,
+    Value<String?> notes = const Value.absent(),
+    DateTime? createdAt,
+    Value<DateTime?> updatedAt = const Value.absent(),
+  }) => Fixture(
+    id: id ?? this.id,
+    startAt: startAt ?? this.startAt,
+    fieldId: fieldId.present ? fieldId.value : this.fieldId,
+    teamAId: teamAId.present ? teamAId.value : this.teamAId,
+    teamBId: teamBId.present ? teamBId.value : this.teamBId,
+    status: status ?? this.status,
+    notes: notes.present ? notes.value : this.notes,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt.present ? updatedAt.value : this.updatedAt,
+  );
+  Fixture copyWithCompanion(MatchesCompanion data) {
+    return Fixture(
+      id: data.id.present ? data.id.value : this.id,
+      startAt: data.startAt.present ? data.startAt.value : this.startAt,
+      fieldId: data.fieldId.present ? data.fieldId.value : this.fieldId,
+      teamAId: data.teamAId.present ? data.teamAId.value : this.teamAId,
+      teamBId: data.teamBId.present ? data.teamBId.value : this.teamBId,
+      status: data.status.present ? data.status.value : this.status,
+      notes: data.notes.present ? data.notes.value : this.notes,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('Fixture(')
+          ..write('id: $id, ')
+          ..write('startAt: $startAt, ')
+          ..write('fieldId: $fieldId, ')
+          ..write('teamAId: $teamAId, ')
+          ..write('teamBId: $teamBId, ')
+          ..write('status: $status, ')
+          ..write('notes: $notes, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    startAt,
+    fieldId,
+    teamAId,
+    teamBId,
+    status,
+    notes,
+    createdAt,
+    updatedAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Fixture &&
+          other.id == this.id &&
+          other.startAt == this.startAt &&
+          other.fieldId == this.fieldId &&
+          other.teamAId == this.teamAId &&
+          other.teamBId == this.teamBId &&
+          other.status == this.status &&
+          other.notes == this.notes &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt);
+}
+
+class MatchesCompanion extends UpdateCompanion<Fixture> {
+  final Value<int> id;
+  final Value<DateTime> startAt;
+  final Value<int?> fieldId;
+  final Value<int?> teamAId;
+  final Value<int?> teamBId;
+  final Value<String> status;
+  final Value<String?> notes;
+  final Value<DateTime> createdAt;
+  final Value<DateTime?> updatedAt;
+  const MatchesCompanion({
+    this.id = const Value.absent(),
+    this.startAt = const Value.absent(),
+    this.fieldId = const Value.absent(),
+    this.teamAId = const Value.absent(),
+    this.teamBId = const Value.absent(),
+    this.status = const Value.absent(),
+    this.notes = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+  });
+  MatchesCompanion.insert({
+    this.id = const Value.absent(),
+    required DateTime startAt,
+    this.fieldId = const Value.absent(),
+    this.teamAId = const Value.absent(),
+    this.teamBId = const Value.absent(),
+    this.status = const Value.absent(),
+    this.notes = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+  }) : startAt = Value(startAt);
+  static Insertable<Fixture> custom({
+    Expression<int>? id,
+    Expression<DateTime>? startAt,
+    Expression<int>? fieldId,
+    Expression<int>? teamAId,
+    Expression<int>? teamBId,
+    Expression<String>? status,
+    Expression<String>? notes,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (startAt != null) 'start_at': startAt,
+      if (fieldId != null) 'field_id': fieldId,
+      if (teamAId != null) 'team_a_id': teamAId,
+      if (teamBId != null) 'team_b_id': teamBId,
+      if (status != null) 'status': status,
+      if (notes != null) 'notes': notes,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+    });
+  }
+
+  MatchesCompanion copyWith({
+    Value<int>? id,
+    Value<DateTime>? startAt,
+    Value<int?>? fieldId,
+    Value<int?>? teamAId,
+    Value<int?>? teamBId,
+    Value<String>? status,
+    Value<String?>? notes,
+    Value<DateTime>? createdAt,
+    Value<DateTime?>? updatedAt,
+  }) {
+    return MatchesCompanion(
+      id: id ?? this.id,
+      startAt: startAt ?? this.startAt,
+      fieldId: fieldId ?? this.fieldId,
+      teamAId: teamAId ?? this.teamAId,
+      teamBId: teamBId ?? this.teamBId,
+      status: status ?? this.status,
+      notes: notes ?? this.notes,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (startAt.present) {
+      map['start_at'] = Variable<DateTime>(startAt.value);
+    }
+    if (fieldId.present) {
+      map['field_id'] = Variable<int>(fieldId.value);
+    }
+    if (teamAId.present) {
+      map['team_a_id'] = Variable<int>(teamAId.value);
+    }
+    if (teamBId.present) {
+      map['team_b_id'] = Variable<int>(teamBId.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (notes.present) {
+      map['notes'] = Variable<String>(notes.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MatchesCompanion(')
+          ..write('id: $id, ')
+          ..write('startAt: $startAt, ')
+          ..write('fieldId: $fieldId, ')
+          ..write('teamAId: $teamAId, ')
+          ..write('teamBId: $teamBId, ')
+          ..write('status: $status, ')
+          ..write('notes: $notes, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $LineupsTable extends Lineups with TableInfo<$LineupsTable, Lineup> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $LineupsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _matchIdMeta = const VerificationMeta(
+    'matchId',
+  );
+  @override
+  late final GeneratedColumn<int> matchId = GeneratedColumn<int>(
+    'match_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _teamIdMeta = const VerificationMeta('teamId');
+  @override
+  late final GeneratedColumn<int> teamId = GeneratedColumn<int>(
+    'team_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _formationMeta = const VerificationMeta(
+    'formation',
+  );
+  @override
+  late final GeneratedColumn<String> formation = GeneratedColumn<String>(
+    'formation',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('4-4-2'),
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [matchId, teamId, formation, updatedAt];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'lineups';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<Lineup> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('match_id')) {
+      context.handle(
+        _matchIdMeta,
+        matchId.isAcceptableOrUnknown(data['match_id']!, _matchIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_matchIdMeta);
+    }
+    if (data.containsKey('team_id')) {
+      context.handle(
+        _teamIdMeta,
+        teamId.isAcceptableOrUnknown(data['team_id']!, _teamIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_teamIdMeta);
+    }
+    if (data.containsKey('formation')) {
+      context.handle(
+        _formationMeta,
+        formation.isAcceptableOrUnknown(data['formation']!, _formationMeta),
+      );
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {matchId, teamId};
+  @override
+  Lineup map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Lineup(
+      matchId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}match_id'],
+      )!,
+      teamId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}team_id'],
+      )!,
+      formation: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}formation'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      ),
+    );
+  }
+
+  @override
+  $LineupsTable createAlias(String alias) {
+    return $LineupsTable(attachedDatabase, alias);
+  }
+}
+
+class Lineup extends DataClass implements Insertable<Lineup> {
+  final int matchId;
+  final int teamId;
+  final String formation;
+  final DateTime? updatedAt;
+  const Lineup({
+    required this.matchId,
+    required this.teamId,
+    required this.formation,
+    this.updatedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['match_id'] = Variable<int>(matchId);
+    map['team_id'] = Variable<int>(teamId);
+    map['formation'] = Variable<String>(formation);
+    if (!nullToAbsent || updatedAt != null) {
+      map['updated_at'] = Variable<DateTime>(updatedAt);
+    }
+    return map;
+  }
+
+  LineupsCompanion toCompanion(bool nullToAbsent) {
+    return LineupsCompanion(
+      matchId: Value(matchId),
+      teamId: Value(teamId),
+      formation: Value(formation),
+      updatedAt: updatedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(updatedAt),
+    );
+  }
+
+  factory Lineup.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Lineup(
+      matchId: serializer.fromJson<int>(json['matchId']),
+      teamId: serializer.fromJson<int>(json['teamId']),
+      formation: serializer.fromJson<String>(json['formation']),
+      updatedAt: serializer.fromJson<DateTime?>(json['updatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'matchId': serializer.toJson<int>(matchId),
+      'teamId': serializer.toJson<int>(teamId),
+      'formation': serializer.toJson<String>(formation),
+      'updatedAt': serializer.toJson<DateTime?>(updatedAt),
+    };
+  }
+
+  Lineup copyWith({
+    int? matchId,
+    int? teamId,
+    String? formation,
+    Value<DateTime?> updatedAt = const Value.absent(),
+  }) => Lineup(
+    matchId: matchId ?? this.matchId,
+    teamId: teamId ?? this.teamId,
+    formation: formation ?? this.formation,
+    updatedAt: updatedAt.present ? updatedAt.value : this.updatedAt,
+  );
+  Lineup copyWithCompanion(LineupsCompanion data) {
+    return Lineup(
+      matchId: data.matchId.present ? data.matchId.value : this.matchId,
+      teamId: data.teamId.present ? data.teamId.value : this.teamId,
+      formation: data.formation.present ? data.formation.value : this.formation,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('Lineup(')
+          ..write('matchId: $matchId, ')
+          ..write('teamId: $teamId, ')
+          ..write('formation: $formation, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(matchId, teamId, formation, updatedAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Lineup &&
+          other.matchId == this.matchId &&
+          other.teamId == this.teamId &&
+          other.formation == this.formation &&
+          other.updatedAt == this.updatedAt);
+}
+
+class LineupsCompanion extends UpdateCompanion<Lineup> {
+  final Value<int> matchId;
+  final Value<int> teamId;
+  final Value<String> formation;
+  final Value<DateTime?> updatedAt;
+  final Value<int> rowid;
+  const LineupsCompanion({
+    this.matchId = const Value.absent(),
+    this.teamId = const Value.absent(),
+    this.formation = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  LineupsCompanion.insert({
+    required int matchId,
+    required int teamId,
+    this.formation = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : matchId = Value(matchId),
+       teamId = Value(teamId);
+  static Insertable<Lineup> custom({
+    Expression<int>? matchId,
+    Expression<int>? teamId,
+    Expression<String>? formation,
+    Expression<DateTime>? updatedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (matchId != null) 'match_id': matchId,
+      if (teamId != null) 'team_id': teamId,
+      if (formation != null) 'formation': formation,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  LineupsCompanion copyWith({
+    Value<int>? matchId,
+    Value<int>? teamId,
+    Value<String>? formation,
+    Value<DateTime?>? updatedAt,
+    Value<int>? rowid,
+  }) {
+    return LineupsCompanion(
+      matchId: matchId ?? this.matchId,
+      teamId: teamId ?? this.teamId,
+      formation: formation ?? this.formation,
+      updatedAt: updatedAt ?? this.updatedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (matchId.present) {
+      map['match_id'] = Variable<int>(matchId.value);
+    }
+    if (teamId.present) {
+      map['team_id'] = Variable<int>(teamId.value);
+    }
+    if (formation.present) {
+      map['formation'] = Variable<String>(formation.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LineupsCompanion(')
+          ..write('matchId: $matchId, ')
+          ..write('teamId: $teamId, ')
+          ..write('formation: $formation, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $LineupSlotsTable extends LineupSlots
+    with TableInfo<$LineupSlotsTable, LineupSlot> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $LineupSlotsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _matchIdMeta = const VerificationMeta(
+    'matchId',
+  );
+  @override
+  late final GeneratedColumn<int> matchId = GeneratedColumn<int>(
+    'match_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _teamIdMeta = const VerificationMeta('teamId');
+  @override
+  late final GeneratedColumn<int> teamId = GeneratedColumn<int>(
+    'team_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _slotIndexMeta = const VerificationMeta(
+    'slotIndex',
+  );
+  @override
+  late final GeneratedColumn<int> slotIndex = GeneratedColumn<int>(
+    'slot_index',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _positionMeta = const VerificationMeta(
+    'position',
+  );
+  @override
+  late final GeneratedColumn<String> position = GeneratedColumn<String>(
+    'position',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _playerIdMeta = const VerificationMeta(
+    'playerId',
+  );
+  @override
+  late final GeneratedColumn<int> playerId = GeneratedColumn<int>(
+    'player_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    matchId,
+    teamId,
+    slotIndex,
+    position,
+    playerId,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'lineup_slots';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<LineupSlot> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('match_id')) {
+      context.handle(
+        _matchIdMeta,
+        matchId.isAcceptableOrUnknown(data['match_id']!, _matchIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_matchIdMeta);
+    }
+    if (data.containsKey('team_id')) {
+      context.handle(
+        _teamIdMeta,
+        teamId.isAcceptableOrUnknown(data['team_id']!, _teamIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_teamIdMeta);
+    }
+    if (data.containsKey('slot_index')) {
+      context.handle(
+        _slotIndexMeta,
+        slotIndex.isAcceptableOrUnknown(data['slot_index']!, _slotIndexMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_slotIndexMeta);
+    }
+    if (data.containsKey('position')) {
+      context.handle(
+        _positionMeta,
+        position.isAcceptableOrUnknown(data['position']!, _positionMeta),
+      );
+    }
+    if (data.containsKey('player_id')) {
+      context.handle(
+        _playerIdMeta,
+        playerId.isAcceptableOrUnknown(data['player_id']!, _playerIdMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  LineupSlot map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return LineupSlot(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      matchId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}match_id'],
+      )!,
+      teamId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}team_id'],
+      )!,
+      slotIndex: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}slot_index'],
+      )!,
+      position: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}position'],
+      ),
+      playerId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}player_id'],
+      ),
+    );
+  }
+
+  @override
+  $LineupSlotsTable createAlias(String alias) {
+    return $LineupSlotsTable(attachedDatabase, alias);
+  }
+}
+
+class LineupSlot extends DataClass implements Insertable<LineupSlot> {
+  final int id;
+  final int matchId;
+  final int teamId;
+  final int slotIndex;
+  final String? position;
+  final int? playerId;
+  const LineupSlot({
+    required this.id,
+    required this.matchId,
+    required this.teamId,
+    required this.slotIndex,
+    this.position,
+    this.playerId,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['match_id'] = Variable<int>(matchId);
+    map['team_id'] = Variable<int>(teamId);
+    map['slot_index'] = Variable<int>(slotIndex);
+    if (!nullToAbsent || position != null) {
+      map['position'] = Variable<String>(position);
+    }
+    if (!nullToAbsent || playerId != null) {
+      map['player_id'] = Variable<int>(playerId);
+    }
+    return map;
+  }
+
+  LineupSlotsCompanion toCompanion(bool nullToAbsent) {
+    return LineupSlotsCompanion(
+      id: Value(id),
+      matchId: Value(matchId),
+      teamId: Value(teamId),
+      slotIndex: Value(slotIndex),
+      position: position == null && nullToAbsent
+          ? const Value.absent()
+          : Value(position),
+      playerId: playerId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(playerId),
+    );
+  }
+
+  factory LineupSlot.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return LineupSlot(
+      id: serializer.fromJson<int>(json['id']),
+      matchId: serializer.fromJson<int>(json['matchId']),
+      teamId: serializer.fromJson<int>(json['teamId']),
+      slotIndex: serializer.fromJson<int>(json['slotIndex']),
+      position: serializer.fromJson<String?>(json['position']),
+      playerId: serializer.fromJson<int?>(json['playerId']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'matchId': serializer.toJson<int>(matchId),
+      'teamId': serializer.toJson<int>(teamId),
+      'slotIndex': serializer.toJson<int>(slotIndex),
+      'position': serializer.toJson<String?>(position),
+      'playerId': serializer.toJson<int?>(playerId),
+    };
+  }
+
+  LineupSlot copyWith({
+    int? id,
+    int? matchId,
+    int? teamId,
+    int? slotIndex,
+    Value<String?> position = const Value.absent(),
+    Value<int?> playerId = const Value.absent(),
+  }) => LineupSlot(
+    id: id ?? this.id,
+    matchId: matchId ?? this.matchId,
+    teamId: teamId ?? this.teamId,
+    slotIndex: slotIndex ?? this.slotIndex,
+    position: position.present ? position.value : this.position,
+    playerId: playerId.present ? playerId.value : this.playerId,
+  );
+  LineupSlot copyWithCompanion(LineupSlotsCompanion data) {
+    return LineupSlot(
+      id: data.id.present ? data.id.value : this.id,
+      matchId: data.matchId.present ? data.matchId.value : this.matchId,
+      teamId: data.teamId.present ? data.teamId.value : this.teamId,
+      slotIndex: data.slotIndex.present ? data.slotIndex.value : this.slotIndex,
+      position: data.position.present ? data.position.value : this.position,
+      playerId: data.playerId.present ? data.playerId.value : this.playerId,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LineupSlot(')
+          ..write('id: $id, ')
+          ..write('matchId: $matchId, ')
+          ..write('teamId: $teamId, ')
+          ..write('slotIndex: $slotIndex, ')
+          ..write('position: $position, ')
+          ..write('playerId: $playerId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(id, matchId, teamId, slotIndex, position, playerId);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is LineupSlot &&
+          other.id == this.id &&
+          other.matchId == this.matchId &&
+          other.teamId == this.teamId &&
+          other.slotIndex == this.slotIndex &&
+          other.position == this.position &&
+          other.playerId == this.playerId);
+}
+
+class LineupSlotsCompanion extends UpdateCompanion<LineupSlot> {
+  final Value<int> id;
+  final Value<int> matchId;
+  final Value<int> teamId;
+  final Value<int> slotIndex;
+  final Value<String?> position;
+  final Value<int?> playerId;
+  const LineupSlotsCompanion({
+    this.id = const Value.absent(),
+    this.matchId = const Value.absent(),
+    this.teamId = const Value.absent(),
+    this.slotIndex = const Value.absent(),
+    this.position = const Value.absent(),
+    this.playerId = const Value.absent(),
+  });
+  LineupSlotsCompanion.insert({
+    this.id = const Value.absent(),
+    required int matchId,
+    required int teamId,
+    required int slotIndex,
+    this.position = const Value.absent(),
+    this.playerId = const Value.absent(),
+  }) : matchId = Value(matchId),
+       teamId = Value(teamId),
+       slotIndex = Value(slotIndex);
+  static Insertable<LineupSlot> custom({
+    Expression<int>? id,
+    Expression<int>? matchId,
+    Expression<int>? teamId,
+    Expression<int>? slotIndex,
+    Expression<String>? position,
+    Expression<int>? playerId,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (matchId != null) 'match_id': matchId,
+      if (teamId != null) 'team_id': teamId,
+      if (slotIndex != null) 'slot_index': slotIndex,
+      if (position != null) 'position': position,
+      if (playerId != null) 'player_id': playerId,
+    });
+  }
+
+  LineupSlotsCompanion copyWith({
+    Value<int>? id,
+    Value<int>? matchId,
+    Value<int>? teamId,
+    Value<int>? slotIndex,
+    Value<String?>? position,
+    Value<int?>? playerId,
+  }) {
+    return LineupSlotsCompanion(
+      id: id ?? this.id,
+      matchId: matchId ?? this.matchId,
+      teamId: teamId ?? this.teamId,
+      slotIndex: slotIndex ?? this.slotIndex,
+      position: position ?? this.position,
+      playerId: playerId ?? this.playerId,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (matchId.present) {
+      map['match_id'] = Variable<int>(matchId.value);
+    }
+    if (teamId.present) {
+      map['team_id'] = Variable<int>(teamId.value);
+    }
+    if (slotIndex.present) {
+      map['slot_index'] = Variable<int>(slotIndex.value);
+    }
+    if (position.present) {
+      map['position'] = Variable<String>(position.value);
+    }
+    if (playerId.present) {
+      map['player_id'] = Variable<int>(playerId.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LineupSlotsCompanion(')
+          ..write('id: $id, ')
+          ..write('matchId: $matchId, ')
+          ..write('teamId: $teamId, ')
+          ..write('slotIndex: $slotIndex, ')
+          ..write('position: $position, ')
+          ..write('playerId: $playerId')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $AttendanceTable extends Attendance
+    with TableInfo<$AttendanceTable, AttendanceData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $AttendanceTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _matchIdMeta = const VerificationMeta(
+    'matchId',
+  );
+  @override
+  late final GeneratedColumn<int> matchId = GeneratedColumn<int>(
+    'match_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _teamIdMeta = const VerificationMeta('teamId');
+  @override
+  late final GeneratedColumn<int> teamId = GeneratedColumn<int>(
+    'team_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _playerIdMeta = const VerificationMeta(
+    'playerId',
+  );
+  @override
+  late final GeneratedColumn<int> playerId = GeneratedColumn<int>(
+    'player_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _isComingMeta = const VerificationMeta(
+    'isComing',
+  );
+  @override
+  late final GeneratedColumn<bool> isComing = GeneratedColumn<bool>(
+    'is_coming',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_coming" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [matchId, teamId, playerId, isComing];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'attendance';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<AttendanceData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('match_id')) {
+      context.handle(
+        _matchIdMeta,
+        matchId.isAcceptableOrUnknown(data['match_id']!, _matchIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_matchIdMeta);
+    }
+    if (data.containsKey('team_id')) {
+      context.handle(
+        _teamIdMeta,
+        teamId.isAcceptableOrUnknown(data['team_id']!, _teamIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_teamIdMeta);
+    }
+    if (data.containsKey('player_id')) {
+      context.handle(
+        _playerIdMeta,
+        playerId.isAcceptableOrUnknown(data['player_id']!, _playerIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_playerIdMeta);
+    }
+    if (data.containsKey('is_coming')) {
+      context.handle(
+        _isComingMeta,
+        isComing.isAcceptableOrUnknown(data['is_coming']!, _isComingMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {matchId, teamId, playerId};
+  @override
+  AttendanceData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return AttendanceData(
+      matchId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}match_id'],
+      )!,
+      teamId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}team_id'],
+      )!,
+      playerId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}player_id'],
+      )!,
+      isComing: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_coming'],
+      )!,
+    );
+  }
+
+  @override
+  $AttendanceTable createAlias(String alias) {
+    return $AttendanceTable(attachedDatabase, alias);
+  }
+}
+
+class AttendanceData extends DataClass implements Insertable<AttendanceData> {
+  final int matchId;
+  final int teamId;
+  final int playerId;
+  final bool isComing;
+  const AttendanceData({
+    required this.matchId,
+    required this.teamId,
+    required this.playerId,
+    required this.isComing,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['match_id'] = Variable<int>(matchId);
+    map['team_id'] = Variable<int>(teamId);
+    map['player_id'] = Variable<int>(playerId);
+    map['is_coming'] = Variable<bool>(isComing);
+    return map;
+  }
+
+  AttendanceCompanion toCompanion(bool nullToAbsent) {
+    return AttendanceCompanion(
+      matchId: Value(matchId),
+      teamId: Value(teamId),
+      playerId: Value(playerId),
+      isComing: Value(isComing),
+    );
+  }
+
+  factory AttendanceData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return AttendanceData(
+      matchId: serializer.fromJson<int>(json['matchId']),
+      teamId: serializer.fromJson<int>(json['teamId']),
+      playerId: serializer.fromJson<int>(json['playerId']),
+      isComing: serializer.fromJson<bool>(json['isComing']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'matchId': serializer.toJson<int>(matchId),
+      'teamId': serializer.toJson<int>(teamId),
+      'playerId': serializer.toJson<int>(playerId),
+      'isComing': serializer.toJson<bool>(isComing),
+    };
+  }
+
+  AttendanceData copyWith({
+    int? matchId,
+    int? teamId,
+    int? playerId,
+    bool? isComing,
+  }) => AttendanceData(
+    matchId: matchId ?? this.matchId,
+    teamId: teamId ?? this.teamId,
+    playerId: playerId ?? this.playerId,
+    isComing: isComing ?? this.isComing,
+  );
+  AttendanceData copyWithCompanion(AttendanceCompanion data) {
+    return AttendanceData(
+      matchId: data.matchId.present ? data.matchId.value : this.matchId,
+      teamId: data.teamId.present ? data.teamId.value : this.teamId,
+      playerId: data.playerId.present ? data.playerId.value : this.playerId,
+      isComing: data.isComing.present ? data.isComing.value : this.isComing,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('AttendanceData(')
+          ..write('matchId: $matchId, ')
+          ..write('teamId: $teamId, ')
+          ..write('playerId: $playerId, ')
+          ..write('isComing: $isComing')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(matchId, teamId, playerId, isComing);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is AttendanceData &&
+          other.matchId == this.matchId &&
+          other.teamId == this.teamId &&
+          other.playerId == this.playerId &&
+          other.isComing == this.isComing);
+}
+
+class AttendanceCompanion extends UpdateCompanion<AttendanceData> {
+  final Value<int> matchId;
+  final Value<int> teamId;
+  final Value<int> playerId;
+  final Value<bool> isComing;
+  final Value<int> rowid;
+  const AttendanceCompanion({
+    this.matchId = const Value.absent(),
+    this.teamId = const Value.absent(),
+    this.playerId = const Value.absent(),
+    this.isComing = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  AttendanceCompanion.insert({
+    required int matchId,
+    required int teamId,
+    required int playerId,
+    this.isComing = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : matchId = Value(matchId),
+       teamId = Value(teamId),
+       playerId = Value(playerId);
+  static Insertable<AttendanceData> custom({
+    Expression<int>? matchId,
+    Expression<int>? teamId,
+    Expression<int>? playerId,
+    Expression<bool>? isComing,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (matchId != null) 'match_id': matchId,
+      if (teamId != null) 'team_id': teamId,
+      if (playerId != null) 'player_id': playerId,
+      if (isComing != null) 'is_coming': isComing,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  AttendanceCompanion copyWith({
+    Value<int>? matchId,
+    Value<int>? teamId,
+    Value<int>? playerId,
+    Value<bool>? isComing,
+    Value<int>? rowid,
+  }) {
+    return AttendanceCompanion(
+      matchId: matchId ?? this.matchId,
+      teamId: teamId ?? this.teamId,
+      playerId: playerId ?? this.playerId,
+      isComing: isComing ?? this.isComing,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (matchId.present) {
+      map['match_id'] = Variable<int>(matchId.value);
+    }
+    if (teamId.present) {
+      map['team_id'] = Variable<int>(teamId.value);
+    }
+    if (playerId.present) {
+      map['player_id'] = Variable<int>(playerId.value);
+    }
+    if (isComing.present) {
+      map['is_coming'] = Variable<bool>(isComing.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('AttendanceCompanion(')
+          ..write('matchId: $matchId, ')
+          ..write('teamId: $teamId, ')
+          ..write('playerId: $playerId, ')
+          ..write('isComing: $isComing, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $TacticsTable extends Tactics with TableInfo<$TacticsTable, Tactic> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $TacticsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _matchIdMeta = const VerificationMeta(
+    'matchId',
+  );
+  @override
+  late final GeneratedColumn<int> matchId = GeneratedColumn<int>(
+    'match_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _pressingMeta = const VerificationMeta(
+    'pressing',
+  );
+  @override
+  late final GeneratedColumn<String> pressing = GeneratedColumn<String>(
+    'pressing',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _widthMeta = const VerificationMeta('width');
+  @override
+  late final GeneratedColumn<String> width = GeneratedColumn<String>(
+    'width',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _buildUpMeta = const VerificationMeta(
+    'buildUp',
+  );
+  @override
+  late final GeneratedColumn<String> buildUp = GeneratedColumn<String>(
+    'build_up',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _cornersMeta = const VerificationMeta(
+    'corners',
+  );
+  @override
+  late final GeneratedColumn<String> corners = GeneratedColumn<String>(
+    'corners',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _freeKicksMeta = const VerificationMeta(
+    'freeKicks',
+  );
+  @override
+  late final GeneratedColumn<String> freeKicks = GeneratedColumn<String>(
+    'free_kicks',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _keyMatchupsMeta = const VerificationMeta(
+    'keyMatchups',
+  );
+  @override
+  late final GeneratedColumn<String> keyMatchups = GeneratedColumn<String>(
+    'key_matchups',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _notesMeta = const VerificationMeta('notes');
+  @override
+  late final GeneratedColumn<String> notes = GeneratedColumn<String>(
+    'notes',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    matchId,
+    pressing,
+    width,
+    buildUp,
+    corners,
+    freeKicks,
+    keyMatchups,
+    notes,
+    updatedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'tactics';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<Tactic> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('match_id')) {
+      context.handle(
+        _matchIdMeta,
+        matchId.isAcceptableOrUnknown(data['match_id']!, _matchIdMeta),
+      );
+    }
+    if (data.containsKey('pressing')) {
+      context.handle(
+        _pressingMeta,
+        pressing.isAcceptableOrUnknown(data['pressing']!, _pressingMeta),
+      );
+    }
+    if (data.containsKey('width')) {
+      context.handle(
+        _widthMeta,
+        width.isAcceptableOrUnknown(data['width']!, _widthMeta),
+      );
+    }
+    if (data.containsKey('build_up')) {
+      context.handle(
+        _buildUpMeta,
+        buildUp.isAcceptableOrUnknown(data['build_up']!, _buildUpMeta),
+      );
+    }
+    if (data.containsKey('corners')) {
+      context.handle(
+        _cornersMeta,
+        corners.isAcceptableOrUnknown(data['corners']!, _cornersMeta),
+      );
+    }
+    if (data.containsKey('free_kicks')) {
+      context.handle(
+        _freeKicksMeta,
+        freeKicks.isAcceptableOrUnknown(data['free_kicks']!, _freeKicksMeta),
+      );
+    }
+    if (data.containsKey('key_matchups')) {
+      context.handle(
+        _keyMatchupsMeta,
+        keyMatchups.isAcceptableOrUnknown(
+          data['key_matchups']!,
+          _keyMatchupsMeta,
+        ),
+      );
+    }
+    if (data.containsKey('notes')) {
+      context.handle(
+        _notesMeta,
+        notes.isAcceptableOrUnknown(data['notes']!, _notesMeta),
+      );
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {matchId};
+  @override
+  Tactic map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Tactic(
+      matchId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}match_id'],
+      )!,
+      pressing: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}pressing'],
+      ),
+      width: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}width'],
+      ),
+      buildUp: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}build_up'],
+      ),
+      corners: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}corners'],
+      ),
+      freeKicks: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}free_kicks'],
+      ),
+      keyMatchups: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}key_matchups'],
+      ),
+      notes: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}notes'],
+      ),
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      ),
+    );
+  }
+
+  @override
+  $TacticsTable createAlias(String alias) {
+    return $TacticsTable(attachedDatabase, alias);
+  }
+}
+
+class Tactic extends DataClass implements Insertable<Tactic> {
+  final int matchId;
+  final String? pressing;
+  final String? width;
+  final String? buildUp;
+  final String? corners;
+  final String? freeKicks;
+  final String? keyMatchups;
+  final String? notes;
+  final DateTime? updatedAt;
+  const Tactic({
+    required this.matchId,
+    this.pressing,
+    this.width,
+    this.buildUp,
+    this.corners,
+    this.freeKicks,
+    this.keyMatchups,
+    this.notes,
+    this.updatedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['match_id'] = Variable<int>(matchId);
+    if (!nullToAbsent || pressing != null) {
+      map['pressing'] = Variable<String>(pressing);
+    }
+    if (!nullToAbsent || width != null) {
+      map['width'] = Variable<String>(width);
+    }
+    if (!nullToAbsent || buildUp != null) {
+      map['build_up'] = Variable<String>(buildUp);
+    }
+    if (!nullToAbsent || corners != null) {
+      map['corners'] = Variable<String>(corners);
+    }
+    if (!nullToAbsent || freeKicks != null) {
+      map['free_kicks'] = Variable<String>(freeKicks);
+    }
+    if (!nullToAbsent || keyMatchups != null) {
+      map['key_matchups'] = Variable<String>(keyMatchups);
+    }
+    if (!nullToAbsent || notes != null) {
+      map['notes'] = Variable<String>(notes);
+    }
+    if (!nullToAbsent || updatedAt != null) {
+      map['updated_at'] = Variable<DateTime>(updatedAt);
+    }
+    return map;
+  }
+
+  TacticsCompanion toCompanion(bool nullToAbsent) {
+    return TacticsCompanion(
+      matchId: Value(matchId),
+      pressing: pressing == null && nullToAbsent
+          ? const Value.absent()
+          : Value(pressing),
+      width: width == null && nullToAbsent
+          ? const Value.absent()
+          : Value(width),
+      buildUp: buildUp == null && nullToAbsent
+          ? const Value.absent()
+          : Value(buildUp),
+      corners: corners == null && nullToAbsent
+          ? const Value.absent()
+          : Value(corners),
+      freeKicks: freeKicks == null && nullToAbsent
+          ? const Value.absent()
+          : Value(freeKicks),
+      keyMatchups: keyMatchups == null && nullToAbsent
+          ? const Value.absent()
+          : Value(keyMatchups),
+      notes: notes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(notes),
+      updatedAt: updatedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(updatedAt),
+    );
+  }
+
+  factory Tactic.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Tactic(
+      matchId: serializer.fromJson<int>(json['matchId']),
+      pressing: serializer.fromJson<String?>(json['pressing']),
+      width: serializer.fromJson<String?>(json['width']),
+      buildUp: serializer.fromJson<String?>(json['buildUp']),
+      corners: serializer.fromJson<String?>(json['corners']),
+      freeKicks: serializer.fromJson<String?>(json['freeKicks']),
+      keyMatchups: serializer.fromJson<String?>(json['keyMatchups']),
+      notes: serializer.fromJson<String?>(json['notes']),
+      updatedAt: serializer.fromJson<DateTime?>(json['updatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'matchId': serializer.toJson<int>(matchId),
+      'pressing': serializer.toJson<String?>(pressing),
+      'width': serializer.toJson<String?>(width),
+      'buildUp': serializer.toJson<String?>(buildUp),
+      'corners': serializer.toJson<String?>(corners),
+      'freeKicks': serializer.toJson<String?>(freeKicks),
+      'keyMatchups': serializer.toJson<String?>(keyMatchups),
+      'notes': serializer.toJson<String?>(notes),
+      'updatedAt': serializer.toJson<DateTime?>(updatedAt),
+    };
+  }
+
+  Tactic copyWith({
+    int? matchId,
+    Value<String?> pressing = const Value.absent(),
+    Value<String?> width = const Value.absent(),
+    Value<String?> buildUp = const Value.absent(),
+    Value<String?> corners = const Value.absent(),
+    Value<String?> freeKicks = const Value.absent(),
+    Value<String?> keyMatchups = const Value.absent(),
+    Value<String?> notes = const Value.absent(),
+    Value<DateTime?> updatedAt = const Value.absent(),
+  }) => Tactic(
+    matchId: matchId ?? this.matchId,
+    pressing: pressing.present ? pressing.value : this.pressing,
+    width: width.present ? width.value : this.width,
+    buildUp: buildUp.present ? buildUp.value : this.buildUp,
+    corners: corners.present ? corners.value : this.corners,
+    freeKicks: freeKicks.present ? freeKicks.value : this.freeKicks,
+    keyMatchups: keyMatchups.present ? keyMatchups.value : this.keyMatchups,
+    notes: notes.present ? notes.value : this.notes,
+    updatedAt: updatedAt.present ? updatedAt.value : this.updatedAt,
+  );
+  Tactic copyWithCompanion(TacticsCompanion data) {
+    return Tactic(
+      matchId: data.matchId.present ? data.matchId.value : this.matchId,
+      pressing: data.pressing.present ? data.pressing.value : this.pressing,
+      width: data.width.present ? data.width.value : this.width,
+      buildUp: data.buildUp.present ? data.buildUp.value : this.buildUp,
+      corners: data.corners.present ? data.corners.value : this.corners,
+      freeKicks: data.freeKicks.present ? data.freeKicks.value : this.freeKicks,
+      keyMatchups: data.keyMatchups.present
+          ? data.keyMatchups.value
+          : this.keyMatchups,
+      notes: data.notes.present ? data.notes.value : this.notes,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('Tactic(')
+          ..write('matchId: $matchId, ')
+          ..write('pressing: $pressing, ')
+          ..write('width: $width, ')
+          ..write('buildUp: $buildUp, ')
+          ..write('corners: $corners, ')
+          ..write('freeKicks: $freeKicks, ')
+          ..write('keyMatchups: $keyMatchups, ')
+          ..write('notes: $notes, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    matchId,
+    pressing,
+    width,
+    buildUp,
+    corners,
+    freeKicks,
+    keyMatchups,
+    notes,
+    updatedAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Tactic &&
+          other.matchId == this.matchId &&
+          other.pressing == this.pressing &&
+          other.width == this.width &&
+          other.buildUp == this.buildUp &&
+          other.corners == this.corners &&
+          other.freeKicks == this.freeKicks &&
+          other.keyMatchups == this.keyMatchups &&
+          other.notes == this.notes &&
+          other.updatedAt == this.updatedAt);
+}
+
+class TacticsCompanion extends UpdateCompanion<Tactic> {
+  final Value<int> matchId;
+  final Value<String?> pressing;
+  final Value<String?> width;
+  final Value<String?> buildUp;
+  final Value<String?> corners;
+  final Value<String?> freeKicks;
+  final Value<String?> keyMatchups;
+  final Value<String?> notes;
+  final Value<DateTime?> updatedAt;
+  const TacticsCompanion({
+    this.matchId = const Value.absent(),
+    this.pressing = const Value.absent(),
+    this.width = const Value.absent(),
+    this.buildUp = const Value.absent(),
+    this.corners = const Value.absent(),
+    this.freeKicks = const Value.absent(),
+    this.keyMatchups = const Value.absent(),
+    this.notes = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+  });
+  TacticsCompanion.insert({
+    this.matchId = const Value.absent(),
+    this.pressing = const Value.absent(),
+    this.width = const Value.absent(),
+    this.buildUp = const Value.absent(),
+    this.corners = const Value.absent(),
+    this.freeKicks = const Value.absent(),
+    this.keyMatchups = const Value.absent(),
+    this.notes = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+  });
+  static Insertable<Tactic> custom({
+    Expression<int>? matchId,
+    Expression<String>? pressing,
+    Expression<String>? width,
+    Expression<String>? buildUp,
+    Expression<String>? corners,
+    Expression<String>? freeKicks,
+    Expression<String>? keyMatchups,
+    Expression<String>? notes,
+    Expression<DateTime>? updatedAt,
+  }) {
+    return RawValuesInsertable({
+      if (matchId != null) 'match_id': matchId,
+      if (pressing != null) 'pressing': pressing,
+      if (width != null) 'width': width,
+      if (buildUp != null) 'build_up': buildUp,
+      if (corners != null) 'corners': corners,
+      if (freeKicks != null) 'free_kicks': freeKicks,
+      if (keyMatchups != null) 'key_matchups': keyMatchups,
+      if (notes != null) 'notes': notes,
+      if (updatedAt != null) 'updated_at': updatedAt,
+    });
+  }
+
+  TacticsCompanion copyWith({
+    Value<int>? matchId,
+    Value<String?>? pressing,
+    Value<String?>? width,
+    Value<String?>? buildUp,
+    Value<String?>? corners,
+    Value<String?>? freeKicks,
+    Value<String?>? keyMatchups,
+    Value<String?>? notes,
+    Value<DateTime?>? updatedAt,
+  }) {
+    return TacticsCompanion(
+      matchId: matchId ?? this.matchId,
+      pressing: pressing ?? this.pressing,
+      width: width ?? this.width,
+      buildUp: buildUp ?? this.buildUp,
+      corners: corners ?? this.corners,
+      freeKicks: freeKicks ?? this.freeKicks,
+      keyMatchups: keyMatchups ?? this.keyMatchups,
+      notes: notes ?? this.notes,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (matchId.present) {
+      map['match_id'] = Variable<int>(matchId.value);
+    }
+    if (pressing.present) {
+      map['pressing'] = Variable<String>(pressing.value);
+    }
+    if (width.present) {
+      map['width'] = Variable<String>(width.value);
+    }
+    if (buildUp.present) {
+      map['build_up'] = Variable<String>(buildUp.value);
+    }
+    if (corners.present) {
+      map['corners'] = Variable<String>(corners.value);
+    }
+    if (freeKicks.present) {
+      map['free_kicks'] = Variable<String>(freeKicks.value);
+    }
+    if (keyMatchups.present) {
+      map['key_matchups'] = Variable<String>(keyMatchups.value);
+    }
+    if (notes.present) {
+      map['notes'] = Variable<String>(notes.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('TacticsCompanion(')
+          ..write('matchId: $matchId, ')
+          ..write('pressing: $pressing, ')
+          ..write('width: $width, ')
+          ..write('buildUp: $buildUp, ')
+          ..write('corners: $corners, ')
+          ..write('freeKicks: $freeKicks, ')
+          ..write('keyMatchups: $keyMatchups, ')
+          ..write('notes: $notes, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $DoDontItemsTable extends DoDontItems
+    with TableInfo<$DoDontItemsTable, DoDontItem> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $DoDontItemsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _matchIdMeta = const VerificationMeta(
+    'matchId',
+  );
+  @override
+  late final GeneratedColumn<int> matchId = GeneratedColumn<int>(
+    'match_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _contentMeta = const VerificationMeta(
+    'content',
+  );
+  @override
+  late final GeneratedColumn<String> content = GeneratedColumn<String>(
+    'content',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _isDoneMeta = const VerificationMeta('isDone');
+  @override
+  late final GeneratedColumn<bool> isDone = GeneratedColumn<bool>(
+    'is_done',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_done" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _sortOrderMeta = const VerificationMeta(
+    'sortOrder',
+  );
+  @override
+  late final GeneratedColumn<int> sortOrder = GeneratedColumn<int>(
+    'sort_order',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    matchId,
+    content,
+    isDone,
+    sortOrder,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'do_dont_items';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<DoDontItem> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('match_id')) {
+      context.handle(
+        _matchIdMeta,
+        matchId.isAcceptableOrUnknown(data['match_id']!, _matchIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_matchIdMeta);
+    }
+    if (data.containsKey('content')) {
+      context.handle(
+        _contentMeta,
+        content.isAcceptableOrUnknown(data['content']!, _contentMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_contentMeta);
+    }
+    if (data.containsKey('is_done')) {
+      context.handle(
+        _isDoneMeta,
+        isDone.isAcceptableOrUnknown(data['is_done']!, _isDoneMeta),
+      );
+    }
+    if (data.containsKey('sort_order')) {
+      context.handle(
+        _sortOrderMeta,
+        sortOrder.isAcceptableOrUnknown(data['sort_order']!, _sortOrderMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  DoDontItem map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return DoDontItem(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      matchId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}match_id'],
+      )!,
+      content: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}content'],
+      )!,
+      isDone: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_done'],
+      )!,
+      sortOrder: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}sort_order'],
+      )!,
+    );
+  }
+
+  @override
+  $DoDontItemsTable createAlias(String alias) {
+    return $DoDontItemsTable(attachedDatabase, alias);
+  }
+}
+
+class DoDontItem extends DataClass implements Insertable<DoDontItem> {
+  final int id;
+  final int matchId;
+  final String content;
+  final bool isDone;
+  final int sortOrder;
+  const DoDontItem({
+    required this.id,
+    required this.matchId,
+    required this.content,
+    required this.isDone,
+    required this.sortOrder,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['match_id'] = Variable<int>(matchId);
+    map['content'] = Variable<String>(content);
+    map['is_done'] = Variable<bool>(isDone);
+    map['sort_order'] = Variable<int>(sortOrder);
+    return map;
+  }
+
+  DoDontItemsCompanion toCompanion(bool nullToAbsent) {
+    return DoDontItemsCompanion(
+      id: Value(id),
+      matchId: Value(matchId),
+      content: Value(content),
+      isDone: Value(isDone),
+      sortOrder: Value(sortOrder),
+    );
+  }
+
+  factory DoDontItem.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return DoDontItem(
+      id: serializer.fromJson<int>(json['id']),
+      matchId: serializer.fromJson<int>(json['matchId']),
+      content: serializer.fromJson<String>(json['content']),
+      isDone: serializer.fromJson<bool>(json['isDone']),
+      sortOrder: serializer.fromJson<int>(json['sortOrder']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'matchId': serializer.toJson<int>(matchId),
+      'content': serializer.toJson<String>(content),
+      'isDone': serializer.toJson<bool>(isDone),
+      'sortOrder': serializer.toJson<int>(sortOrder),
+    };
+  }
+
+  DoDontItem copyWith({
+    int? id,
+    int? matchId,
+    String? content,
+    bool? isDone,
+    int? sortOrder,
+  }) => DoDontItem(
+    id: id ?? this.id,
+    matchId: matchId ?? this.matchId,
+    content: content ?? this.content,
+    isDone: isDone ?? this.isDone,
+    sortOrder: sortOrder ?? this.sortOrder,
+  );
+  DoDontItem copyWithCompanion(DoDontItemsCompanion data) {
+    return DoDontItem(
+      id: data.id.present ? data.id.value : this.id,
+      matchId: data.matchId.present ? data.matchId.value : this.matchId,
+      content: data.content.present ? data.content.value : this.content,
+      isDone: data.isDone.present ? data.isDone.value : this.isDone,
+      sortOrder: data.sortOrder.present ? data.sortOrder.value : this.sortOrder,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DoDontItem(')
+          ..write('id: $id, ')
+          ..write('matchId: $matchId, ')
+          ..write('content: $content, ')
+          ..write('isDone: $isDone, ')
+          ..write('sortOrder: $sortOrder')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, matchId, content, isDone, sortOrder);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is DoDontItem &&
+          other.id == this.id &&
+          other.matchId == this.matchId &&
+          other.content == this.content &&
+          other.isDone == this.isDone &&
+          other.sortOrder == this.sortOrder);
+}
+
+class DoDontItemsCompanion extends UpdateCompanion<DoDontItem> {
+  final Value<int> id;
+  final Value<int> matchId;
+  final Value<String> content;
+  final Value<bool> isDone;
+  final Value<int> sortOrder;
+  const DoDontItemsCompanion({
+    this.id = const Value.absent(),
+    this.matchId = const Value.absent(),
+    this.content = const Value.absent(),
+    this.isDone = const Value.absent(),
+    this.sortOrder = const Value.absent(),
+  });
+  DoDontItemsCompanion.insert({
+    this.id = const Value.absent(),
+    required int matchId,
+    required String content,
+    this.isDone = const Value.absent(),
+    this.sortOrder = const Value.absent(),
+  }) : matchId = Value(matchId),
+       content = Value(content);
+  static Insertable<DoDontItem> custom({
+    Expression<int>? id,
+    Expression<int>? matchId,
+    Expression<String>? content,
+    Expression<bool>? isDone,
+    Expression<int>? sortOrder,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (matchId != null) 'match_id': matchId,
+      if (content != null) 'content': content,
+      if (isDone != null) 'is_done': isDone,
+      if (sortOrder != null) 'sort_order': sortOrder,
+    });
+  }
+
+  DoDontItemsCompanion copyWith({
+    Value<int>? id,
+    Value<int>? matchId,
+    Value<String>? content,
+    Value<bool>? isDone,
+    Value<int>? sortOrder,
+  }) {
+    return DoDontItemsCompanion(
+      id: id ?? this.id,
+      matchId: matchId ?? this.matchId,
+      content: content ?? this.content,
+      isDone: isDone ?? this.isDone,
+      sortOrder: sortOrder ?? this.sortOrder,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (matchId.present) {
+      map['match_id'] = Variable<int>(matchId.value);
+    }
+    if (content.present) {
+      map['content'] = Variable<String>(content.value);
+    }
+    if (isDone.present) {
+      map['is_done'] = Variable<bool>(isDone.value);
+    }
+    if (sortOrder.present) {
+      map['sort_order'] = Variable<int>(sortOrder.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DoDontItemsCompanion(')
+          ..write('id: $id, ')
+          ..write('matchId: $matchId, ')
+          ..write('content: $content, ')
+          ..write('isDone: $isDone, ')
+          ..write('sortOrder: $sortOrder')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $SettingsEntriesTable extends SettingsEntries
+    with TableInfo<$SettingsEntriesTable, SettingsEntry> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $SettingsEntriesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _keyMeta = const VerificationMeta('key');
+  @override
+  late final GeneratedColumn<String> key = GeneratedColumn<String>(
+    'key',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _stringValueMeta = const VerificationMeta(
+    'stringValue',
+  );
+  @override
+  late final GeneratedColumn<String> stringValue = GeneratedColumn<String>(
+    'string_value',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _intValueMeta = const VerificationMeta(
+    'intValue',
+  );
+  @override
+  late final GeneratedColumn<int> intValue = GeneratedColumn<int>(
+    'int_value',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _boolValueMeta = const VerificationMeta(
+    'boolValue',
+  );
+  @override
+  late final GeneratedColumn<bool> boolValue = GeneratedColumn<bool>(
+    'bool_value',
+    aliasedName,
+    true,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("bool_value" IN (0, 1))',
+    ),
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    key,
+    stringValue,
+    intValue,
+    boolValue,
+    updatedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'settings_entries';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<SettingsEntry> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('key')) {
+      context.handle(
+        _keyMeta,
+        key.isAcceptableOrUnknown(data['key']!, _keyMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_keyMeta);
+    }
+    if (data.containsKey('string_value')) {
+      context.handle(
+        _stringValueMeta,
+        stringValue.isAcceptableOrUnknown(
+          data['string_value']!,
+          _stringValueMeta,
+        ),
+      );
+    }
+    if (data.containsKey('int_value')) {
+      context.handle(
+        _intValueMeta,
+        intValue.isAcceptableOrUnknown(data['int_value']!, _intValueMeta),
+      );
+    }
+    if (data.containsKey('bool_value')) {
+      context.handle(
+        _boolValueMeta,
+        boolValue.isAcceptableOrUnknown(data['bool_value']!, _boolValueMeta),
+      );
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {key};
+  @override
+  SettingsEntry map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SettingsEntry(
+      key: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}key'],
+      )!,
+      stringValue: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}string_value'],
+      ),
+      intValue: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}int_value'],
+      ),
+      boolValue: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}bool_value'],
+      ),
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      ),
+    );
+  }
+
+  @override
+  $SettingsEntriesTable createAlias(String alias) {
+    return $SettingsEntriesTable(attachedDatabase, alias);
+  }
+}
+
+class SettingsEntry extends DataClass implements Insertable<SettingsEntry> {
+  final String key;
+  final String? stringValue;
+  final int? intValue;
+  final bool? boolValue;
+  final DateTime? updatedAt;
+  const SettingsEntry({
+    required this.key,
+    this.stringValue,
+    this.intValue,
+    this.boolValue,
+    this.updatedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['key'] = Variable<String>(key);
+    if (!nullToAbsent || stringValue != null) {
+      map['string_value'] = Variable<String>(stringValue);
+    }
+    if (!nullToAbsent || intValue != null) {
+      map['int_value'] = Variable<int>(intValue);
+    }
+    if (!nullToAbsent || boolValue != null) {
+      map['bool_value'] = Variable<bool>(boolValue);
+    }
+    if (!nullToAbsent || updatedAt != null) {
+      map['updated_at'] = Variable<DateTime>(updatedAt);
+    }
+    return map;
+  }
+
+  SettingsEntriesCompanion toCompanion(bool nullToAbsent) {
+    return SettingsEntriesCompanion(
+      key: Value(key),
+      stringValue: stringValue == null && nullToAbsent
+          ? const Value.absent()
+          : Value(stringValue),
+      intValue: intValue == null && nullToAbsent
+          ? const Value.absent()
+          : Value(intValue),
+      boolValue: boolValue == null && nullToAbsent
+          ? const Value.absent()
+          : Value(boolValue),
+      updatedAt: updatedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(updatedAt),
+    );
+  }
+
+  factory SettingsEntry.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SettingsEntry(
+      key: serializer.fromJson<String>(json['key']),
+      stringValue: serializer.fromJson<String?>(json['stringValue']),
+      intValue: serializer.fromJson<int?>(json['intValue']),
+      boolValue: serializer.fromJson<bool?>(json['boolValue']),
+      updatedAt: serializer.fromJson<DateTime?>(json['updatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'key': serializer.toJson<String>(key),
+      'stringValue': serializer.toJson<String?>(stringValue),
+      'intValue': serializer.toJson<int?>(intValue),
+      'boolValue': serializer.toJson<bool?>(boolValue),
+      'updatedAt': serializer.toJson<DateTime?>(updatedAt),
+    };
+  }
+
+  SettingsEntry copyWith({
+    String? key,
+    Value<String?> stringValue = const Value.absent(),
+    Value<int?> intValue = const Value.absent(),
+    Value<bool?> boolValue = const Value.absent(),
+    Value<DateTime?> updatedAt = const Value.absent(),
+  }) => SettingsEntry(
+    key: key ?? this.key,
+    stringValue: stringValue.present ? stringValue.value : this.stringValue,
+    intValue: intValue.present ? intValue.value : this.intValue,
+    boolValue: boolValue.present ? boolValue.value : this.boolValue,
+    updatedAt: updatedAt.present ? updatedAt.value : this.updatedAt,
+  );
+  SettingsEntry copyWithCompanion(SettingsEntriesCompanion data) {
+    return SettingsEntry(
+      key: data.key.present ? data.key.value : this.key,
+      stringValue: data.stringValue.present
+          ? data.stringValue.value
+          : this.stringValue,
+      intValue: data.intValue.present ? data.intValue.value : this.intValue,
+      boolValue: data.boolValue.present ? data.boolValue.value : this.boolValue,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SettingsEntry(')
+          ..write('key: $key, ')
+          ..write('stringValue: $stringValue, ')
+          ..write('intValue: $intValue, ')
+          ..write('boolValue: $boolValue, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(key, stringValue, intValue, boolValue, updatedAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SettingsEntry &&
+          other.key == this.key &&
+          other.stringValue == this.stringValue &&
+          other.intValue == this.intValue &&
+          other.boolValue == this.boolValue &&
+          other.updatedAt == this.updatedAt);
+}
+
+class SettingsEntriesCompanion extends UpdateCompanion<SettingsEntry> {
+  final Value<String> key;
+  final Value<String?> stringValue;
+  final Value<int?> intValue;
+  final Value<bool?> boolValue;
+  final Value<DateTime?> updatedAt;
+  final Value<int> rowid;
+  const SettingsEntriesCompanion({
+    this.key = const Value.absent(),
+    this.stringValue = const Value.absent(),
+    this.intValue = const Value.absent(),
+    this.boolValue = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  SettingsEntriesCompanion.insert({
+    required String key,
+    this.stringValue = const Value.absent(),
+    this.intValue = const Value.absent(),
+    this.boolValue = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : key = Value(key);
+  static Insertable<SettingsEntry> custom({
+    Expression<String>? key,
+    Expression<String>? stringValue,
+    Expression<int>? intValue,
+    Expression<bool>? boolValue,
+    Expression<DateTime>? updatedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (key != null) 'key': key,
+      if (stringValue != null) 'string_value': stringValue,
+      if (intValue != null) 'int_value': intValue,
+      if (boolValue != null) 'bool_value': boolValue,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  SettingsEntriesCompanion copyWith({
+    Value<String>? key,
+    Value<String?>? stringValue,
+    Value<int?>? intValue,
+    Value<bool?>? boolValue,
+    Value<DateTime?>? updatedAt,
+    Value<int>? rowid,
+  }) {
+    return SettingsEntriesCompanion(
+      key: key ?? this.key,
+      stringValue: stringValue ?? this.stringValue,
+      intValue: intValue ?? this.intValue,
+      boolValue: boolValue ?? this.boolValue,
+      updatedAt: updatedAt ?? this.updatedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (key.present) {
+      map['key'] = Variable<String>(key.value);
+    }
+    if (stringValue.present) {
+      map['string_value'] = Variable<String>(stringValue.value);
+    }
+    if (intValue.present) {
+      map['int_value'] = Variable<int>(intValue.value);
+    }
+    if (boolValue.present) {
+      map['bool_value'] = Variable<bool>(boolValue.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SettingsEntriesCompanion(')
+          ..write('key: $key, ')
+          ..write('stringValue: $stringValue, ')
+          ..write('intValue: $intValue, ')
+          ..write('boolValue: $boolValue, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+abstract class _$AppDatabase extends GeneratedDatabase {
+  _$AppDatabase(QueryExecutor e) : super(e);
+  $AppDatabaseManager get managers => $AppDatabaseManager(this);
+  late final $TeamsTable teams = $TeamsTable(this);
+  late final $PlayersTable players = $PlayersTable(this);
+  late final $FieldsTable fields = $FieldsTable(this);
+  late final $MatchesTable matches = $MatchesTable(this);
+  late final $LineupsTable lineups = $LineupsTable(this);
+  late final $LineupSlotsTable lineupSlots = $LineupSlotsTable(this);
+  late final $AttendanceTable attendance = $AttendanceTable(this);
+  late final $TacticsTable tactics = $TacticsTable(this);
+  late final $DoDontItemsTable doDontItems = $DoDontItemsTable(this);
+  late final $SettingsEntriesTable settingsEntries = $SettingsEntriesTable(
+    this,
+  );
+  late final TeamsDao teamsDao = TeamsDao(this as AppDatabase);
+  late final FieldsDao fieldsDao = FieldsDao(this as AppDatabase);
+  late final MatchesDao matchesDao = MatchesDao(this as AppDatabase);
+  late final LineupDao lineupDao = LineupDao(this as AppDatabase);
+  late final TacticsDao tacticsDao = TacticsDao(this as AppDatabase);
+  late final SettingsDao settingsDao = SettingsDao(this as AppDatabase);
+  @override
+  Iterable<TableInfo<Table, Object?>> get allTables =>
+      allSchemaEntities.whereType<TableInfo<Table, Object?>>();
+  @override
+  List<DatabaseSchemaEntity> get allSchemaEntities => [
+    teams,
+    players,
+    fields,
+    matches,
+    lineups,
+    lineupSlots,
+    attendance,
+    tactics,
+    doDontItems,
+    settingsEntries,
+  ];
+}
+
+typedef $$TeamsTableCreateCompanionBuilder =
+    TeamsCompanion Function({
+      Value<int> id,
+      required String name,
+      Value<String?> badgeIcon,
+      Value<int?> homeColor,
+      Value<int?> awayColor,
+      Value<bool> isDefault,
+      Value<DateTime> createdAt,
+      Value<DateTime?> updatedAt,
+    });
+typedef $$TeamsTableUpdateCompanionBuilder =
+    TeamsCompanion Function({
+      Value<int> id,
+      Value<String> name,
+      Value<String?> badgeIcon,
+      Value<int?> homeColor,
+      Value<int?> awayColor,
+      Value<bool> isDefault,
+      Value<DateTime> createdAt,
+      Value<DateTime?> updatedAt,
+    });
+
+class $$TeamsTableFilterComposer extends Composer<_$AppDatabase, $TeamsTable> {
+  $$TeamsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get badgeIcon => $composableBuilder(
+    column: $table.badgeIcon,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get homeColor => $composableBuilder(
+    column: $table.homeColor,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get awayColor => $composableBuilder(
+    column: $table.awayColor,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get isDefault => $composableBuilder(
+    column: $table.isDefault,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$TeamsTableOrderingComposer
+    extends Composer<_$AppDatabase, $TeamsTable> {
+  $$TeamsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get badgeIcon => $composableBuilder(
+    column: $table.badgeIcon,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get homeColor => $composableBuilder(
+    column: $table.homeColor,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get awayColor => $composableBuilder(
+    column: $table.awayColor,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get isDefault => $composableBuilder(
+    column: $table.isDefault,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$TeamsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $TeamsTable> {
+  $$TeamsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get badgeIcon =>
+      $composableBuilder(column: $table.badgeIcon, builder: (column) => column);
+
+  GeneratedColumn<int> get homeColor =>
+      $composableBuilder(column: $table.homeColor, builder: (column) => column);
+
+  GeneratedColumn<int> get awayColor =>
+      $composableBuilder(column: $table.awayColor, builder: (column) => column);
+
+  GeneratedColumn<bool> get isDefault =>
+      $composableBuilder(column: $table.isDefault, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+}
+
+class $$TeamsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $TeamsTable,
+          Team,
+          $$TeamsTableFilterComposer,
+          $$TeamsTableOrderingComposer,
+          $$TeamsTableAnnotationComposer,
+          $$TeamsTableCreateCompanionBuilder,
+          $$TeamsTableUpdateCompanionBuilder,
+          (Team, BaseReferences<_$AppDatabase, $TeamsTable, Team>),
+          Team,
+          PrefetchHooks Function()
+        > {
+  $$TeamsTableTableManager(_$AppDatabase db, $TeamsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$TeamsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$TeamsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$TeamsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<String?> badgeIcon = const Value.absent(),
+                Value<int?> homeColor = const Value.absent(),
+                Value<int?> awayColor = const Value.absent(),
+                Value<bool> isDefault = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime?> updatedAt = const Value.absent(),
+              }) => TeamsCompanion(
+                id: id,
+                name: name,
+                badgeIcon: badgeIcon,
+                homeColor: homeColor,
+                awayColor: awayColor,
+                isDefault: isDefault,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required String name,
+                Value<String?> badgeIcon = const Value.absent(),
+                Value<int?> homeColor = const Value.absent(),
+                Value<int?> awayColor = const Value.absent(),
+                Value<bool> isDefault = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime?> updatedAt = const Value.absent(),
+              }) => TeamsCompanion.insert(
+                id: id,
+                name: name,
+                badgeIcon: badgeIcon,
+                homeColor: homeColor,
+                awayColor: awayColor,
+                isDefault: isDefault,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$TeamsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $TeamsTable,
+      Team,
+      $$TeamsTableFilterComposer,
+      $$TeamsTableOrderingComposer,
+      $$TeamsTableAnnotationComposer,
+      $$TeamsTableCreateCompanionBuilder,
+      $$TeamsTableUpdateCompanionBuilder,
+      (Team, BaseReferences<_$AppDatabase, $TeamsTable, Team>),
+      Team,
+      PrefetchHooks Function()
+    >;
+typedef $$PlayersTableCreateCompanionBuilder =
+    PlayersCompanion Function({
+      Value<int> id,
+      required int teamId,
+      required String name,
+      Value<String?> position,
+      Value<bool> isCaptain,
+      Value<DateTime> createdAt,
+      Value<DateTime?> updatedAt,
+    });
+typedef $$PlayersTableUpdateCompanionBuilder =
+    PlayersCompanion Function({
+      Value<int> id,
+      Value<int> teamId,
+      Value<String> name,
+      Value<String?> position,
+      Value<bool> isCaptain,
+      Value<DateTime> createdAt,
+      Value<DateTime?> updatedAt,
+    });
+
+class $$PlayersTableFilterComposer
+    extends Composer<_$AppDatabase, $PlayersTable> {
+  $$PlayersTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get teamId => $composableBuilder(
+    column: $table.teamId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get position => $composableBuilder(
+    column: $table.position,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get isCaptain => $composableBuilder(
+    column: $table.isCaptain,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$PlayersTableOrderingComposer
+    extends Composer<_$AppDatabase, $PlayersTable> {
+  $$PlayersTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get teamId => $composableBuilder(
+    column: $table.teamId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get position => $composableBuilder(
+    column: $table.position,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get isCaptain => $composableBuilder(
+    column: $table.isCaptain,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$PlayersTableAnnotationComposer
+    extends Composer<_$AppDatabase, $PlayersTable> {
+  $$PlayersTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<int> get teamId =>
+      $composableBuilder(column: $table.teamId, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get position =>
+      $composableBuilder(column: $table.position, builder: (column) => column);
+
+  GeneratedColumn<bool> get isCaptain =>
+      $composableBuilder(column: $table.isCaptain, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+}
+
+class $$PlayersTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $PlayersTable,
+          Player,
+          $$PlayersTableFilterComposer,
+          $$PlayersTableOrderingComposer,
+          $$PlayersTableAnnotationComposer,
+          $$PlayersTableCreateCompanionBuilder,
+          $$PlayersTableUpdateCompanionBuilder,
+          (Player, BaseReferences<_$AppDatabase, $PlayersTable, Player>),
+          Player,
+          PrefetchHooks Function()
+        > {
+  $$PlayersTableTableManager(_$AppDatabase db, $PlayersTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$PlayersTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$PlayersTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$PlayersTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<int> teamId = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<String?> position = const Value.absent(),
+                Value<bool> isCaptain = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime?> updatedAt = const Value.absent(),
+              }) => PlayersCompanion(
+                id: id,
+                teamId: teamId,
+                name: name,
+                position: position,
+                isCaptain: isCaptain,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required int teamId,
+                required String name,
+                Value<String?> position = const Value.absent(),
+                Value<bool> isCaptain = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime?> updatedAt = const Value.absent(),
+              }) => PlayersCompanion.insert(
+                id: id,
+                teamId: teamId,
+                name: name,
+                position: position,
+                isCaptain: isCaptain,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$PlayersTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $PlayersTable,
+      Player,
+      $$PlayersTableFilterComposer,
+      $$PlayersTableOrderingComposer,
+      $$PlayersTableAnnotationComposer,
+      $$PlayersTableCreateCompanionBuilder,
+      $$PlayersTableUpdateCompanionBuilder,
+      (Player, BaseReferences<_$AppDatabase, $PlayersTable, Player>),
+      Player,
+      PrefetchHooks Function()
+    >;
+typedef $$FieldsTableCreateCompanionBuilder =
+    FieldsCompanion Function({
+      Value<int> id,
+      required String name,
+      Value<String?> address,
+      Value<String?> notes,
+      Value<String?> photoPath,
+      Value<DateTime> createdAt,
+      Value<DateTime?> updatedAt,
+    });
+typedef $$FieldsTableUpdateCompanionBuilder =
+    FieldsCompanion Function({
+      Value<int> id,
+      Value<String> name,
+      Value<String?> address,
+      Value<String?> notes,
+      Value<String?> photoPath,
+      Value<DateTime> createdAt,
+      Value<DateTime?> updatedAt,
+    });
+
+class $$FieldsTableFilterComposer
+    extends Composer<_$AppDatabase, $FieldsTable> {
+  $$FieldsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get address => $composableBuilder(
+    column: $table.address,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get notes => $composableBuilder(
+    column: $table.notes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get photoPath => $composableBuilder(
+    column: $table.photoPath,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$FieldsTableOrderingComposer
+    extends Composer<_$AppDatabase, $FieldsTable> {
+  $$FieldsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get address => $composableBuilder(
+    column: $table.address,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get notes => $composableBuilder(
+    column: $table.notes,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get photoPath => $composableBuilder(
+    column: $table.photoPath,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$FieldsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $FieldsTable> {
+  $$FieldsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get address =>
+      $composableBuilder(column: $table.address, builder: (column) => column);
+
+  GeneratedColumn<String> get notes =>
+      $composableBuilder(column: $table.notes, builder: (column) => column);
+
+  GeneratedColumn<String> get photoPath =>
+      $composableBuilder(column: $table.photoPath, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+}
+
+class $$FieldsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $FieldsTable,
+          Field,
+          $$FieldsTableFilterComposer,
+          $$FieldsTableOrderingComposer,
+          $$FieldsTableAnnotationComposer,
+          $$FieldsTableCreateCompanionBuilder,
+          $$FieldsTableUpdateCompanionBuilder,
+          (Field, BaseReferences<_$AppDatabase, $FieldsTable, Field>),
+          Field,
+          PrefetchHooks Function()
+        > {
+  $$FieldsTableTableManager(_$AppDatabase db, $FieldsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$FieldsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$FieldsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$FieldsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<String?> address = const Value.absent(),
+                Value<String?> notes = const Value.absent(),
+                Value<String?> photoPath = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime?> updatedAt = const Value.absent(),
+              }) => FieldsCompanion(
+                id: id,
+                name: name,
+                address: address,
+                notes: notes,
+                photoPath: photoPath,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required String name,
+                Value<String?> address = const Value.absent(),
+                Value<String?> notes = const Value.absent(),
+                Value<String?> photoPath = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime?> updatedAt = const Value.absent(),
+              }) => FieldsCompanion.insert(
+                id: id,
+                name: name,
+                address: address,
+                notes: notes,
+                photoPath: photoPath,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$FieldsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $FieldsTable,
+      Field,
+      $$FieldsTableFilterComposer,
+      $$FieldsTableOrderingComposer,
+      $$FieldsTableAnnotationComposer,
+      $$FieldsTableCreateCompanionBuilder,
+      $$FieldsTableUpdateCompanionBuilder,
+      (Field, BaseReferences<_$AppDatabase, $FieldsTable, Field>),
+      Field,
+      PrefetchHooks Function()
+    >;
+typedef $$MatchesTableCreateCompanionBuilder =
+    MatchesCompanion Function({
+      Value<int> id,
+      required DateTime startAt,
+      Value<int?> fieldId,
+      Value<int?> teamAId,
+      Value<int?> teamBId,
+      Value<String> status,
+      Value<String?> notes,
+      Value<DateTime> createdAt,
+      Value<DateTime?> updatedAt,
+    });
+typedef $$MatchesTableUpdateCompanionBuilder =
+    MatchesCompanion Function({
+      Value<int> id,
+      Value<DateTime> startAt,
+      Value<int?> fieldId,
+      Value<int?> teamAId,
+      Value<int?> teamBId,
+      Value<String> status,
+      Value<String?> notes,
+      Value<DateTime> createdAt,
+      Value<DateTime?> updatedAt,
+    });
+
+class $$MatchesTableFilterComposer
+    extends Composer<_$AppDatabase, $MatchesTable> {
+  $$MatchesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get startAt => $composableBuilder(
+    column: $table.startAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get fieldId => $composableBuilder(
+    column: $table.fieldId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get teamAId => $composableBuilder(
+    column: $table.teamAId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get teamBId => $composableBuilder(
+    column: $table.teamBId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get notes => $composableBuilder(
+    column: $table.notes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$MatchesTableOrderingComposer
+    extends Composer<_$AppDatabase, $MatchesTable> {
+  $$MatchesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get startAt => $composableBuilder(
+    column: $table.startAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get fieldId => $composableBuilder(
+    column: $table.fieldId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get teamAId => $composableBuilder(
+    column: $table.teamAId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get teamBId => $composableBuilder(
+    column: $table.teamBId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get notes => $composableBuilder(
+    column: $table.notes,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$MatchesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $MatchesTable> {
+  $$MatchesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get startAt =>
+      $composableBuilder(column: $table.startAt, builder: (column) => column);
+
+  GeneratedColumn<int> get fieldId =>
+      $composableBuilder(column: $table.fieldId, builder: (column) => column);
+
+  GeneratedColumn<int> get teamAId =>
+      $composableBuilder(column: $table.teamAId, builder: (column) => column);
+
+  GeneratedColumn<int> get teamBId =>
+      $composableBuilder(column: $table.teamBId, builder: (column) => column);
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<String> get notes =>
+      $composableBuilder(column: $table.notes, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+}
+
+class $$MatchesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $MatchesTable,
+          Fixture,
+          $$MatchesTableFilterComposer,
+          $$MatchesTableOrderingComposer,
+          $$MatchesTableAnnotationComposer,
+          $$MatchesTableCreateCompanionBuilder,
+          $$MatchesTableUpdateCompanionBuilder,
+          (Fixture, BaseReferences<_$AppDatabase, $MatchesTable, Fixture>),
+          Fixture,
+          PrefetchHooks Function()
+        > {
+  $$MatchesTableTableManager(_$AppDatabase db, $MatchesTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$MatchesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$MatchesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$MatchesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<DateTime> startAt = const Value.absent(),
+                Value<int?> fieldId = const Value.absent(),
+                Value<int?> teamAId = const Value.absent(),
+                Value<int?> teamBId = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<String?> notes = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime?> updatedAt = const Value.absent(),
+              }) => MatchesCompanion(
+                id: id,
+                startAt: startAt,
+                fieldId: fieldId,
+                teamAId: teamAId,
+                teamBId: teamBId,
+                status: status,
+                notes: notes,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required DateTime startAt,
+                Value<int?> fieldId = const Value.absent(),
+                Value<int?> teamAId = const Value.absent(),
+                Value<int?> teamBId = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<String?> notes = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime?> updatedAt = const Value.absent(),
+              }) => MatchesCompanion.insert(
+                id: id,
+                startAt: startAt,
+                fieldId: fieldId,
+                teamAId: teamAId,
+                teamBId: teamBId,
+                status: status,
+                notes: notes,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$MatchesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $MatchesTable,
+      Fixture,
+      $$MatchesTableFilterComposer,
+      $$MatchesTableOrderingComposer,
+      $$MatchesTableAnnotationComposer,
+      $$MatchesTableCreateCompanionBuilder,
+      $$MatchesTableUpdateCompanionBuilder,
+      (Fixture, BaseReferences<_$AppDatabase, $MatchesTable, Fixture>),
+      Fixture,
+      PrefetchHooks Function()
+    >;
+typedef $$LineupsTableCreateCompanionBuilder =
+    LineupsCompanion Function({
+      required int matchId,
+      required int teamId,
+      Value<String> formation,
+      Value<DateTime?> updatedAt,
+      Value<int> rowid,
+    });
+typedef $$LineupsTableUpdateCompanionBuilder =
+    LineupsCompanion Function({
+      Value<int> matchId,
+      Value<int> teamId,
+      Value<String> formation,
+      Value<DateTime?> updatedAt,
+      Value<int> rowid,
+    });
+
+class $$LineupsTableFilterComposer
+    extends Composer<_$AppDatabase, $LineupsTable> {
+  $$LineupsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get matchId => $composableBuilder(
+    column: $table.matchId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get teamId => $composableBuilder(
+    column: $table.teamId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get formation => $composableBuilder(
+    column: $table.formation,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$LineupsTableOrderingComposer
+    extends Composer<_$AppDatabase, $LineupsTable> {
+  $$LineupsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get matchId => $composableBuilder(
+    column: $table.matchId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get teamId => $composableBuilder(
+    column: $table.teamId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get formation => $composableBuilder(
+    column: $table.formation,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$LineupsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $LineupsTable> {
+  $$LineupsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get matchId =>
+      $composableBuilder(column: $table.matchId, builder: (column) => column);
+
+  GeneratedColumn<int> get teamId =>
+      $composableBuilder(column: $table.teamId, builder: (column) => column);
+
+  GeneratedColumn<String> get formation =>
+      $composableBuilder(column: $table.formation, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+}
+
+class $$LineupsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $LineupsTable,
+          Lineup,
+          $$LineupsTableFilterComposer,
+          $$LineupsTableOrderingComposer,
+          $$LineupsTableAnnotationComposer,
+          $$LineupsTableCreateCompanionBuilder,
+          $$LineupsTableUpdateCompanionBuilder,
+          (Lineup, BaseReferences<_$AppDatabase, $LineupsTable, Lineup>),
+          Lineup,
+          PrefetchHooks Function()
+        > {
+  $$LineupsTableTableManager(_$AppDatabase db, $LineupsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$LineupsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$LineupsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$LineupsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> matchId = const Value.absent(),
+                Value<int> teamId = const Value.absent(),
+                Value<String> formation = const Value.absent(),
+                Value<DateTime?> updatedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => LineupsCompanion(
+                matchId: matchId,
+                teamId: teamId,
+                formation: formation,
+                updatedAt: updatedAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required int matchId,
+                required int teamId,
+                Value<String> formation = const Value.absent(),
+                Value<DateTime?> updatedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => LineupsCompanion.insert(
+                matchId: matchId,
+                teamId: teamId,
+                formation: formation,
+                updatedAt: updatedAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$LineupsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $LineupsTable,
+      Lineup,
+      $$LineupsTableFilterComposer,
+      $$LineupsTableOrderingComposer,
+      $$LineupsTableAnnotationComposer,
+      $$LineupsTableCreateCompanionBuilder,
+      $$LineupsTableUpdateCompanionBuilder,
+      (Lineup, BaseReferences<_$AppDatabase, $LineupsTable, Lineup>),
+      Lineup,
+      PrefetchHooks Function()
+    >;
+typedef $$LineupSlotsTableCreateCompanionBuilder =
+    LineupSlotsCompanion Function({
+      Value<int> id,
+      required int matchId,
+      required int teamId,
+      required int slotIndex,
+      Value<String?> position,
+      Value<int?> playerId,
+    });
+typedef $$LineupSlotsTableUpdateCompanionBuilder =
+    LineupSlotsCompanion Function({
+      Value<int> id,
+      Value<int> matchId,
+      Value<int> teamId,
+      Value<int> slotIndex,
+      Value<String?> position,
+      Value<int?> playerId,
+    });
+
+class $$LineupSlotsTableFilterComposer
+    extends Composer<_$AppDatabase, $LineupSlotsTable> {
+  $$LineupSlotsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get matchId => $composableBuilder(
+    column: $table.matchId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get teamId => $composableBuilder(
+    column: $table.teamId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get slotIndex => $composableBuilder(
+    column: $table.slotIndex,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get position => $composableBuilder(
+    column: $table.position,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get playerId => $composableBuilder(
+    column: $table.playerId,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$LineupSlotsTableOrderingComposer
+    extends Composer<_$AppDatabase, $LineupSlotsTable> {
+  $$LineupSlotsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get matchId => $composableBuilder(
+    column: $table.matchId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get teamId => $composableBuilder(
+    column: $table.teamId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get slotIndex => $composableBuilder(
+    column: $table.slotIndex,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get position => $composableBuilder(
+    column: $table.position,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get playerId => $composableBuilder(
+    column: $table.playerId,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$LineupSlotsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $LineupSlotsTable> {
+  $$LineupSlotsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<int> get matchId =>
+      $composableBuilder(column: $table.matchId, builder: (column) => column);
+
+  GeneratedColumn<int> get teamId =>
+      $composableBuilder(column: $table.teamId, builder: (column) => column);
+
+  GeneratedColumn<int> get slotIndex =>
+      $composableBuilder(column: $table.slotIndex, builder: (column) => column);
+
+  GeneratedColumn<String> get position =>
+      $composableBuilder(column: $table.position, builder: (column) => column);
+
+  GeneratedColumn<int> get playerId =>
+      $composableBuilder(column: $table.playerId, builder: (column) => column);
+}
+
+class $$LineupSlotsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $LineupSlotsTable,
+          LineupSlot,
+          $$LineupSlotsTableFilterComposer,
+          $$LineupSlotsTableOrderingComposer,
+          $$LineupSlotsTableAnnotationComposer,
+          $$LineupSlotsTableCreateCompanionBuilder,
+          $$LineupSlotsTableUpdateCompanionBuilder,
+          (
+            LineupSlot,
+            BaseReferences<_$AppDatabase, $LineupSlotsTable, LineupSlot>,
+          ),
+          LineupSlot,
+          PrefetchHooks Function()
+        > {
+  $$LineupSlotsTableTableManager(_$AppDatabase db, $LineupSlotsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$LineupSlotsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$LineupSlotsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$LineupSlotsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<int> matchId = const Value.absent(),
+                Value<int> teamId = const Value.absent(),
+                Value<int> slotIndex = const Value.absent(),
+                Value<String?> position = const Value.absent(),
+                Value<int?> playerId = const Value.absent(),
+              }) => LineupSlotsCompanion(
+                id: id,
+                matchId: matchId,
+                teamId: teamId,
+                slotIndex: slotIndex,
+                position: position,
+                playerId: playerId,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required int matchId,
+                required int teamId,
+                required int slotIndex,
+                Value<String?> position = const Value.absent(),
+                Value<int?> playerId = const Value.absent(),
+              }) => LineupSlotsCompanion.insert(
+                id: id,
+                matchId: matchId,
+                teamId: teamId,
+                slotIndex: slotIndex,
+                position: position,
+                playerId: playerId,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$LineupSlotsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $LineupSlotsTable,
+      LineupSlot,
+      $$LineupSlotsTableFilterComposer,
+      $$LineupSlotsTableOrderingComposer,
+      $$LineupSlotsTableAnnotationComposer,
+      $$LineupSlotsTableCreateCompanionBuilder,
+      $$LineupSlotsTableUpdateCompanionBuilder,
+      (
+        LineupSlot,
+        BaseReferences<_$AppDatabase, $LineupSlotsTable, LineupSlot>,
+      ),
+      LineupSlot,
+      PrefetchHooks Function()
+    >;
+typedef $$AttendanceTableCreateCompanionBuilder =
+    AttendanceCompanion Function({
+      required int matchId,
+      required int teamId,
+      required int playerId,
+      Value<bool> isComing,
+      Value<int> rowid,
+    });
+typedef $$AttendanceTableUpdateCompanionBuilder =
+    AttendanceCompanion Function({
+      Value<int> matchId,
+      Value<int> teamId,
+      Value<int> playerId,
+      Value<bool> isComing,
+      Value<int> rowid,
+    });
+
+class $$AttendanceTableFilterComposer
+    extends Composer<_$AppDatabase, $AttendanceTable> {
+  $$AttendanceTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get matchId => $composableBuilder(
+    column: $table.matchId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get teamId => $composableBuilder(
+    column: $table.teamId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get playerId => $composableBuilder(
+    column: $table.playerId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get isComing => $composableBuilder(
+    column: $table.isComing,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$AttendanceTableOrderingComposer
+    extends Composer<_$AppDatabase, $AttendanceTable> {
+  $$AttendanceTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get matchId => $composableBuilder(
+    column: $table.matchId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get teamId => $composableBuilder(
+    column: $table.teamId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get playerId => $composableBuilder(
+    column: $table.playerId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get isComing => $composableBuilder(
+    column: $table.isComing,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$AttendanceTableAnnotationComposer
+    extends Composer<_$AppDatabase, $AttendanceTable> {
+  $$AttendanceTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get matchId =>
+      $composableBuilder(column: $table.matchId, builder: (column) => column);
+
+  GeneratedColumn<int> get teamId =>
+      $composableBuilder(column: $table.teamId, builder: (column) => column);
+
+  GeneratedColumn<int> get playerId =>
+      $composableBuilder(column: $table.playerId, builder: (column) => column);
+
+  GeneratedColumn<bool> get isComing =>
+      $composableBuilder(column: $table.isComing, builder: (column) => column);
+}
+
+class $$AttendanceTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $AttendanceTable,
+          AttendanceData,
+          $$AttendanceTableFilterComposer,
+          $$AttendanceTableOrderingComposer,
+          $$AttendanceTableAnnotationComposer,
+          $$AttendanceTableCreateCompanionBuilder,
+          $$AttendanceTableUpdateCompanionBuilder,
+          (
+            AttendanceData,
+            BaseReferences<_$AppDatabase, $AttendanceTable, AttendanceData>,
+          ),
+          AttendanceData,
+          PrefetchHooks Function()
+        > {
+  $$AttendanceTableTableManager(_$AppDatabase db, $AttendanceTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$AttendanceTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$AttendanceTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$AttendanceTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> matchId = const Value.absent(),
+                Value<int> teamId = const Value.absent(),
+                Value<int> playerId = const Value.absent(),
+                Value<bool> isComing = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => AttendanceCompanion(
+                matchId: matchId,
+                teamId: teamId,
+                playerId: playerId,
+                isComing: isComing,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required int matchId,
+                required int teamId,
+                required int playerId,
+                Value<bool> isComing = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => AttendanceCompanion.insert(
+                matchId: matchId,
+                teamId: teamId,
+                playerId: playerId,
+                isComing: isComing,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$AttendanceTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $AttendanceTable,
+      AttendanceData,
+      $$AttendanceTableFilterComposer,
+      $$AttendanceTableOrderingComposer,
+      $$AttendanceTableAnnotationComposer,
+      $$AttendanceTableCreateCompanionBuilder,
+      $$AttendanceTableUpdateCompanionBuilder,
+      (
+        AttendanceData,
+        BaseReferences<_$AppDatabase, $AttendanceTable, AttendanceData>,
+      ),
+      AttendanceData,
+      PrefetchHooks Function()
+    >;
+typedef $$TacticsTableCreateCompanionBuilder =
+    TacticsCompanion Function({
+      Value<int> matchId,
+      Value<String?> pressing,
+      Value<String?> width,
+      Value<String?> buildUp,
+      Value<String?> corners,
+      Value<String?> freeKicks,
+      Value<String?> keyMatchups,
+      Value<String?> notes,
+      Value<DateTime?> updatedAt,
+    });
+typedef $$TacticsTableUpdateCompanionBuilder =
+    TacticsCompanion Function({
+      Value<int> matchId,
+      Value<String?> pressing,
+      Value<String?> width,
+      Value<String?> buildUp,
+      Value<String?> corners,
+      Value<String?> freeKicks,
+      Value<String?> keyMatchups,
+      Value<String?> notes,
+      Value<DateTime?> updatedAt,
+    });
+
+class $$TacticsTableFilterComposer
+    extends Composer<_$AppDatabase, $TacticsTable> {
+  $$TacticsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get matchId => $composableBuilder(
+    column: $table.matchId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get pressing => $composableBuilder(
+    column: $table.pressing,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get width => $composableBuilder(
+    column: $table.width,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get buildUp => $composableBuilder(
+    column: $table.buildUp,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get corners => $composableBuilder(
+    column: $table.corners,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get freeKicks => $composableBuilder(
+    column: $table.freeKicks,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get keyMatchups => $composableBuilder(
+    column: $table.keyMatchups,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get notes => $composableBuilder(
+    column: $table.notes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$TacticsTableOrderingComposer
+    extends Composer<_$AppDatabase, $TacticsTable> {
+  $$TacticsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get matchId => $composableBuilder(
+    column: $table.matchId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get pressing => $composableBuilder(
+    column: $table.pressing,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get width => $composableBuilder(
+    column: $table.width,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get buildUp => $composableBuilder(
+    column: $table.buildUp,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get corners => $composableBuilder(
+    column: $table.corners,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get freeKicks => $composableBuilder(
+    column: $table.freeKicks,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get keyMatchups => $composableBuilder(
+    column: $table.keyMatchups,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get notes => $composableBuilder(
+    column: $table.notes,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$TacticsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $TacticsTable> {
+  $$TacticsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get matchId =>
+      $composableBuilder(column: $table.matchId, builder: (column) => column);
+
+  GeneratedColumn<String> get pressing =>
+      $composableBuilder(column: $table.pressing, builder: (column) => column);
+
+  GeneratedColumn<String> get width =>
+      $composableBuilder(column: $table.width, builder: (column) => column);
+
+  GeneratedColumn<String> get buildUp =>
+      $composableBuilder(column: $table.buildUp, builder: (column) => column);
+
+  GeneratedColumn<String> get corners =>
+      $composableBuilder(column: $table.corners, builder: (column) => column);
+
+  GeneratedColumn<String> get freeKicks =>
+      $composableBuilder(column: $table.freeKicks, builder: (column) => column);
+
+  GeneratedColumn<String> get keyMatchups => $composableBuilder(
+    column: $table.keyMatchups,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get notes =>
+      $composableBuilder(column: $table.notes, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+}
+
+class $$TacticsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $TacticsTable,
+          Tactic,
+          $$TacticsTableFilterComposer,
+          $$TacticsTableOrderingComposer,
+          $$TacticsTableAnnotationComposer,
+          $$TacticsTableCreateCompanionBuilder,
+          $$TacticsTableUpdateCompanionBuilder,
+          (Tactic, BaseReferences<_$AppDatabase, $TacticsTable, Tactic>),
+          Tactic,
+          PrefetchHooks Function()
+        > {
+  $$TacticsTableTableManager(_$AppDatabase db, $TacticsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$TacticsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$TacticsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$TacticsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> matchId = const Value.absent(),
+                Value<String?> pressing = const Value.absent(),
+                Value<String?> width = const Value.absent(),
+                Value<String?> buildUp = const Value.absent(),
+                Value<String?> corners = const Value.absent(),
+                Value<String?> freeKicks = const Value.absent(),
+                Value<String?> keyMatchups = const Value.absent(),
+                Value<String?> notes = const Value.absent(),
+                Value<DateTime?> updatedAt = const Value.absent(),
+              }) => TacticsCompanion(
+                matchId: matchId,
+                pressing: pressing,
+                width: width,
+                buildUp: buildUp,
+                corners: corners,
+                freeKicks: freeKicks,
+                keyMatchups: keyMatchups,
+                notes: notes,
+                updatedAt: updatedAt,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> matchId = const Value.absent(),
+                Value<String?> pressing = const Value.absent(),
+                Value<String?> width = const Value.absent(),
+                Value<String?> buildUp = const Value.absent(),
+                Value<String?> corners = const Value.absent(),
+                Value<String?> freeKicks = const Value.absent(),
+                Value<String?> keyMatchups = const Value.absent(),
+                Value<String?> notes = const Value.absent(),
+                Value<DateTime?> updatedAt = const Value.absent(),
+              }) => TacticsCompanion.insert(
+                matchId: matchId,
+                pressing: pressing,
+                width: width,
+                buildUp: buildUp,
+                corners: corners,
+                freeKicks: freeKicks,
+                keyMatchups: keyMatchups,
+                notes: notes,
+                updatedAt: updatedAt,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$TacticsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $TacticsTable,
+      Tactic,
+      $$TacticsTableFilterComposer,
+      $$TacticsTableOrderingComposer,
+      $$TacticsTableAnnotationComposer,
+      $$TacticsTableCreateCompanionBuilder,
+      $$TacticsTableUpdateCompanionBuilder,
+      (Tactic, BaseReferences<_$AppDatabase, $TacticsTable, Tactic>),
+      Tactic,
+      PrefetchHooks Function()
+    >;
+typedef $$DoDontItemsTableCreateCompanionBuilder =
+    DoDontItemsCompanion Function({
+      Value<int> id,
+      required int matchId,
+      required String content,
+      Value<bool> isDone,
+      Value<int> sortOrder,
+    });
+typedef $$DoDontItemsTableUpdateCompanionBuilder =
+    DoDontItemsCompanion Function({
+      Value<int> id,
+      Value<int> matchId,
+      Value<String> content,
+      Value<bool> isDone,
+      Value<int> sortOrder,
+    });
+
+class $$DoDontItemsTableFilterComposer
+    extends Composer<_$AppDatabase, $DoDontItemsTable> {
+  $$DoDontItemsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get matchId => $composableBuilder(
+    column: $table.matchId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get content => $composableBuilder(
+    column: $table.content,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get isDone => $composableBuilder(
+    column: $table.isDone,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get sortOrder => $composableBuilder(
+    column: $table.sortOrder,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$DoDontItemsTableOrderingComposer
+    extends Composer<_$AppDatabase, $DoDontItemsTable> {
+  $$DoDontItemsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get matchId => $composableBuilder(
+    column: $table.matchId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get content => $composableBuilder(
+    column: $table.content,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get isDone => $composableBuilder(
+    column: $table.isDone,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get sortOrder => $composableBuilder(
+    column: $table.sortOrder,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$DoDontItemsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $DoDontItemsTable> {
+  $$DoDontItemsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<int> get matchId =>
+      $composableBuilder(column: $table.matchId, builder: (column) => column);
+
+  GeneratedColumn<String> get content =>
+      $composableBuilder(column: $table.content, builder: (column) => column);
+
+  GeneratedColumn<bool> get isDone =>
+      $composableBuilder(column: $table.isDone, builder: (column) => column);
+
+  GeneratedColumn<int> get sortOrder =>
+      $composableBuilder(column: $table.sortOrder, builder: (column) => column);
+}
+
+class $$DoDontItemsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $DoDontItemsTable,
+          DoDontItem,
+          $$DoDontItemsTableFilterComposer,
+          $$DoDontItemsTableOrderingComposer,
+          $$DoDontItemsTableAnnotationComposer,
+          $$DoDontItemsTableCreateCompanionBuilder,
+          $$DoDontItemsTableUpdateCompanionBuilder,
+          (
+            DoDontItem,
+            BaseReferences<_$AppDatabase, $DoDontItemsTable, DoDontItem>,
+          ),
+          DoDontItem,
+          PrefetchHooks Function()
+        > {
+  $$DoDontItemsTableTableManager(_$AppDatabase db, $DoDontItemsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$DoDontItemsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$DoDontItemsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$DoDontItemsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<int> matchId = const Value.absent(),
+                Value<String> content = const Value.absent(),
+                Value<bool> isDone = const Value.absent(),
+                Value<int> sortOrder = const Value.absent(),
+              }) => DoDontItemsCompanion(
+                id: id,
+                matchId: matchId,
+                content: content,
+                isDone: isDone,
+                sortOrder: sortOrder,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required int matchId,
+                required String content,
+                Value<bool> isDone = const Value.absent(),
+                Value<int> sortOrder = const Value.absent(),
+              }) => DoDontItemsCompanion.insert(
+                id: id,
+                matchId: matchId,
+                content: content,
+                isDone: isDone,
+                sortOrder: sortOrder,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$DoDontItemsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $DoDontItemsTable,
+      DoDontItem,
+      $$DoDontItemsTableFilterComposer,
+      $$DoDontItemsTableOrderingComposer,
+      $$DoDontItemsTableAnnotationComposer,
+      $$DoDontItemsTableCreateCompanionBuilder,
+      $$DoDontItemsTableUpdateCompanionBuilder,
+      (
+        DoDontItem,
+        BaseReferences<_$AppDatabase, $DoDontItemsTable, DoDontItem>,
+      ),
+      DoDontItem,
+      PrefetchHooks Function()
+    >;
+typedef $$SettingsEntriesTableCreateCompanionBuilder =
+    SettingsEntriesCompanion Function({
+      required String key,
+      Value<String?> stringValue,
+      Value<int?> intValue,
+      Value<bool?> boolValue,
+      Value<DateTime?> updatedAt,
+      Value<int> rowid,
+    });
+typedef $$SettingsEntriesTableUpdateCompanionBuilder =
+    SettingsEntriesCompanion Function({
+      Value<String> key,
+      Value<String?> stringValue,
+      Value<int?> intValue,
+      Value<bool?> boolValue,
+      Value<DateTime?> updatedAt,
+      Value<int> rowid,
+    });
+
+class $$SettingsEntriesTableFilterComposer
+    extends Composer<_$AppDatabase, $SettingsEntriesTable> {
+  $$SettingsEntriesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get key => $composableBuilder(
+    column: $table.key,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get stringValue => $composableBuilder(
+    column: $table.stringValue,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get intValue => $composableBuilder(
+    column: $table.intValue,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get boolValue => $composableBuilder(
+    column: $table.boolValue,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$SettingsEntriesTableOrderingComposer
+    extends Composer<_$AppDatabase, $SettingsEntriesTable> {
+  $$SettingsEntriesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get key => $composableBuilder(
+    column: $table.key,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get stringValue => $composableBuilder(
+    column: $table.stringValue,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get intValue => $composableBuilder(
+    column: $table.intValue,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get boolValue => $composableBuilder(
+    column: $table.boolValue,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$SettingsEntriesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $SettingsEntriesTable> {
+  $$SettingsEntriesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get key =>
+      $composableBuilder(column: $table.key, builder: (column) => column);
+
+  GeneratedColumn<String> get stringValue => $composableBuilder(
+    column: $table.stringValue,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get intValue =>
+      $composableBuilder(column: $table.intValue, builder: (column) => column);
+
+  GeneratedColumn<bool> get boolValue =>
+      $composableBuilder(column: $table.boolValue, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+}
+
+class $$SettingsEntriesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $SettingsEntriesTable,
+          SettingsEntry,
+          $$SettingsEntriesTableFilterComposer,
+          $$SettingsEntriesTableOrderingComposer,
+          $$SettingsEntriesTableAnnotationComposer,
+          $$SettingsEntriesTableCreateCompanionBuilder,
+          $$SettingsEntriesTableUpdateCompanionBuilder,
+          (
+            SettingsEntry,
+            BaseReferences<_$AppDatabase, $SettingsEntriesTable, SettingsEntry>,
+          ),
+          SettingsEntry,
+          PrefetchHooks Function()
+        > {
+  $$SettingsEntriesTableTableManager(
+    _$AppDatabase db,
+    $SettingsEntriesTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$SettingsEntriesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$SettingsEntriesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$SettingsEntriesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> key = const Value.absent(),
+                Value<String?> stringValue = const Value.absent(),
+                Value<int?> intValue = const Value.absent(),
+                Value<bool?> boolValue = const Value.absent(),
+                Value<DateTime?> updatedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => SettingsEntriesCompanion(
+                key: key,
+                stringValue: stringValue,
+                intValue: intValue,
+                boolValue: boolValue,
+                updatedAt: updatedAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String key,
+                Value<String?> stringValue = const Value.absent(),
+                Value<int?> intValue = const Value.absent(),
+                Value<bool?> boolValue = const Value.absent(),
+                Value<DateTime?> updatedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => SettingsEntriesCompanion.insert(
+                key: key,
+                stringValue: stringValue,
+                intValue: intValue,
+                boolValue: boolValue,
+                updatedAt: updatedAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$SettingsEntriesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $SettingsEntriesTable,
+      SettingsEntry,
+      $$SettingsEntriesTableFilterComposer,
+      $$SettingsEntriesTableOrderingComposer,
+      $$SettingsEntriesTableAnnotationComposer,
+      $$SettingsEntriesTableCreateCompanionBuilder,
+      $$SettingsEntriesTableUpdateCompanionBuilder,
+      (
+        SettingsEntry,
+        BaseReferences<_$AppDatabase, $SettingsEntriesTable, SettingsEntry>,
+      ),
+      SettingsEntry,
+      PrefetchHooks Function()
+    >;
+
+class $AppDatabaseManager {
+  final _$AppDatabase _db;
+  $AppDatabaseManager(this._db);
+  $$TeamsTableTableManager get teams =>
+      $$TeamsTableTableManager(_db, _db.teams);
+  $$PlayersTableTableManager get players =>
+      $$PlayersTableTableManager(_db, _db.players);
+  $$FieldsTableTableManager get fields =>
+      $$FieldsTableTableManager(_db, _db.fields);
+  $$MatchesTableTableManager get matches =>
+      $$MatchesTableTableManager(_db, _db.matches);
+  $$LineupsTableTableManager get lineups =>
+      $$LineupsTableTableManager(_db, _db.lineups);
+  $$LineupSlotsTableTableManager get lineupSlots =>
+      $$LineupSlotsTableTableManager(_db, _db.lineupSlots);
+  $$AttendanceTableTableManager get attendance =>
+      $$AttendanceTableTableManager(_db, _db.attendance);
+  $$TacticsTableTableManager get tactics =>
+      $$TacticsTableTableManager(_db, _db.tactics);
+  $$DoDontItemsTableTableManager get doDontItems =>
+      $$DoDontItemsTableTableManager(_db, _db.doDontItems);
+  $$SettingsEntriesTableTableManager get settingsEntries =>
+      $$SettingsEntriesTableTableManager(_db, _db.settingsEntries);
+}
