@@ -89,10 +89,10 @@
 - [x] `front/lib/providers/tactics_provider.dart`
 - [x] `front/lib/providers/stats_provider.dart` (поки stub; розширимо коли Stats будуть чітко визначені у спеці)
 
-### - [ ] Phase 5 — Screen: Splash (`/`)
+### - [x] Phase 5 — Screen: Splash (`/`)
 
-- [ ] `front/lib/ui/pages/splash_page.dart` (min 2s + init DB/prefs → redirect на onboarding/hub)
-- [ ] За потреби: `front/lib/ui/widgets/common/` (loader, background overlay)
+- [x] `front/lib/ui/pages/splash_page.dart` (min 2s + init DB/prefs → redirect на onboarding/hub)
+- [x] UI: background image + dark overlay, centered title/tagline, loader bottom-center (без інтеракцій)
 
 ### - [ ] Phase 6 — Screen: Onboarding (`/onboarding`)
 

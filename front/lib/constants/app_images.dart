@@ -1,7 +1,7 @@
 class AppImages {
   const AppImages._();
 
-  static const String splashBackground = 'assets/images/bg_splash.jpeg';
+  static const String splashBackground = 'assets/images/bg_splash.jpg';
   static const String onboardingBackground = 'assets/images/bg_onboarding.jpeg';
   static const String teamStudioBackground =
       'assets/images/bg_team_studio.jpeg';

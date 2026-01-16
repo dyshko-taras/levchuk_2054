@@ -4,8 +4,10 @@ import 'package:provider/provider.dart';
 import '../../constants/app_durations.dart';
 import '../../constants/app_images.dart';
 import '../../constants/app_routes.dart';
+import '../../constants/app_sizes.dart';
 import '../../constants/app_spacing.dart';
 import '../../constants/app_strings.dart';
+import '../../data/local/database/app_database.dart';
 import '../../providers/settings_provider.dart';
 import '../theme/app_colors.dart';
 
@@ -30,9 +32,13 @@ class _SplashPageState extends State<SplashPage> {
 
     final startedAt = DateTime.now();
     try {
+      final db = context.read<AppDatabase>();
+      await db.customSelect('SELECT 1').getSingleOrNull();
+
       final settings = context.read<SettingsProvider>();
-      final targetRoute =
-          settings.isFirstLaunch ? AppRoutes.onboarding : AppRoutes.hub;
+      final targetRoute = settings.isFirstLaunch
+          ? AppRoutes.onboarding
+          : AppRoutes.hub;
 
       final elapsed = DateTime.now().difference(startedAt);
       final remaining = AppDurations.splashMin - elapsed;
@@ -60,8 +66,8 @@ class _SplashPageState extends State<SplashPage> {
   Widget build(BuildContext context) {
     final titleStyle = Theme.of(context).textTheme.displayLarge;
     final taglineStyle = Theme.of(context).textTheme.titleMedium?.copyWith(
-          color: AppColors.whiteOverlay70,
-        );
+      color: AppColors.whiteOverlay70,
+    );
 
     return Scaffold(
       body: Stack(
@@ -93,15 +99,17 @@ class _SplashPageState extends State<SplashPage> {
               ),
             ),
           ),
-          SafeArea(
+          const SafeArea(
             child: Padding(
               padding: const EdgeInsets.only(bottom: AppSpacing.xl),
-              child: const Align(
+              child: Align(
                 alignment: Alignment.bottomCenter,
                 child: SizedBox(
-                  height: 36,
-                  width: 36,
-                  child: CircularProgressIndicator(strokeWidth: 3),
+                  height: AppSizes.splashLoaderSize,
+                  width: AppSizes.splashLoaderSize,
+                  child: CircularProgressIndicator(
+                    strokeWidth: AppSizes.splashLoaderStrokeWidth,
+                  ),
                 ),
               ),
             ),
