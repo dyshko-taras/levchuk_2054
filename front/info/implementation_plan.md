@@ -94,10 +94,10 @@
 - [x] `front/lib/ui/pages/splash_page.dart` (min 2s + init DB/prefs → redirect на onboarding/hub)
 - [x] UI: background image + dark overlay, centered title/tagline, loader bottom-center (без інтеракцій)
 
-### - [ ] Phase 6 — Screen: Onboarding (`/onboarding`)
+### - [x] Phase 6 — Screen: Onboarding (`/onboarding`)
 
-- [ ] `front/lib/ui/pages/onboarding_page.dart` (3 слайди + mini-setup, Next/Back/Skip/Start/Privacy)
-- [ ] За потреби: `front/lib/ui/widgets/` (dots indicator, slide layout)
+- [x] `front/lib/ui/pages/onboarding_page.dart` (3 слайди, Back/Skip, dots, Next, Privacy на останньому слайді)
+- [x] Reusable buttons: `front/lib/ui/widgets/buttons/app_buttons.dart`
 
 ### - [ ] Phase 7 — Screen: Hub (`/hub`)
 
@@ -155,9 +155,9 @@
 
 - [ ] `front/lib/ui/pages/settings_page.dart` (default team, reminders toggle, version, privacy, clear all data + confirm)
 
-### - [ ] Phase 18 — Screen: Privacy (`/privacy`)
+### - [x] Phase 18 — Privacy (method placeholder)
 
-- [ ] `front/lib/ui/pages/privacy_page.dart` (статичний текст privacy + back)
+- [x] `front/lib/ui/privacy/privacy_actions.dart` (TODO: статичний privacy текст як модал, без зовнішніх лінків)
 
 ### - [ ] Phase 19 — Дизайн-полірування, UX та перевірка відповідності (по скрінах)
 

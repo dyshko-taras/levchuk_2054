@@ -8,7 +8,6 @@ import '../ui/pages/lineup_tactics_board_page.dart';
 import '../ui/pages/match_center_page.dart';
 import '../ui/pages/match_composer_page.dart';
 import '../ui/pages/onboarding_page.dart';
-import '../ui/pages/privacy_page.dart';
 import '../ui/pages/settings_page.dart';
 import '../ui/pages/splash_page.dart';
 import '../ui/pages/stats_page.dart';
@@ -47,6 +46,5 @@ class AppRoutes {
     lineupTactics: (_) => const LineupTacticsBoardPage(),
     stats: (_) => const StatsPage(),
     settings: (_) => const SettingsPage(),
-    privacy: (_) => const PrivacyPage(),
   };
 }

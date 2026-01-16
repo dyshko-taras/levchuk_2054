@@ -9,8 +9,8 @@ class AppIcons {
   static const String chevronLeft = 'assets/icons/icon_chevron_left.svg';
   static const String chevronDown = 'assets/icons/icon_chevron_down.svg';
   static const String edit = 'assets/icons/icon_edit.svg';
-  static const String delete = 'assets/icons/icon_delete.svg';
-  static const String check = 'assets/icons/icon_check.svg';
   static const String calendar = 'assets/icons/icon_calendar.svg';
+  static const String delete = 'assets/icons/icon_delete.svg';
   static const String search = 'assets/icons/icon_search.svg';
+  static const String check = 'assets/icons/icon_check.svg';
 }

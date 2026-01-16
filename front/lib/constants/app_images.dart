@@ -2,31 +2,26 @@ class AppImages {
   const AppImages._();
 
   static const String splashBackground = 'assets/images/bg_splash.jpg';
-  static const String onboardingBackground = 'assets/images/bg_onboarding.jpeg';
-  static const String teamStudioBackground =
-      'assets/images/bg_team_studio.jpeg';
+  static const String onboardingBackground = 'assets/images/bg_onboarding.jpg';
+  static const String teamStudioBackground = 'assets/images/bg_team_studio.jpg';
   static const String matchCenterHeaderBackground =
-      'assets/images/bg_match_center_header.jpeg';
+      'assets/images/bg_match_center_header.jpg';
 
   static const String onboardingSlideTeamStudio =
-      'assets/images/img_onboarding_slide_team_studio.jpeg';
+      'assets/images/img_onboarding_slide_team_studio.png';
   static const String onboardingSlideFieldsRegistry =
-      'assets/images/img_onboarding_slide_fields_registry.jpeg';
-  static const String onboardingSlideHubMatchPlanned =
-      'assets/images/img_onboarding_slide_hub_match_planned.jpeg';
-  static const String onboardingSlideHubNoMatchPlanned =
-      'assets/images/img_onboarding_slide_hub_no_match_planned.jpeg';
+      'assets/images/img_onboarding_slide_fields_registry.png';
   static const String onboardingSlideAvailability =
-      'assets/images/img_onboarding_slide_availability.jpeg';
+      'assets/images/img_onboarding_slide_availability.png';
 
   static const String hubNextMatchCardBackground =
-      'assets/images/img_hub_next_match_card_bg.jpeg';
+      'assets/images/img_hub_next_match_card_bg.jpg';
   static const String hubNoMatchPlannedCardBackground =
-      'assets/images/img_hub_no_match_planned_card_bg.jpeg';
+      'assets/images/img_hub_no_match_planned_card_bg.jpg';
   static const String hubMySquadCardBackground =
-      'assets/images/img_hub_my_squad_card_bg.jpeg';
+      'assets/images/img_hub_my_squad_card_bg.jpg';
   static const String hubFieldSnapshotCardBackground =
-      'assets/images/img_hub_field_snapshot_card_bg.jpeg';
+      'assets/images/img_hub_field_snapshot_card_bg.jpg';
 
   static const String teamBadgeIcons =
       'assets/images/badges_team_badge_icons.svg';
@@ -36,12 +31,12 @@ class AppImages {
       'assets/images/img_team_kit_away_preview.webp';
 
   static const String fieldsRegistryCardBackground =
-      'assets/images/img_fields_registry_card_bg.jpeg';
+      'assets/images/img_fields_registry_card_bg.jpg';
   static const String fieldPhotoPlaceholder =
       'assets/images/img_field_photo_placeholder.webp';
 
   static const String lineupBoardPitch =
-      'assets/images/img_lineup_board_pitch.jpeg';
+      'assets/images/img_lineup_board_pitch.jpg';
   static const String lineupBoardTeamAKit =
       'assets/images/img_lineup_board_team_a_kit.webp';
   static const String lineupBoardTeamBKit =
