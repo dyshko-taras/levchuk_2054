@@ -4,6 +4,8 @@ import 'package:drift/drift.dart';
 class Matches extends Table {
   IntColumn get id => integer().autoIncrement()();
 
+  TextColumn get title => text()();
+
   DateTimeColumn get startAt => dateTime()();
 
   IntColumn get fieldId => integer().nullable()();

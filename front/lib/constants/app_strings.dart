@@ -67,6 +67,7 @@ class AppStrings {
   static const String commonDelete = 'Delete';
   static const String commonOk = 'OK';
   static const String commonPlaceholderDash = '—';
+  static const String commonRequiredMarker = '*';
   static const String teamStudioNameRequiredError = 'Team name is required';
   static const String teamStudioNameNotUniqueError = 'Team name must be unique';
   static const String teamStudioDeleteNotAllowed =
@@ -104,6 +105,35 @@ class AppStrings {
       '$teamA vs $teamB';
   static String availabilityMatchCardTime(String date, String time) =>
       '$date, $time';
+
+  static const String matchComposerTitle = 'Match Composer';
+  static const String matchComposerFieldPickFromFields = 'Pick from Fields';
+  static const String matchComposerTitleLabel = 'Title';
+  static const String matchComposerTitleHint = 'Enter name';
+  static const String matchComposerDateTimeLabel = 'Date & Time';
+  static const String matchComposerDateTimeHint = 'Enter';
+  static const String matchComposerFieldLabel = 'Field';
+  static const String matchComposerFieldHint = 'Select';
+  static const String matchComposerTeamALabel = 'Team A';
+  static const String matchComposerTeamBLabel = 'Team B';
+  static const String matchComposerTeamHint = 'Enter';
+  static const String matchComposerNotesLabel = 'Notes';
+  static const String matchComposerNotesHint = 'Enter Notes';
+  static const String matchComposerSave = 'Save';
+  static const String matchComposerCancel = 'Cancel';
+  static const String matchComposerErrorTitleRequired = 'Title is required';
+  static const String matchComposerErrorDateTimeRequired =
+      'Date & Time is required';
+  static const String matchComposerErrorFieldRequired = 'Field is required';
+  static const String matchComposerErrorTeamARequired = 'Team A is required';
+  static const String matchComposerConflictTitle = 'Time conflict detected';
+  static const String matchComposerConflictMessage =
+      'This match conflicts with another match for the same team or field.';
+  static const String matchComposerConflictSaveAnyway = 'Save anyway';
+  static const String matchComposerConflictAdjust = 'Adjust';
+  static const String matchComposerDeleteTitle = 'Delete match?';
+  static const String matchComposerDeleteMessage =
+      'This action can’t be undone.';
 
   static const String fieldFormRequiredMarker = '*';
   static const String fieldFormNameLabel = 'Name';

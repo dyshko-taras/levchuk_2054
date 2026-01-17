@@ -129,10 +129,10 @@
 - [x] `front/lib/ui/pages/availability_grid_page.dart` (календар + тайм-слоти, фільтри, конфлікти MVP)
 - [x] Використано `table_calendar` для календаря
 
-### - [ ] Phase 13 — Screen: Match Composer (`/match-composer`)
+### - [x] Phase 13 — Screen: Match Composer (`/match-composer`)
 
-- [ ] `front/lib/ui/pages/match_composer_page.dart` (створення матчу: дата/час, поле, команди, save)
-- [ ] За потреби: `front/lib/ui/widgets/` (picker rows)
+- [x] `front/lib/ui/pages/match_composer_page.dart` (create/edit, prefill, pickers, conflict warning, save/delete)
+- [x] `front/lib/data/local/database/schema/matches.dart` (додано `title`)
 
 ### - [ ] Phase 14 — Screen: Match Center (`/match-center`)
 

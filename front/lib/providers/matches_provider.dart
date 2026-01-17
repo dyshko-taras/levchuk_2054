@@ -23,6 +23,7 @@ class MatchesProvider extends ChangeNotifier {
   List<Fixture> get matches => _matches;
 
   Future<int> createMatch({
+    required String title,
     required DateTime startAt,
     int? fieldId,
     int? teamAId,
@@ -32,6 +33,7 @@ class MatchesProvider extends ChangeNotifier {
   }) {
     return _repository.createMatch(
       MatchesCompanion.insert(
+        title: title,
         startAt: startAt,
         fieldId: Value(fieldId),
         teamAId: Value(teamAId),

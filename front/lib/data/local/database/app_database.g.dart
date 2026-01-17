@@ -1836,6 +1836,15 @@ class $MatchesTable extends Matches with TableInfo<$MatchesTable, Fixture> {
       'PRIMARY KEY AUTOINCREMENT',
     ),
   );
+  static const VerificationMeta _titleMeta = const VerificationMeta('title');
+  @override
+  late final GeneratedColumn<String> title = GeneratedColumn<String>(
+    'title',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _startAtMeta = const VerificationMeta(
     'startAt',
   );
@@ -1925,6 +1934,7 @@ class $MatchesTable extends Matches with TableInfo<$MatchesTable, Fixture> {
   @override
   List<GeneratedColumn> get $columns => [
     id,
+    title,
     startAt,
     fieldId,
     teamAId,
@@ -1948,6 +1958,14 @@ class $MatchesTable extends Matches with TableInfo<$MatchesTable, Fixture> {
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('title')) {
+      context.handle(
+        _titleMeta,
+        title.isAcceptableOrUnknown(data['title']!, _titleMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_titleMeta);
     }
     if (data.containsKey('start_at')) {
       context.handle(
@@ -2012,6 +2030,10 @@ class $MatchesTable extends Matches with TableInfo<$MatchesTable, Fixture> {
         DriftSqlType.int,
         data['${effectivePrefix}id'],
       )!,
+      title: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}title'],
+      )!,
       startAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}start_at'],
@@ -2055,6 +2077,7 @@ class $MatchesTable extends Matches with TableInfo<$MatchesTable, Fixture> {
 
 class Fixture extends DataClass implements Insertable<Fixture> {
   final int id;
+  final String title;
   final DateTime startAt;
   final int? fieldId;
   final int? teamAId;
@@ -2065,6 +2088,7 @@ class Fixture extends DataClass implements Insertable<Fixture> {
   final DateTime? updatedAt;
   const Fixture({
     required this.id,
+    required this.title,
     required this.startAt,
     this.fieldId,
     this.teamAId,
@@ -2078,6 +2102,7 @@ class Fixture extends DataClass implements Insertable<Fixture> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
+    map['title'] = Variable<String>(title);
     map['start_at'] = Variable<DateTime>(startAt);
     if (!nullToAbsent || fieldId != null) {
       map['field_id'] = Variable<int>(fieldId);
@@ -2102,6 +2127,7 @@ class Fixture extends DataClass implements Insertable<Fixture> {
   MatchesCompanion toCompanion(bool nullToAbsent) {
     return MatchesCompanion(
       id: Value(id),
+      title: Value(title),
       startAt: Value(startAt),
       fieldId: fieldId == null && nullToAbsent
           ? const Value.absent()
@@ -2130,6 +2156,7 @@ class Fixture extends DataClass implements Insertable<Fixture> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Fixture(
       id: serializer.fromJson<int>(json['id']),
+      title: serializer.fromJson<String>(json['title']),
       startAt: serializer.fromJson<DateTime>(json['startAt']),
       fieldId: serializer.fromJson<int?>(json['fieldId']),
       teamAId: serializer.fromJson<int?>(json['teamAId']),
@@ -2145,6 +2172,7 @@ class Fixture extends DataClass implements Insertable<Fixture> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
+      'title': serializer.toJson<String>(title),
       'startAt': serializer.toJson<DateTime>(startAt),
       'fieldId': serializer.toJson<int?>(fieldId),
       'teamAId': serializer.toJson<int?>(teamAId),
@@ -2158,6 +2186,7 @@ class Fixture extends DataClass implements Insertable<Fixture> {
 
   Fixture copyWith({
     int? id,
+    String? title,
     DateTime? startAt,
     Value<int?> fieldId = const Value.absent(),
     Value<int?> teamAId = const Value.absent(),
@@ -2168,6 +2197,7 @@ class Fixture extends DataClass implements Insertable<Fixture> {
     Value<DateTime?> updatedAt = const Value.absent(),
   }) => Fixture(
     id: id ?? this.id,
+    title: title ?? this.title,
     startAt: startAt ?? this.startAt,
     fieldId: fieldId.present ? fieldId.value : this.fieldId,
     teamAId: teamAId.present ? teamAId.value : this.teamAId,
@@ -2180,6 +2210,7 @@ class Fixture extends DataClass implements Insertable<Fixture> {
   Fixture copyWithCompanion(MatchesCompanion data) {
     return Fixture(
       id: data.id.present ? data.id.value : this.id,
+      title: data.title.present ? data.title.value : this.title,
       startAt: data.startAt.present ? data.startAt.value : this.startAt,
       fieldId: data.fieldId.present ? data.fieldId.value : this.fieldId,
       teamAId: data.teamAId.present ? data.teamAId.value : this.teamAId,
@@ -2195,6 +2226,7 @@ class Fixture extends DataClass implements Insertable<Fixture> {
   String toString() {
     return (StringBuffer('Fixture(')
           ..write('id: $id, ')
+          ..write('title: $title, ')
           ..write('startAt: $startAt, ')
           ..write('fieldId: $fieldId, ')
           ..write('teamAId: $teamAId, ')
@@ -2210,6 +2242,7 @@ class Fixture extends DataClass implements Insertable<Fixture> {
   @override
   int get hashCode => Object.hash(
     id,
+    title,
     startAt,
     fieldId,
     teamAId,
@@ -2224,6 +2257,7 @@ class Fixture extends DataClass implements Insertable<Fixture> {
       identical(this, other) ||
       (other is Fixture &&
           other.id == this.id &&
+          other.title == this.title &&
           other.startAt == this.startAt &&
           other.fieldId == this.fieldId &&
           other.teamAId == this.teamAId &&
@@ -2236,6 +2270,7 @@ class Fixture extends DataClass implements Insertable<Fixture> {
 
 class MatchesCompanion extends UpdateCompanion<Fixture> {
   final Value<int> id;
+  final Value<String> title;
   final Value<DateTime> startAt;
   final Value<int?> fieldId;
   final Value<int?> teamAId;
@@ -2246,6 +2281,7 @@ class MatchesCompanion extends UpdateCompanion<Fixture> {
   final Value<DateTime?> updatedAt;
   const MatchesCompanion({
     this.id = const Value.absent(),
+    this.title = const Value.absent(),
     this.startAt = const Value.absent(),
     this.fieldId = const Value.absent(),
     this.teamAId = const Value.absent(),
@@ -2257,6 +2293,7 @@ class MatchesCompanion extends UpdateCompanion<Fixture> {
   });
   MatchesCompanion.insert({
     this.id = const Value.absent(),
+    required String title,
     required DateTime startAt,
     this.fieldId = const Value.absent(),
     this.teamAId = const Value.absent(),
@@ -2265,9 +2302,11 @@ class MatchesCompanion extends UpdateCompanion<Fixture> {
     this.notes = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
-  }) : startAt = Value(startAt);
+  }) : title = Value(title),
+       startAt = Value(startAt);
   static Insertable<Fixture> custom({
     Expression<int>? id,
+    Expression<String>? title,
     Expression<DateTime>? startAt,
     Expression<int>? fieldId,
     Expression<int>? teamAId,
@@ -2279,6 +2318,7 @@ class MatchesCompanion extends UpdateCompanion<Fixture> {
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
+      if (title != null) 'title': title,
       if (startAt != null) 'start_at': startAt,
       if (fieldId != null) 'field_id': fieldId,
       if (teamAId != null) 'team_a_id': teamAId,
@@ -2292,6 +2332,7 @@ class MatchesCompanion extends UpdateCompanion<Fixture> {
 
   MatchesCompanion copyWith({
     Value<int>? id,
+    Value<String>? title,
     Value<DateTime>? startAt,
     Value<int?>? fieldId,
     Value<int?>? teamAId,
@@ -2303,6 +2344,7 @@ class MatchesCompanion extends UpdateCompanion<Fixture> {
   }) {
     return MatchesCompanion(
       id: id ?? this.id,
+      title: title ?? this.title,
       startAt: startAt ?? this.startAt,
       fieldId: fieldId ?? this.fieldId,
       teamAId: teamAId ?? this.teamAId,
@@ -2319,6 +2361,9 @@ class MatchesCompanion extends UpdateCompanion<Fixture> {
     final map = <String, Expression>{};
     if (id.present) {
       map['id'] = Variable<int>(id.value);
+    }
+    if (title.present) {
+      map['title'] = Variable<String>(title.value);
     }
     if (startAt.present) {
       map['start_at'] = Variable<DateTime>(startAt.value);
@@ -2351,6 +2396,7 @@ class MatchesCompanion extends UpdateCompanion<Fixture> {
   String toString() {
     return (StringBuffer('MatchesCompanion(')
           ..write('id: $id, ')
+          ..write('title: $title, ')
           ..write('startAt: $startAt, ')
           ..write('fieldId: $fieldId, ')
           ..write('teamAId: $teamAId, ')
@@ -5578,6 +5624,7 @@ typedef $$FieldsTableProcessedTableManager =
 typedef $$MatchesTableCreateCompanionBuilder =
     MatchesCompanion Function({
       Value<int> id,
+      required String title,
       required DateTime startAt,
       Value<int?> fieldId,
       Value<int?> teamAId,
@@ -5590,6 +5637,7 @@ typedef $$MatchesTableCreateCompanionBuilder =
 typedef $$MatchesTableUpdateCompanionBuilder =
     MatchesCompanion Function({
       Value<int> id,
+      Value<String> title,
       Value<DateTime> startAt,
       Value<int?> fieldId,
       Value<int?> teamAId,
@@ -5611,6 +5659,11 @@ class $$MatchesTableFilterComposer
   });
   ColumnFilters<int> get id => $composableBuilder(
     column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get title => $composableBuilder(
+    column: $table.title,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -5669,6 +5722,11 @@ class $$MatchesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get title => $composableBuilder(
+    column: $table.title,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<DateTime> get startAt => $composableBuilder(
     column: $table.startAt,
     builder: (column) => ColumnOrderings(column),
@@ -5721,6 +5779,9 @@ class $$MatchesTableAnnotationComposer
   });
   GeneratedColumn<int> get id =>
       $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get title =>
+      $composableBuilder(column: $table.title, builder: (column) => column);
 
   GeneratedColumn<DateTime> get startAt =>
       $composableBuilder(column: $table.startAt, builder: (column) => column);
@@ -5776,6 +5837,7 @@ class $$MatchesTableTableManager
           updateCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
+                Value<String> title = const Value.absent(),
                 Value<DateTime> startAt = const Value.absent(),
                 Value<int?> fieldId = const Value.absent(),
                 Value<int?> teamAId = const Value.absent(),
@@ -5786,6 +5848,7 @@ class $$MatchesTableTableManager
                 Value<DateTime?> updatedAt = const Value.absent(),
               }) => MatchesCompanion(
                 id: id,
+                title: title,
                 startAt: startAt,
                 fieldId: fieldId,
                 teamAId: teamAId,
@@ -5798,6 +5861,7 @@ class $$MatchesTableTableManager
           createCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
+                required String title,
                 required DateTime startAt,
                 Value<int?> fieldId = const Value.absent(),
                 Value<int?> teamAId = const Value.absent(),
@@ -5808,6 +5872,7 @@ class $$MatchesTableTableManager
                 Value<DateTime?> updatedAt = const Value.absent(),
               }) => MatchesCompanion.insert(
                 id: id,
+                title: title,
                 startAt: startAt,
                 fieldId: fieldId,
                 teamAId: teamAId,

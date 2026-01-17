@@ -70,6 +70,39 @@ class AppSecondaryButton extends StatelessWidget {
   }
 }
 
+class AppDangerButton extends StatelessWidget {
+  const AppDangerButton({
+    super.key,
+    required this.label,
+    required this.onPressed,
+  });
+
+  final String label;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: AppSizes.onboardingSecondaryButtonHeight,
+      width: double.infinity,
+      child: FilledButton(
+        style: FilledButton.styleFrom(
+          backgroundColor: AppColors.darkRed,
+          shape: const StadiumBorder(),
+        ),
+        onPressed: onPressed,
+        child: Text(
+          label,
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            color: AppColors.white,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class AppTopBarTextButton extends StatelessWidget {
   const AppTopBarTextButton({
     super.key,

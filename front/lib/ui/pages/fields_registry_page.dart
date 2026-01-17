@@ -35,6 +35,10 @@ class _Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final args = ModalRoute.of(context)?.settings.arguments;
+    final selectMode = args is FieldsRegistryArgs
+        ? args.selectForResult
+        : false;
     final fields = context.watch<FieldsProvider>().fields;
 
     return Padding(
@@ -57,21 +61,22 @@ class _Body extends StatelessWidget {
                 ),
               ),
               const Spacer(),
-              AppIconCircleButton(
-                icon: SvgPicture.asset(
-                  AppIcons.add,
-                  width: AppSizes.iconMd,
-                  height: AppSizes.iconMd,
-                  colorFilter: const ColorFilter.mode(
-                    AppColors.white,
-                    BlendMode.srcIn,
+              if (!selectMode)
+                AppIconCircleButton(
+                  icon: SvgPicture.asset(
+                    AppIcons.add,
+                    width: AppSizes.iconMd,
+                    height: AppSizes.iconMd,
+                    colorFilter: const ColorFilter.mode(
+                      AppColors.white,
+                      BlendMode.srcIn,
+                    ),
+                  ),
+                  onPressed: () => Navigator.of(context).pushNamed(
+                    AppRoutes.fieldForm,
+                    arguments: const FieldFormArgs(createNew: true),
                   ),
                 ),
-                onPressed: () => Navigator.of(context).pushNamed(
-                  AppRoutes.fieldForm,
-                  arguments: const FieldFormArgs(createNew: true),
-                ),
-              ),
             ],
           ),
           Gaps.hMd,
@@ -83,7 +88,7 @@ class _Body extends StatelessWidget {
                       arguments: const FieldFormArgs(createNew: true),
                     ),
                   )
-                : _FieldsList(fields: fields),
+                : _FieldsList(fields: fields, selectMode: selectMode),
           ),
         ],
       ),
@@ -92,9 +97,10 @@ class _Body extends StatelessWidget {
 }
 
 class _FieldsList extends StatelessWidget {
-  const _FieldsList({required this.fields});
+  const _FieldsList({required this.fields, required this.selectMode});
 
   final List<Field> fields;
+  final bool selectMode;
 
   @override
   Widget build(BuildContext context) {
@@ -122,10 +128,12 @@ class _FieldsList extends StatelessWidget {
                 field.photoPath ?? AppImages.fieldsRegistryCardBackground,
             useForMatchLabel: AppStrings.fieldsRegistryUseForMatch,
             openLabel: AppStrings.fieldsRegistryOpen,
-            onUseForMatch: () => Navigator.of(context).pushNamed(
-              AppRoutes.matchComposer,
-              arguments: MatchComposerArgs(prefillFieldId: field.id),
-            ),
+            onUseForMatch: selectMode
+                ? () => Navigator.of(context).pop(field.id)
+                : () => Navigator.of(context).pushNamed(
+                    AppRoutes.matchComposer,
+                    arguments: MatchComposerArgs(prefillFieldId: field.id),
+                  ),
             onOpen: () => Navigator.of(context).pushNamed(
               AppRoutes.fieldForm,
               arguments: FieldFormArgs(fieldId: field.id),
@@ -164,4 +172,10 @@ class _EmptyState extends StatelessWidget {
       ),
     );
   }
+}
+
+class FieldsRegistryArgs {
+  const FieldsRegistryArgs({this.selectForResult = false});
+
+  final bool selectForResult;
 }
