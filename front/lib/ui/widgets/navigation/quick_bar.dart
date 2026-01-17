@@ -10,11 +10,13 @@ class QuickBarItem {
     required this.label,
     required this.isSelected,
     required this.onPressed,
+    this.trailing,
   });
 
   final String label;
   final bool isSelected;
   final VoidCallback onPressed;
+  final Widget? trailing;
 }
 
 class QuickBar extends StatelessWidget {
@@ -104,13 +106,28 @@ class _QuickBarButton extends StatelessWidget {
         padding: EdgeInsets.zero,
       ),
       onPressed: item.onPressed,
-      child: Text(
-        item.label,
-        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-          color: AppColors.white,
-          fontWeight: FontWeight.w600,
-        ),
-      ),
+      child: item.trailing == null
+          ? Text(
+              item.label,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: AppColors.white,
+                fontWeight: FontWeight.w600,
+              ),
+            )
+          : Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  item.label,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: AppColors.white,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Gaps.wXs,
+                item.trailing!,
+              ],
+            ),
     );
   }
 }

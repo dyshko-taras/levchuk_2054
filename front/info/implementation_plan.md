@@ -124,10 +124,10 @@
 - [x] `front/lib/ui/pages/field_form_page.dart` (create/edit, валідації, save, delete rules)
 - [x] Delete constraint: `planned` matches prevent delete (provider + DAO)
 
-### - [ ] Phase 12 — Screen: Availability Grid (`/availability`)
+### - [x] Phase 12 — Screen: Availability Grid (`/availability`)
 
-- [ ] `front/lib/ui/pages/availability_grid_page.dart` (календар/сітка доступності, локальне збереження)
-- [ ] За потреби: `front/lib/ui/widgets/` (calendar header, day cell)
+- [x] `front/lib/ui/pages/availability_grid_page.dart` (календар + тайм-слоти, фільтри, конфлікти MVP)
+- [x] Використано `table_calendar` для календаря
 
 ### - [ ] Phase 13 — Screen: Match Composer (`/match-composer`)
 

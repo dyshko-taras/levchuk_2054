@@ -66,6 +66,7 @@ class AppStrings {
   static const String commonSave = 'Save';
   static const String commonDelete = 'Delete';
   static const String commonOk = 'OK';
+  static const String commonPlaceholderDash = '—';
   static const String teamStudioNameRequiredError = 'Team name is required';
   static const String teamStudioNameNotUniqueError = 'Team name must be unique';
   static const String teamStudioDeleteNotAllowed =
@@ -82,6 +83,27 @@ class AppStrings {
   static const String fieldsRegistryUseForMatch = 'Use for match';
   static const String fieldsRegistryOpen = 'Open';
   static const String fieldsRegistryTypePrefix = 'Grass:';
+
+  static const String availabilityTitle = 'Availability';
+  static const String availabilityFilterPeriod = 'Period';
+  static const String availabilityFilterTeam = 'Team filter';
+  static const String availabilityFilterField = 'Field filter';
+  static const String availabilityPeriodWeek = 'Week';
+  static const String availabilityPeriodMonth = 'Month';
+  static const String availabilityTeamDefault = 'Default team';
+  static const String availabilityTeamAny = 'Any team';
+  static const String availabilityFieldAll = 'All';
+  static const String availabilityDayMorning = 'Morning';
+  static const String availabilityDayAfternoon = 'Afternoon';
+  static const String availabilityDayEvening = 'Evening';
+  static const String availabilityMatchPlanned = 'Planned';
+  static const String availabilityStatusFinished = 'Finished';
+  static const String availabilityResolveConflicts = 'Resolve conflicts';
+  static const String availabilityMatchCardFieldLabel = 'Field';
+  static String availabilityMatchCardTeams(String teamA, String teamB) =>
+      '$teamA vs $teamB';
+  static String availabilityMatchCardTime(String date, String time) =>
+      '$date, $time';
 
   static const String fieldFormRequiredMarker = '*';
   static const String fieldFormNameLabel = 'Name';

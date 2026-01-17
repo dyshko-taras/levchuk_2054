@@ -8,8 +8,13 @@ class MatchComposerPage extends StatelessWidget {
 }
 
 class MatchComposerArgs {
-  const MatchComposerArgs({this.prefillTeamId, this.prefillFieldId});
+  const MatchComposerArgs({
+    this.prefillTeamId,
+    this.prefillFieldId,
+    this.prefillStartAt,
+  });
 
   final int? prefillTeamId;
   final int? prefillFieldId;
+  final DateTime? prefillStartAt;
 }

@@ -6,3 +6,9 @@ class MatchCenterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => const Scaffold(body: SizedBox.shrink());
 }
+
+class MatchCenterArgs {
+  const MatchCenterArgs({required this.matchId});
+
+  final int matchId;
+}

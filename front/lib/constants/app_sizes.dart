@@ -31,4 +31,11 @@ class AppSizes {
   static const double fieldFormPhotoSize = 86;
 
   static const double teamStudioPlayerNumberFieldWidth = 80;
+
+  static const double availabilityCalendarDayRowHeight = 46;
+  static const double availabilityCalendarDaysOfWeekHeight = 26;
+  static const double availabilityTimeChipHeight = 40;
+  static const double availabilityMatchCardHeight = 110;
+  static const double availabilityCalendarMarkerSize = 6;
+  static const double availabilityCalendarMarkerBottomMargin = 4;
 }
