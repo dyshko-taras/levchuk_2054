@@ -135,6 +135,22 @@ class AppStrings {
   static const String matchComposerDeleteMessage =
       'This action can’t be undone.';
 
+  static const String matchCenterTitle = 'Match Center';
+  static const String matchCenterRostersPreviewA = 'Rosters preview: A';
+  static const String matchCenterRostersPreviewB = 'Rosters preview: B';
+  static const String matchCenterTeamATbd = 'Team A';
+  static const String matchCenterTeamBTbd = 'Team B / TBD';
+  static const String matchCenterActionEditMatch = 'Edit match';
+  static const String matchCenterActionJoinTeamB = 'Join Team B';
+  static const String matchCenterActionMarkFinished = 'Mark finished';
+  static const String matchCenterActionOpenLineup = 'Open Lineup & Tactics';
+  static const String matchCenterFinalizeTitle = 'Finalize Match';
+  static const String matchCenterFinalizeWinLabel = 'Win';
+  static const String matchCenterFinalizeDraw = 'Draw';
+  static const String matchCenterFinalizeSave = 'Save';
+  static const String matchCenterFinalizeCancel = 'Cancel';
+  static const String matchCenterFinalizeWinRequired = 'Select winner';
+
   static const String fieldFormRequiredMarker = '*';
   static const String fieldFormNameLabel = 'Name';
   static const String fieldFormNameHint = 'Enter name';

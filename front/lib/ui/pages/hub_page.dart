@@ -17,6 +17,7 @@ import '../theme/app_colors.dart';
 import '../widgets/buttons/app_buttons.dart';
 import '../widgets/hub/hub_cards.dart';
 import '../widgets/navigation/quick_bar.dart';
+import 'match_center_page.dart';
 
 class HubPage extends StatefulWidget {
   const HubPage({super.key});
@@ -183,9 +184,13 @@ class _HubPageState extends State<HubPage> {
                   tab: _tab,
                   nextMatchDate: nextMatchDate,
                   nextMatchFieldName: nextMatchFieldName,
-                  onOpenNextMatch: () => Navigator.of(context).pushNamed(
-                    AppRoutes.matchCenter,
-                  ),
+                  onOpenNextMatch: () {
+                    if (nextMatch == null) return;
+                    Navigator.of(context).pushNamed(
+                      AppRoutes.matchCenter,
+                      arguments: MatchCenterArgs(matchId: nextMatch.id),
+                    );
+                  },
                   onAddMatch: _openMatchComposer,
                   teamName: defaultTeam?.name ?? AppStrings.hubLabelTeamName,
                   playersCount: 0,

@@ -238,8 +238,8 @@ class _MatchComposerPageState extends State<MatchComposerPage> {
       if (thisMatchId != null && match.id == thisMatchId) continue;
 
       final bStart = match.startAt;
-      final bEnd = bStart.add(
-        AppDurations.matchDefault + AppDurations.matchBufferAfter,
+      final bEnd = (match.endAt ?? bStart.add(AppDurations.matchDefault)).add(
+        AppDurations.matchBufferAfter,
       );
       if (!_intervalsOverlap(aStart, aEnd, bStart, bEnd)) continue;
 
@@ -311,6 +311,7 @@ class _MatchComposerPageState extends State<MatchComposerPage> {
 
     setState(() => _saving = true);
     final notes = _notesController.text.trim();
+    final endAt = startAt.add(AppDurations.matchDefault);
 
     final provider = context.read<MatchesProvider>();
     final matchId = _editingMatchId;
@@ -318,6 +319,7 @@ class _MatchComposerPageState extends State<MatchComposerPage> {
       await provider.createMatch(
         title: title,
         startAt: startAt,
+        endAt: endAt,
         fieldId: fieldId,
         teamAId: teamAId,
         teamBId: teamBId,
@@ -332,6 +334,7 @@ class _MatchComposerPageState extends State<MatchComposerPage> {
           existing.copyWith(
             title: title,
             startAt: startAt,
+            endAt: Value(endAt),
             fieldId: Value(fieldId),
             teamAId: Value(teamAId),
             teamBId: Value(teamBId),

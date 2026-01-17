@@ -7,6 +7,7 @@ class Matches extends Table {
   TextColumn get title => text()();
 
   DateTimeColumn get startAt => dateTime()();
+  DateTimeColumn get endAt => dateTime().nullable()();
 
   IntColumn get fieldId => integer().nullable()();
 
@@ -14,6 +15,10 @@ class Matches extends Table {
   IntColumn get teamBId => integer().nullable()();
 
   TextColumn get status => text().withDefault(const Constant('planned'))();
+
+  TextColumn get result => text().nullable()();
+  IntColumn get scoreA => integer().nullable()();
+  IntColumn get scoreB => integer().nullable()();
 
   TextColumn get notes => text().nullable()();
 

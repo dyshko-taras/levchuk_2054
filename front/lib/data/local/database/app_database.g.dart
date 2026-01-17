@@ -1856,6 +1856,15 @@ class $MatchesTable extends Matches with TableInfo<$MatchesTable, Fixture> {
     type: DriftSqlType.dateTime,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _endAtMeta = const VerificationMeta('endAt');
+  @override
+  late final GeneratedColumn<DateTime> endAt = GeneratedColumn<DateTime>(
+    'end_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _fieldIdMeta = const VerificationMeta(
     'fieldId',
   );
@@ -1899,6 +1908,33 @@ class $MatchesTable extends Matches with TableInfo<$MatchesTable, Fixture> {
     requiredDuringInsert: false,
     defaultValue: const Constant('planned'),
   );
+  static const VerificationMeta _resultMeta = const VerificationMeta('result');
+  @override
+  late final GeneratedColumn<String> result = GeneratedColumn<String>(
+    'result',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _scoreAMeta = const VerificationMeta('scoreA');
+  @override
+  late final GeneratedColumn<int> scoreA = GeneratedColumn<int>(
+    'score_a',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _scoreBMeta = const VerificationMeta('scoreB');
+  @override
+  late final GeneratedColumn<int> scoreB = GeneratedColumn<int>(
+    'score_b',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _notesMeta = const VerificationMeta('notes');
   @override
   late final GeneratedColumn<String> notes = GeneratedColumn<String>(
@@ -1936,10 +1972,14 @@ class $MatchesTable extends Matches with TableInfo<$MatchesTable, Fixture> {
     id,
     title,
     startAt,
+    endAt,
     fieldId,
     teamAId,
     teamBId,
     status,
+    result,
+    scoreA,
+    scoreB,
     notes,
     createdAt,
     updatedAt,
@@ -1975,6 +2015,12 @@ class $MatchesTable extends Matches with TableInfo<$MatchesTable, Fixture> {
     } else if (isInserting) {
       context.missing(_startAtMeta);
     }
+    if (data.containsKey('end_at')) {
+      context.handle(
+        _endAtMeta,
+        endAt.isAcceptableOrUnknown(data['end_at']!, _endAtMeta),
+      );
+    }
     if (data.containsKey('field_id')) {
       context.handle(
         _fieldIdMeta,
@@ -1997,6 +2043,24 @@ class $MatchesTable extends Matches with TableInfo<$MatchesTable, Fixture> {
       context.handle(
         _statusMeta,
         status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    }
+    if (data.containsKey('result')) {
+      context.handle(
+        _resultMeta,
+        result.isAcceptableOrUnknown(data['result']!, _resultMeta),
+      );
+    }
+    if (data.containsKey('score_a')) {
+      context.handle(
+        _scoreAMeta,
+        scoreA.isAcceptableOrUnknown(data['score_a']!, _scoreAMeta),
+      );
+    }
+    if (data.containsKey('score_b')) {
+      context.handle(
+        _scoreBMeta,
+        scoreB.isAcceptableOrUnknown(data['score_b']!, _scoreBMeta),
       );
     }
     if (data.containsKey('notes')) {
@@ -2038,6 +2102,10 @@ class $MatchesTable extends Matches with TableInfo<$MatchesTable, Fixture> {
         DriftSqlType.dateTime,
         data['${effectivePrefix}start_at'],
       )!,
+      endAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}end_at'],
+      ),
       fieldId: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}field_id'],
@@ -2054,6 +2122,18 @@ class $MatchesTable extends Matches with TableInfo<$MatchesTable, Fixture> {
         DriftSqlType.string,
         data['${effectivePrefix}status'],
       )!,
+      result: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}result'],
+      ),
+      scoreA: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}score_a'],
+      ),
+      scoreB: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}score_b'],
+      ),
       notes: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}notes'],
@@ -2079,10 +2159,14 @@ class Fixture extends DataClass implements Insertable<Fixture> {
   final int id;
   final String title;
   final DateTime startAt;
+  final DateTime? endAt;
   final int? fieldId;
   final int? teamAId;
   final int? teamBId;
   final String status;
+  final String? result;
+  final int? scoreA;
+  final int? scoreB;
   final String? notes;
   final DateTime createdAt;
   final DateTime? updatedAt;
@@ -2090,10 +2174,14 @@ class Fixture extends DataClass implements Insertable<Fixture> {
     required this.id,
     required this.title,
     required this.startAt,
+    this.endAt,
     this.fieldId,
     this.teamAId,
     this.teamBId,
     required this.status,
+    this.result,
+    this.scoreA,
+    this.scoreB,
     this.notes,
     required this.createdAt,
     this.updatedAt,
@@ -2104,6 +2192,9 @@ class Fixture extends DataClass implements Insertable<Fixture> {
     map['id'] = Variable<int>(id);
     map['title'] = Variable<String>(title);
     map['start_at'] = Variable<DateTime>(startAt);
+    if (!nullToAbsent || endAt != null) {
+      map['end_at'] = Variable<DateTime>(endAt);
+    }
     if (!nullToAbsent || fieldId != null) {
       map['field_id'] = Variable<int>(fieldId);
     }
@@ -2114,6 +2205,15 @@ class Fixture extends DataClass implements Insertable<Fixture> {
       map['team_b_id'] = Variable<int>(teamBId);
     }
     map['status'] = Variable<String>(status);
+    if (!nullToAbsent || result != null) {
+      map['result'] = Variable<String>(result);
+    }
+    if (!nullToAbsent || scoreA != null) {
+      map['score_a'] = Variable<int>(scoreA);
+    }
+    if (!nullToAbsent || scoreB != null) {
+      map['score_b'] = Variable<int>(scoreB);
+    }
     if (!nullToAbsent || notes != null) {
       map['notes'] = Variable<String>(notes);
     }
@@ -2129,6 +2229,9 @@ class Fixture extends DataClass implements Insertable<Fixture> {
       id: Value(id),
       title: Value(title),
       startAt: Value(startAt),
+      endAt: endAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(endAt),
       fieldId: fieldId == null && nullToAbsent
           ? const Value.absent()
           : Value(fieldId),
@@ -2139,6 +2242,15 @@ class Fixture extends DataClass implements Insertable<Fixture> {
           ? const Value.absent()
           : Value(teamBId),
       status: Value(status),
+      result: result == null && nullToAbsent
+          ? const Value.absent()
+          : Value(result),
+      scoreA: scoreA == null && nullToAbsent
+          ? const Value.absent()
+          : Value(scoreA),
+      scoreB: scoreB == null && nullToAbsent
+          ? const Value.absent()
+          : Value(scoreB),
       notes: notes == null && nullToAbsent
           ? const Value.absent()
           : Value(notes),
@@ -2158,10 +2270,14 @@ class Fixture extends DataClass implements Insertable<Fixture> {
       id: serializer.fromJson<int>(json['id']),
       title: serializer.fromJson<String>(json['title']),
       startAt: serializer.fromJson<DateTime>(json['startAt']),
+      endAt: serializer.fromJson<DateTime?>(json['endAt']),
       fieldId: serializer.fromJson<int?>(json['fieldId']),
       teamAId: serializer.fromJson<int?>(json['teamAId']),
       teamBId: serializer.fromJson<int?>(json['teamBId']),
       status: serializer.fromJson<String>(json['status']),
+      result: serializer.fromJson<String?>(json['result']),
+      scoreA: serializer.fromJson<int?>(json['scoreA']),
+      scoreB: serializer.fromJson<int?>(json['scoreB']),
       notes: serializer.fromJson<String?>(json['notes']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime?>(json['updatedAt']),
@@ -2174,10 +2290,14 @@ class Fixture extends DataClass implements Insertable<Fixture> {
       'id': serializer.toJson<int>(id),
       'title': serializer.toJson<String>(title),
       'startAt': serializer.toJson<DateTime>(startAt),
+      'endAt': serializer.toJson<DateTime?>(endAt),
       'fieldId': serializer.toJson<int?>(fieldId),
       'teamAId': serializer.toJson<int?>(teamAId),
       'teamBId': serializer.toJson<int?>(teamBId),
       'status': serializer.toJson<String>(status),
+      'result': serializer.toJson<String?>(result),
+      'scoreA': serializer.toJson<int?>(scoreA),
+      'scoreB': serializer.toJson<int?>(scoreB),
       'notes': serializer.toJson<String?>(notes),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime?>(updatedAt),
@@ -2188,10 +2308,14 @@ class Fixture extends DataClass implements Insertable<Fixture> {
     int? id,
     String? title,
     DateTime? startAt,
+    Value<DateTime?> endAt = const Value.absent(),
     Value<int?> fieldId = const Value.absent(),
     Value<int?> teamAId = const Value.absent(),
     Value<int?> teamBId = const Value.absent(),
     String? status,
+    Value<String?> result = const Value.absent(),
+    Value<int?> scoreA = const Value.absent(),
+    Value<int?> scoreB = const Value.absent(),
     Value<String?> notes = const Value.absent(),
     DateTime? createdAt,
     Value<DateTime?> updatedAt = const Value.absent(),
@@ -2199,10 +2323,14 @@ class Fixture extends DataClass implements Insertable<Fixture> {
     id: id ?? this.id,
     title: title ?? this.title,
     startAt: startAt ?? this.startAt,
+    endAt: endAt.present ? endAt.value : this.endAt,
     fieldId: fieldId.present ? fieldId.value : this.fieldId,
     teamAId: teamAId.present ? teamAId.value : this.teamAId,
     teamBId: teamBId.present ? teamBId.value : this.teamBId,
     status: status ?? this.status,
+    result: result.present ? result.value : this.result,
+    scoreA: scoreA.present ? scoreA.value : this.scoreA,
+    scoreB: scoreB.present ? scoreB.value : this.scoreB,
     notes: notes.present ? notes.value : this.notes,
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt.present ? updatedAt.value : this.updatedAt,
@@ -2212,10 +2340,14 @@ class Fixture extends DataClass implements Insertable<Fixture> {
       id: data.id.present ? data.id.value : this.id,
       title: data.title.present ? data.title.value : this.title,
       startAt: data.startAt.present ? data.startAt.value : this.startAt,
+      endAt: data.endAt.present ? data.endAt.value : this.endAt,
       fieldId: data.fieldId.present ? data.fieldId.value : this.fieldId,
       teamAId: data.teamAId.present ? data.teamAId.value : this.teamAId,
       teamBId: data.teamBId.present ? data.teamBId.value : this.teamBId,
       status: data.status.present ? data.status.value : this.status,
+      result: data.result.present ? data.result.value : this.result,
+      scoreA: data.scoreA.present ? data.scoreA.value : this.scoreA,
+      scoreB: data.scoreB.present ? data.scoreB.value : this.scoreB,
       notes: data.notes.present ? data.notes.value : this.notes,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
@@ -2228,10 +2360,14 @@ class Fixture extends DataClass implements Insertable<Fixture> {
           ..write('id: $id, ')
           ..write('title: $title, ')
           ..write('startAt: $startAt, ')
+          ..write('endAt: $endAt, ')
           ..write('fieldId: $fieldId, ')
           ..write('teamAId: $teamAId, ')
           ..write('teamBId: $teamBId, ')
           ..write('status: $status, ')
+          ..write('result: $result, ')
+          ..write('scoreA: $scoreA, ')
+          ..write('scoreB: $scoreB, ')
           ..write('notes: $notes, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt')
@@ -2244,10 +2380,14 @@ class Fixture extends DataClass implements Insertable<Fixture> {
     id,
     title,
     startAt,
+    endAt,
     fieldId,
     teamAId,
     teamBId,
     status,
+    result,
+    scoreA,
+    scoreB,
     notes,
     createdAt,
     updatedAt,
@@ -2259,10 +2399,14 @@ class Fixture extends DataClass implements Insertable<Fixture> {
           other.id == this.id &&
           other.title == this.title &&
           other.startAt == this.startAt &&
+          other.endAt == this.endAt &&
           other.fieldId == this.fieldId &&
           other.teamAId == this.teamAId &&
           other.teamBId == this.teamBId &&
           other.status == this.status &&
+          other.result == this.result &&
+          other.scoreA == this.scoreA &&
+          other.scoreB == this.scoreB &&
           other.notes == this.notes &&
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt);
@@ -2272,10 +2416,14 @@ class MatchesCompanion extends UpdateCompanion<Fixture> {
   final Value<int> id;
   final Value<String> title;
   final Value<DateTime> startAt;
+  final Value<DateTime?> endAt;
   final Value<int?> fieldId;
   final Value<int?> teamAId;
   final Value<int?> teamBId;
   final Value<String> status;
+  final Value<String?> result;
+  final Value<int?> scoreA;
+  final Value<int?> scoreB;
   final Value<String?> notes;
   final Value<DateTime> createdAt;
   final Value<DateTime?> updatedAt;
@@ -2283,10 +2431,14 @@ class MatchesCompanion extends UpdateCompanion<Fixture> {
     this.id = const Value.absent(),
     this.title = const Value.absent(),
     this.startAt = const Value.absent(),
+    this.endAt = const Value.absent(),
     this.fieldId = const Value.absent(),
     this.teamAId = const Value.absent(),
     this.teamBId = const Value.absent(),
     this.status = const Value.absent(),
+    this.result = const Value.absent(),
+    this.scoreA = const Value.absent(),
+    this.scoreB = const Value.absent(),
     this.notes = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
@@ -2295,10 +2447,14 @@ class MatchesCompanion extends UpdateCompanion<Fixture> {
     this.id = const Value.absent(),
     required String title,
     required DateTime startAt,
+    this.endAt = const Value.absent(),
     this.fieldId = const Value.absent(),
     this.teamAId = const Value.absent(),
     this.teamBId = const Value.absent(),
     this.status = const Value.absent(),
+    this.result = const Value.absent(),
+    this.scoreA = const Value.absent(),
+    this.scoreB = const Value.absent(),
     this.notes = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
@@ -2308,10 +2464,14 @@ class MatchesCompanion extends UpdateCompanion<Fixture> {
     Expression<int>? id,
     Expression<String>? title,
     Expression<DateTime>? startAt,
+    Expression<DateTime>? endAt,
     Expression<int>? fieldId,
     Expression<int>? teamAId,
     Expression<int>? teamBId,
     Expression<String>? status,
+    Expression<String>? result,
+    Expression<int>? scoreA,
+    Expression<int>? scoreB,
     Expression<String>? notes,
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
@@ -2320,10 +2480,14 @@ class MatchesCompanion extends UpdateCompanion<Fixture> {
       if (id != null) 'id': id,
       if (title != null) 'title': title,
       if (startAt != null) 'start_at': startAt,
+      if (endAt != null) 'end_at': endAt,
       if (fieldId != null) 'field_id': fieldId,
       if (teamAId != null) 'team_a_id': teamAId,
       if (teamBId != null) 'team_b_id': teamBId,
       if (status != null) 'status': status,
+      if (result != null) 'result': result,
+      if (scoreA != null) 'score_a': scoreA,
+      if (scoreB != null) 'score_b': scoreB,
       if (notes != null) 'notes': notes,
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
@@ -2334,10 +2498,14 @@ class MatchesCompanion extends UpdateCompanion<Fixture> {
     Value<int>? id,
     Value<String>? title,
     Value<DateTime>? startAt,
+    Value<DateTime?>? endAt,
     Value<int?>? fieldId,
     Value<int?>? teamAId,
     Value<int?>? teamBId,
     Value<String>? status,
+    Value<String?>? result,
+    Value<int?>? scoreA,
+    Value<int?>? scoreB,
     Value<String?>? notes,
     Value<DateTime>? createdAt,
     Value<DateTime?>? updatedAt,
@@ -2346,10 +2514,14 @@ class MatchesCompanion extends UpdateCompanion<Fixture> {
       id: id ?? this.id,
       title: title ?? this.title,
       startAt: startAt ?? this.startAt,
+      endAt: endAt ?? this.endAt,
       fieldId: fieldId ?? this.fieldId,
       teamAId: teamAId ?? this.teamAId,
       teamBId: teamBId ?? this.teamBId,
       status: status ?? this.status,
+      result: result ?? this.result,
+      scoreA: scoreA ?? this.scoreA,
+      scoreB: scoreB ?? this.scoreB,
       notes: notes ?? this.notes,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
@@ -2368,6 +2540,9 @@ class MatchesCompanion extends UpdateCompanion<Fixture> {
     if (startAt.present) {
       map['start_at'] = Variable<DateTime>(startAt.value);
     }
+    if (endAt.present) {
+      map['end_at'] = Variable<DateTime>(endAt.value);
+    }
     if (fieldId.present) {
       map['field_id'] = Variable<int>(fieldId.value);
     }
@@ -2379,6 +2554,15 @@ class MatchesCompanion extends UpdateCompanion<Fixture> {
     }
     if (status.present) {
       map['status'] = Variable<String>(status.value);
+    }
+    if (result.present) {
+      map['result'] = Variable<String>(result.value);
+    }
+    if (scoreA.present) {
+      map['score_a'] = Variable<int>(scoreA.value);
+    }
+    if (scoreB.present) {
+      map['score_b'] = Variable<int>(scoreB.value);
     }
     if (notes.present) {
       map['notes'] = Variable<String>(notes.value);
@@ -2398,10 +2582,14 @@ class MatchesCompanion extends UpdateCompanion<Fixture> {
           ..write('id: $id, ')
           ..write('title: $title, ')
           ..write('startAt: $startAt, ')
+          ..write('endAt: $endAt, ')
           ..write('fieldId: $fieldId, ')
           ..write('teamAId: $teamAId, ')
           ..write('teamBId: $teamBId, ')
           ..write('status: $status, ')
+          ..write('result: $result, ')
+          ..write('scoreA: $scoreA, ')
+          ..write('scoreB: $scoreB, ')
           ..write('notes: $notes, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt')
@@ -5626,10 +5814,14 @@ typedef $$MatchesTableCreateCompanionBuilder =
       Value<int> id,
       required String title,
       required DateTime startAt,
+      Value<DateTime?> endAt,
       Value<int?> fieldId,
       Value<int?> teamAId,
       Value<int?> teamBId,
       Value<String> status,
+      Value<String?> result,
+      Value<int?> scoreA,
+      Value<int?> scoreB,
       Value<String?> notes,
       Value<DateTime> createdAt,
       Value<DateTime?> updatedAt,
@@ -5639,10 +5831,14 @@ typedef $$MatchesTableUpdateCompanionBuilder =
       Value<int> id,
       Value<String> title,
       Value<DateTime> startAt,
+      Value<DateTime?> endAt,
       Value<int?> fieldId,
       Value<int?> teamAId,
       Value<int?> teamBId,
       Value<String> status,
+      Value<String?> result,
+      Value<int?> scoreA,
+      Value<int?> scoreB,
       Value<String?> notes,
       Value<DateTime> createdAt,
       Value<DateTime?> updatedAt,
@@ -5672,6 +5868,11 @@ class $$MatchesTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnFilters<DateTime> get endAt => $composableBuilder(
+    column: $table.endAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
   ColumnFilters<int> get fieldId => $composableBuilder(
     column: $table.fieldId,
     builder: (column) => ColumnFilters(column),
@@ -5689,6 +5890,21 @@ class $$MatchesTableFilterComposer
 
   ColumnFilters<String> get status => $composableBuilder(
     column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get result => $composableBuilder(
+    column: $table.result,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get scoreA => $composableBuilder(
+    column: $table.scoreA,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get scoreB => $composableBuilder(
+    column: $table.scoreB,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -5732,6 +5948,11 @@ class $$MatchesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<DateTime> get endAt => $composableBuilder(
+    column: $table.endAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<int> get fieldId => $composableBuilder(
     column: $table.fieldId,
     builder: (column) => ColumnOrderings(column),
@@ -5749,6 +5970,21 @@ class $$MatchesTableOrderingComposer
 
   ColumnOrderings<String> get status => $composableBuilder(
     column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get result => $composableBuilder(
+    column: $table.result,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get scoreA => $composableBuilder(
+    column: $table.scoreA,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get scoreB => $composableBuilder(
+    column: $table.scoreB,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -5786,6 +6022,9 @@ class $$MatchesTableAnnotationComposer
   GeneratedColumn<DateTime> get startAt =>
       $composableBuilder(column: $table.startAt, builder: (column) => column);
 
+  GeneratedColumn<DateTime> get endAt =>
+      $composableBuilder(column: $table.endAt, builder: (column) => column);
+
   GeneratedColumn<int> get fieldId =>
       $composableBuilder(column: $table.fieldId, builder: (column) => column);
 
@@ -5797,6 +6036,15 @@ class $$MatchesTableAnnotationComposer
 
   GeneratedColumn<String> get status =>
       $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<String> get result =>
+      $composableBuilder(column: $table.result, builder: (column) => column);
+
+  GeneratedColumn<int> get scoreA =>
+      $composableBuilder(column: $table.scoreA, builder: (column) => column);
+
+  GeneratedColumn<int> get scoreB =>
+      $composableBuilder(column: $table.scoreB, builder: (column) => column);
 
   GeneratedColumn<String> get notes =>
       $composableBuilder(column: $table.notes, builder: (column) => column);
@@ -5839,10 +6087,14 @@ class $$MatchesTableTableManager
                 Value<int> id = const Value.absent(),
                 Value<String> title = const Value.absent(),
                 Value<DateTime> startAt = const Value.absent(),
+                Value<DateTime?> endAt = const Value.absent(),
                 Value<int?> fieldId = const Value.absent(),
                 Value<int?> teamAId = const Value.absent(),
                 Value<int?> teamBId = const Value.absent(),
                 Value<String> status = const Value.absent(),
+                Value<String?> result = const Value.absent(),
+                Value<int?> scoreA = const Value.absent(),
+                Value<int?> scoreB = const Value.absent(),
                 Value<String?> notes = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime?> updatedAt = const Value.absent(),
@@ -5850,10 +6102,14 @@ class $$MatchesTableTableManager
                 id: id,
                 title: title,
                 startAt: startAt,
+                endAt: endAt,
                 fieldId: fieldId,
                 teamAId: teamAId,
                 teamBId: teamBId,
                 status: status,
+                result: result,
+                scoreA: scoreA,
+                scoreB: scoreB,
                 notes: notes,
                 createdAt: createdAt,
                 updatedAt: updatedAt,
@@ -5863,10 +6119,14 @@ class $$MatchesTableTableManager
                 Value<int> id = const Value.absent(),
                 required String title,
                 required DateTime startAt,
+                Value<DateTime?> endAt = const Value.absent(),
                 Value<int?> fieldId = const Value.absent(),
                 Value<int?> teamAId = const Value.absent(),
                 Value<int?> teamBId = const Value.absent(),
                 Value<String> status = const Value.absent(),
+                Value<String?> result = const Value.absent(),
+                Value<int?> scoreA = const Value.absent(),
+                Value<int?> scoreB = const Value.absent(),
                 Value<String?> notes = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime?> updatedAt = const Value.absent(),
@@ -5874,10 +6134,14 @@ class $$MatchesTableTableManager
                 id: id,
                 title: title,
                 startAt: startAt,
+                endAt: endAt,
                 fieldId: fieldId,
                 teamAId: teamAId,
                 teamBId: teamBId,
                 status: status,
+                result: result,
+                scoreA: scoreA,
+                scoreB: scoreB,
                 notes: notes,
                 createdAt: createdAt,
                 updatedAt: updatedAt,

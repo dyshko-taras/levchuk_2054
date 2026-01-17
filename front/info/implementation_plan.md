@@ -134,10 +134,10 @@
 - [x] `front/lib/ui/pages/match_composer_page.dart` (create/edit, prefill, pickers, conflict warning, save/delete)
 - [x] `front/lib/data/local/database/schema/matches.dart` (додано `title`)
 
-### - [ ] Phase 14 — Screen: Match Center (`/match-center`)
+### - [x] Phase 14 — Screen: Match Center (`/match-center`)
 
-- [ ] `front/lib/ui/pages/match_center_page.dart` (деталі матчу, статус, переходи на lineup board)
-- [ ] За потреби: `front/lib/ui/widgets/` (header card, actions)
+- [x] `front/lib/ui/pages/match_center_page.dart` (summary, roster preview, actions, finalize match)
+- [x] `front/lib/data/local/database/schema/matches.dart` (result/score fields)
 
 ### - [ ] Phase 15 — Screen: Lineup & Tactics Board (`/lineup-tactics`)
 

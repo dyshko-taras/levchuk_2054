@@ -25,20 +25,28 @@ class MatchesProvider extends ChangeNotifier {
   Future<int> createMatch({
     required String title,
     required DateTime startAt,
+    DateTime? endAt,
     int? fieldId,
     int? teamAId,
     int? teamBId,
     String status = 'planned',
+    String? result,
+    int? scoreA,
+    int? scoreB,
     String? notes,
   }) {
     return _repository.createMatch(
       MatchesCompanion.insert(
         title: title,
         startAt: startAt,
+        endAt: Value(endAt),
         fieldId: Value(fieldId),
         teamAId: Value(teamAId),
         teamBId: Value(teamBId),
         status: Value(status),
+        result: Value(result),
+        scoreA: Value(scoreA),
+        scoreB: Value(scoreB),
         notes: Value(notes),
       ),
     );

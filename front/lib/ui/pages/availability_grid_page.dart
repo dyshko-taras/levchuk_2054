@@ -885,9 +885,10 @@ bool _overlapsHour(Fixture match, int hour) {
   final slotStart = _startAtFor(day, hour);
   final slotEnd = slotStart.add(AppDurations.availabilitySlot);
 
-  final matchEnd = match.startAt.add(
-    AppDurations.matchDefault + AppDurations.matchBufferAfter,
-  );
+  final matchEnd =
+      (match.endAt ?? match.startAt.add(AppDurations.matchDefault)).add(
+        AppDurations.matchBufferAfter,
+      );
   return _intervalsOverlap(slotStart, slotEnd, match.startAt, matchEnd);
 }
 
@@ -909,9 +910,10 @@ Fixture? _findFirstMatchForHour(
   final slotEnd = slotStart.add(AppDurations.availabilitySlot);
 
   final overlapping = matches.where((m) {
-    final matchEnd = m.startAt.add(
-      AppDurations.matchDefault + AppDurations.matchBufferAfter,
-    );
+    final matchEnd =
+        (m.endAt ?? m.startAt.add(AppDurations.matchDefault)).add(
+          AppDurations.matchBufferAfter,
+        );
     return _intervalsOverlap(slotStart, slotEnd, m.startAt, matchEnd);
   }).toList()..sort((a, b) => a.startAt.compareTo(b.startAt));
 
