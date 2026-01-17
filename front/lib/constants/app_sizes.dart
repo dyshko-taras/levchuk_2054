@@ -25,4 +25,10 @@ class AppSizes {
   static const double hubEmptyCtaWidth = 160;
   static const double hubOpenButtonWidth = 140;
   static const double hubContentMaxWidth = 520;
+
+  static const double fieldsRegistryCardHeight = 140;
+  static const double fieldsRegistryCardImageWidth = 190;
+  static const double fieldFormPhotoSize = 86;
+
+  static const double teamStudioPlayerNumberFieldWidth = 80;
 }

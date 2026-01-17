@@ -1270,6 +1270,15 @@ class $FieldsTable extends Fields with TableInfo<$FieldsTable, Field> {
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _typeMeta = const VerificationMeta('type');
+  @override
+  late final GeneratedColumn<String> type = GeneratedColumn<String>(
+    'type',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _notesMeta = const VerificationMeta('notes');
   @override
   late final GeneratedColumn<String> notes = GeneratedColumn<String>(
@@ -1277,6 +1286,24 @@ class $FieldsTable extends Fields with TableInfo<$FieldsTable, Field> {
     aliasedName,
     true,
     type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _latMeta = const VerificationMeta('lat');
+  @override
+  late final GeneratedColumn<double> lat = GeneratedColumn<double>(
+    'lat',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _lonMeta = const VerificationMeta('lon');
+  @override
+  late final GeneratedColumn<double> lon = GeneratedColumn<double>(
+    'lon',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
     requiredDuringInsert: false,
   );
   static const VerificationMeta _photoPathMeta = const VerificationMeta(
@@ -1318,7 +1345,10 @@ class $FieldsTable extends Fields with TableInfo<$FieldsTable, Field> {
     id,
     name,
     address,
+    type,
     notes,
+    lat,
+    lon,
     photoPath,
     createdAt,
     updatedAt,
@@ -1352,10 +1382,28 @@ class $FieldsTable extends Fields with TableInfo<$FieldsTable, Field> {
         address.isAcceptableOrUnknown(data['address']!, _addressMeta),
       );
     }
+    if (data.containsKey('type')) {
+      context.handle(
+        _typeMeta,
+        type.isAcceptableOrUnknown(data['type']!, _typeMeta),
+      );
+    }
     if (data.containsKey('notes')) {
       context.handle(
         _notesMeta,
         notes.isAcceptableOrUnknown(data['notes']!, _notesMeta),
+      );
+    }
+    if (data.containsKey('lat')) {
+      context.handle(
+        _latMeta,
+        lat.isAcceptableOrUnknown(data['lat']!, _latMeta),
+      );
+    }
+    if (data.containsKey('lon')) {
+      context.handle(
+        _lonMeta,
+        lon.isAcceptableOrUnknown(data['lon']!, _lonMeta),
       );
     }
     if (data.containsKey('photo_path')) {
@@ -1397,9 +1445,21 @@ class $FieldsTable extends Fields with TableInfo<$FieldsTable, Field> {
         DriftSqlType.string,
         data['${effectivePrefix}address'],
       ),
+      type: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}type'],
+      ),
       notes: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}notes'],
+      ),
+      lat: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}lat'],
+      ),
+      lon: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}lon'],
       ),
       photoPath: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
@@ -1426,7 +1486,10 @@ class Field extends DataClass implements Insertable<Field> {
   final int id;
   final String name;
   final String? address;
+  final String? type;
   final String? notes;
+  final double? lat;
+  final double? lon;
   final String? photoPath;
   final DateTime createdAt;
   final DateTime? updatedAt;
@@ -1434,7 +1497,10 @@ class Field extends DataClass implements Insertable<Field> {
     required this.id,
     required this.name,
     this.address,
+    this.type,
     this.notes,
+    this.lat,
+    this.lon,
     this.photoPath,
     required this.createdAt,
     this.updatedAt,
@@ -1447,8 +1513,17 @@ class Field extends DataClass implements Insertable<Field> {
     if (!nullToAbsent || address != null) {
       map['address'] = Variable<String>(address);
     }
+    if (!nullToAbsent || type != null) {
+      map['type'] = Variable<String>(type);
+    }
     if (!nullToAbsent || notes != null) {
       map['notes'] = Variable<String>(notes);
+    }
+    if (!nullToAbsent || lat != null) {
+      map['lat'] = Variable<double>(lat);
+    }
+    if (!nullToAbsent || lon != null) {
+      map['lon'] = Variable<double>(lon);
     }
     if (!nullToAbsent || photoPath != null) {
       map['photo_path'] = Variable<String>(photoPath);
@@ -1467,9 +1542,12 @@ class Field extends DataClass implements Insertable<Field> {
       address: address == null && nullToAbsent
           ? const Value.absent()
           : Value(address),
+      type: type == null && nullToAbsent ? const Value.absent() : Value(type),
       notes: notes == null && nullToAbsent
           ? const Value.absent()
           : Value(notes),
+      lat: lat == null && nullToAbsent ? const Value.absent() : Value(lat),
+      lon: lon == null && nullToAbsent ? const Value.absent() : Value(lon),
       photoPath: photoPath == null && nullToAbsent
           ? const Value.absent()
           : Value(photoPath),
@@ -1489,7 +1567,10 @@ class Field extends DataClass implements Insertable<Field> {
       id: serializer.fromJson<int>(json['id']),
       name: serializer.fromJson<String>(json['name']),
       address: serializer.fromJson<String?>(json['address']),
+      type: serializer.fromJson<String?>(json['type']),
       notes: serializer.fromJson<String?>(json['notes']),
+      lat: serializer.fromJson<double?>(json['lat']),
+      lon: serializer.fromJson<double?>(json['lon']),
       photoPath: serializer.fromJson<String?>(json['photoPath']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime?>(json['updatedAt']),
@@ -1502,7 +1583,10 @@ class Field extends DataClass implements Insertable<Field> {
       'id': serializer.toJson<int>(id),
       'name': serializer.toJson<String>(name),
       'address': serializer.toJson<String?>(address),
+      'type': serializer.toJson<String?>(type),
       'notes': serializer.toJson<String?>(notes),
+      'lat': serializer.toJson<double?>(lat),
+      'lon': serializer.toJson<double?>(lon),
       'photoPath': serializer.toJson<String?>(photoPath),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime?>(updatedAt),
@@ -1513,7 +1597,10 @@ class Field extends DataClass implements Insertable<Field> {
     int? id,
     String? name,
     Value<String?> address = const Value.absent(),
+    Value<String?> type = const Value.absent(),
     Value<String?> notes = const Value.absent(),
+    Value<double?> lat = const Value.absent(),
+    Value<double?> lon = const Value.absent(),
     Value<String?> photoPath = const Value.absent(),
     DateTime? createdAt,
     Value<DateTime?> updatedAt = const Value.absent(),
@@ -1521,7 +1608,10 @@ class Field extends DataClass implements Insertable<Field> {
     id: id ?? this.id,
     name: name ?? this.name,
     address: address.present ? address.value : this.address,
+    type: type.present ? type.value : this.type,
     notes: notes.present ? notes.value : this.notes,
+    lat: lat.present ? lat.value : this.lat,
+    lon: lon.present ? lon.value : this.lon,
     photoPath: photoPath.present ? photoPath.value : this.photoPath,
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt.present ? updatedAt.value : this.updatedAt,
@@ -1531,7 +1621,10 @@ class Field extends DataClass implements Insertable<Field> {
       id: data.id.present ? data.id.value : this.id,
       name: data.name.present ? data.name.value : this.name,
       address: data.address.present ? data.address.value : this.address,
+      type: data.type.present ? data.type.value : this.type,
       notes: data.notes.present ? data.notes.value : this.notes,
+      lat: data.lat.present ? data.lat.value : this.lat,
+      lon: data.lon.present ? data.lon.value : this.lon,
       photoPath: data.photoPath.present ? data.photoPath.value : this.photoPath,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
@@ -1544,7 +1637,10 @@ class Field extends DataClass implements Insertable<Field> {
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('address: $address, ')
+          ..write('type: $type, ')
           ..write('notes: $notes, ')
+          ..write('lat: $lat, ')
+          ..write('lon: $lon, ')
           ..write('photoPath: $photoPath, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt')
@@ -1553,8 +1649,18 @@ class Field extends DataClass implements Insertable<Field> {
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, name, address, notes, photoPath, createdAt, updatedAt);
+  int get hashCode => Object.hash(
+    id,
+    name,
+    address,
+    type,
+    notes,
+    lat,
+    lon,
+    photoPath,
+    createdAt,
+    updatedAt,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1562,7 +1668,10 @@ class Field extends DataClass implements Insertable<Field> {
           other.id == this.id &&
           other.name == this.name &&
           other.address == this.address &&
+          other.type == this.type &&
           other.notes == this.notes &&
+          other.lat == this.lat &&
+          other.lon == this.lon &&
           other.photoPath == this.photoPath &&
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt);
@@ -1572,7 +1681,10 @@ class FieldsCompanion extends UpdateCompanion<Field> {
   final Value<int> id;
   final Value<String> name;
   final Value<String?> address;
+  final Value<String?> type;
   final Value<String?> notes;
+  final Value<double?> lat;
+  final Value<double?> lon;
   final Value<String?> photoPath;
   final Value<DateTime> createdAt;
   final Value<DateTime?> updatedAt;
@@ -1580,7 +1692,10 @@ class FieldsCompanion extends UpdateCompanion<Field> {
     this.id = const Value.absent(),
     this.name = const Value.absent(),
     this.address = const Value.absent(),
+    this.type = const Value.absent(),
     this.notes = const Value.absent(),
+    this.lat = const Value.absent(),
+    this.lon = const Value.absent(),
     this.photoPath = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
@@ -1589,7 +1704,10 @@ class FieldsCompanion extends UpdateCompanion<Field> {
     this.id = const Value.absent(),
     required String name,
     this.address = const Value.absent(),
+    this.type = const Value.absent(),
     this.notes = const Value.absent(),
+    this.lat = const Value.absent(),
+    this.lon = const Value.absent(),
     this.photoPath = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
@@ -1598,7 +1716,10 @@ class FieldsCompanion extends UpdateCompanion<Field> {
     Expression<int>? id,
     Expression<String>? name,
     Expression<String>? address,
+    Expression<String>? type,
     Expression<String>? notes,
+    Expression<double>? lat,
+    Expression<double>? lon,
     Expression<String>? photoPath,
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
@@ -1607,7 +1728,10 @@ class FieldsCompanion extends UpdateCompanion<Field> {
       if (id != null) 'id': id,
       if (name != null) 'name': name,
       if (address != null) 'address': address,
+      if (type != null) 'type': type,
       if (notes != null) 'notes': notes,
+      if (lat != null) 'lat': lat,
+      if (lon != null) 'lon': lon,
       if (photoPath != null) 'photo_path': photoPath,
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
@@ -1618,7 +1742,10 @@ class FieldsCompanion extends UpdateCompanion<Field> {
     Value<int>? id,
     Value<String>? name,
     Value<String?>? address,
+    Value<String?>? type,
     Value<String?>? notes,
+    Value<double?>? lat,
+    Value<double?>? lon,
     Value<String?>? photoPath,
     Value<DateTime>? createdAt,
     Value<DateTime?>? updatedAt,
@@ -1627,7 +1754,10 @@ class FieldsCompanion extends UpdateCompanion<Field> {
       id: id ?? this.id,
       name: name ?? this.name,
       address: address ?? this.address,
+      type: type ?? this.type,
       notes: notes ?? this.notes,
+      lat: lat ?? this.lat,
+      lon: lon ?? this.lon,
       photoPath: photoPath ?? this.photoPath,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
@@ -1646,8 +1776,17 @@ class FieldsCompanion extends UpdateCompanion<Field> {
     if (address.present) {
       map['address'] = Variable<String>(address.value);
     }
+    if (type.present) {
+      map['type'] = Variable<String>(type.value);
+    }
     if (notes.present) {
       map['notes'] = Variable<String>(notes.value);
+    }
+    if (lat.present) {
+      map['lat'] = Variable<double>(lat.value);
+    }
+    if (lon.present) {
+      map['lon'] = Variable<double>(lon.value);
     }
     if (photoPath.present) {
       map['photo_path'] = Variable<String>(photoPath.value);
@@ -1667,7 +1806,10 @@ class FieldsCompanion extends UpdateCompanion<Field> {
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('address: $address, ')
+          ..write('type: $type, ')
           ..write('notes: $notes, ')
+          ..write('lat: $lat, ')
+          ..write('lon: $lon, ')
           ..write('photoPath: $photoPath, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt')
@@ -5155,7 +5297,10 @@ typedef $$FieldsTableCreateCompanionBuilder =
       Value<int> id,
       required String name,
       Value<String?> address,
+      Value<String?> type,
       Value<String?> notes,
+      Value<double?> lat,
+      Value<double?> lon,
       Value<String?> photoPath,
       Value<DateTime> createdAt,
       Value<DateTime?> updatedAt,
@@ -5165,7 +5310,10 @@ typedef $$FieldsTableUpdateCompanionBuilder =
       Value<int> id,
       Value<String> name,
       Value<String?> address,
+      Value<String?> type,
       Value<String?> notes,
+      Value<double?> lat,
+      Value<double?> lon,
       Value<String?> photoPath,
       Value<DateTime> createdAt,
       Value<DateTime?> updatedAt,
@@ -5195,8 +5343,23 @@ class $$FieldsTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnFilters<String> get type => $composableBuilder(
+    column: $table.type,
+    builder: (column) => ColumnFilters(column),
+  );
+
   ColumnFilters<String> get notes => $composableBuilder(
     column: $table.notes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get lat => $composableBuilder(
+    column: $table.lat,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get lon => $composableBuilder(
+    column: $table.lon,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -5240,8 +5403,23 @@ class $$FieldsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get type => $composableBuilder(
+    column: $table.type,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get notes => $composableBuilder(
     column: $table.notes,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get lat => $composableBuilder(
+    column: $table.lat,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get lon => $composableBuilder(
+    column: $table.lon,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -5279,8 +5457,17 @@ class $$FieldsTableAnnotationComposer
   GeneratedColumn<String> get address =>
       $composableBuilder(column: $table.address, builder: (column) => column);
 
+  GeneratedColumn<String> get type =>
+      $composableBuilder(column: $table.type, builder: (column) => column);
+
   GeneratedColumn<String> get notes =>
       $composableBuilder(column: $table.notes, builder: (column) => column);
+
+  GeneratedColumn<double> get lat =>
+      $composableBuilder(column: $table.lat, builder: (column) => column);
+
+  GeneratedColumn<double> get lon =>
+      $composableBuilder(column: $table.lon, builder: (column) => column);
 
   GeneratedColumn<String> get photoPath =>
       $composableBuilder(column: $table.photoPath, builder: (column) => column);
@@ -5323,7 +5510,10 @@ class $$FieldsTableTableManager
                 Value<int> id = const Value.absent(),
                 Value<String> name = const Value.absent(),
                 Value<String?> address = const Value.absent(),
+                Value<String?> type = const Value.absent(),
                 Value<String?> notes = const Value.absent(),
+                Value<double?> lat = const Value.absent(),
+                Value<double?> lon = const Value.absent(),
                 Value<String?> photoPath = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime?> updatedAt = const Value.absent(),
@@ -5331,7 +5521,10 @@ class $$FieldsTableTableManager
                 id: id,
                 name: name,
                 address: address,
+                type: type,
                 notes: notes,
+                lat: lat,
+                lon: lon,
                 photoPath: photoPath,
                 createdAt: createdAt,
                 updatedAt: updatedAt,
@@ -5341,7 +5534,10 @@ class $$FieldsTableTableManager
                 Value<int> id = const Value.absent(),
                 required String name,
                 Value<String?> address = const Value.absent(),
+                Value<String?> type = const Value.absent(),
                 Value<String?> notes = const Value.absent(),
+                Value<double?> lat = const Value.absent(),
+                Value<double?> lon = const Value.absent(),
                 Value<String?> photoPath = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime?> updatedAt = const Value.absent(),
@@ -5349,7 +5545,10 @@ class $$FieldsTableTableManager
                 id: id,
                 name: name,
                 address: address,
+                type: type,
                 notes: notes,
+                lat: lat,
+                lon: lon,
                 photoPath: photoPath,
                 createdAt: createdAt,
                 updatedAt: updatedAt,

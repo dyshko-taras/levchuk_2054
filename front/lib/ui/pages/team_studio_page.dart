@@ -12,6 +12,7 @@ import '../../providers/settings_provider.dart';
 import '../../providers/teams_provider.dart';
 import '../theme/app_colors.dart';
 import '../widgets/buttons/app_buttons.dart';
+import '../widgets/inputs/app_text_fields.dart';
 import '../widgets/navigation/quick_bar.dart';
 import '../widgets/team_studio/badge_picker.dart';
 import '../widgets/team_studio/kit_preview.dart';
@@ -449,45 +450,9 @@ class _ProfileTab extends StatelessWidget {
                 ),
               ),
               Gaps.hSm,
-              TextField(
+              AppPillTextField(
                 controller: nameController,
-                style: Theme.of(context).textTheme.titleMedium,
-                decoration: InputDecoration(
-                  hintText: AppStrings.teamStudioTeamNameHint,
-                  hintStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppColors.whiteOverlay70,
-                  ),
-                  filled: true,
-                  fillColor: AppColors.whiteOverlay10,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(999),
-                    borderSide: const BorderSide(
-                      color: AppColors.whiteOverlay20,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(999),
-                    borderSide: const BorderSide(
-                      color: AppColors.whiteOverlay20,
-                    ),
-                  ),
-                  suffixIcon: Padding(
-                    padding: const EdgeInsets.only(right: AppSpacing.md),
-                    child: SvgPicture.asset(
-                      AppIcons.edit,
-                      width: AppSizes.iconMd,
-                      height: AppSizes.iconMd,
-                      colorFilter: const ColorFilter.mode(
-                        AppColors.white,
-                        BlendMode.srcIn,
-                      ),
-                    ),
-                  ),
-                  suffixIconConstraints: const BoxConstraints(
-                    minHeight: AppSizes.iconMd,
-                    minWidth: AppSizes.iconMd + AppSpacing.xl,
-                  ),
-                ),
+                hintText: AppStrings.teamStudioTeamNameHint,
               ),
               Gaps.hLg,
               Text(
@@ -734,33 +699,54 @@ class _PlayerDialogState extends State<_PlayerDialog> {
               style: Theme.of(context).textTheme.titleLarge,
             ),
             Gaps.hMd,
-            TextField(
+            Text(
+              AppStrings.teamStudioPlayerNameLabel,
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            Gaps.hXs,
+            AppPillTextField(
               controller: _nameController,
-              decoration: const InputDecoration(
-                labelText: AppStrings.teamStudioPlayerNameLabel,
-                hintText: AppStrings.teamStudioPlayerNameHint,
-              ),
+              hintText: AppStrings.teamStudioPlayerNameHint,
+              suffixIconAsset: null,
             ),
             Gaps.hSm,
             Row(
               children: [
                 Expanded(
-                  child: TextField(
-                    controller: _positionController,
-                    decoration: const InputDecoration(
-                      labelText: AppStrings.teamStudioPlayerPositionLabel,
-                    ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        AppStrings.teamStudioPlayerPositionLabel,
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      Gaps.hXs,
+                      AppPillTextField(
+                        controller: _positionController,
+                        hintText: null,
+                        suffixIconAsset: null,
+                      ),
+                    ],
                   ),
                 ),
                 Gaps.wSm,
                 SizedBox(
-                  width: 80,
-                  child: TextField(
-                    controller: _numberController,
-                    keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(
-                      labelText: AppStrings.teamStudioPlayerNumberLabel,
-                    ),
+                  width: AppSizes.teamStudioPlayerNumberFieldWidth,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        AppStrings.teamStudioPlayerNumberLabel,
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      Gaps.hXs,
+                      AppPillTextField(
+                        controller: _numberController,
+                        hintText: null,
+                        suffixIconAsset: null,
+                        keyboardType: TextInputType.number,
+                      ),
+                    ],
                   ),
                 ),
               ],

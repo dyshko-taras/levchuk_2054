@@ -27,4 +27,13 @@ class MatchesDao extends DatabaseAccessor<AppDatabase> with _$MatchesDaoMixin {
     final row = await query.getSingle();
     return row.read(matches.id.count()) ?? 0;
   }
+
+  Future<int> countPlannedMatchesByFieldId(int fieldId) async {
+    final expr =
+        matches.fieldId.equals(fieldId) & matches.status.equals('planned');
+    final query = selectOnly(matches)..addColumns([matches.id.count()]);
+    query.where(expr);
+    final row = await query.getSingle();
+    return row.read(matches.id.count()) ?? 0;
+  }
 }

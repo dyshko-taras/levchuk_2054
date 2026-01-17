@@ -5,7 +5,11 @@ class Fields extends Table {
 
   TextColumn get name => text()();
   TextColumn get address => text().nullable()();
+  TextColumn get type => text().nullable()();
   TextColumn get notes => text().nullable()();
+
+  RealColumn get lat => real().nullable()();
+  RealColumn get lon => real().nullable()();
 
   TextColumn get photoPath => text().nullable()();
 

@@ -24,15 +24,21 @@ class FieldsProvider extends ChangeNotifier {
 
   Future<int> createField({
     required String name,
-    String? address,
+    required String address,
+    String? type,
     String? notes,
+    double? lat,
+    double? lon,
     String? photoPath,
   }) {
     return _repository.createField(
       FieldsCompanion.insert(
         name: name,
         address: Value(address),
+        type: Value(type),
         notes: Value(notes),
+        lat: Value(lat),
+        lon: Value(lon),
         photoPath: Value(photoPath),
       ),
     );
@@ -42,6 +48,14 @@ class FieldsProvider extends ChangeNotifier {
 
   Future<void> deleteFieldById(int fieldId) =>
       _repository.deleteFieldById(fieldId);
+
+  Future<bool> canDeleteField(int fieldId) async {
+    final usedPlannedMatchesCount = await _repository
+        .countPlannedMatchesByFieldId(
+          fieldId,
+        );
+    return usedPlannedMatchesCount == 0;
+  }
 
   @override
   void dispose() {

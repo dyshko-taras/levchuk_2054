@@ -75,4 +75,37 @@ class AppStrings {
   static const String teamsDirectoryEmpty = 'No teams created yet.';
   static const String teamsDirectoryNewTeam = '+ New Team';
   static const String teamsDirectoryPlayersCountPrefix = 'Players:';
+
+  static const String fieldsRegistryTitle = 'Fields Registry';
+  static const String fieldsRegistryEmpty = 'No fields created yet.';
+  static const String fieldsRegistryNewField = '+ Add Field';
+  static const String fieldsRegistryUseForMatch = 'Use for match';
+  static const String fieldsRegistryOpen = 'Open';
+  static const String fieldsRegistryTypePrefix = 'Grass:';
+
+  static const String fieldFormRequiredMarker = '*';
+  static const String fieldFormNameLabel = 'Name';
+  static const String fieldFormNameHint = 'Enter name';
+  static const String fieldFormAddressLabel = 'Address';
+  static const String fieldFormAddressHint = 'Enter Address';
+  static const String fieldFormTypeLabel = 'Type';
+  static const String fieldFormTypeHint = 'Select Type';
+  static const String fieldFormNotesLabel = 'Notes';
+  static const String fieldFormNotesHint = 'Enter Notes';
+  static const String fieldFormLatLabel = 'Lat';
+  static const String fieldFormLonLabel = 'Lon';
+  static const String fieldFormLatHint = 'Enter';
+  static const String fieldFormLonHint = 'Enter';
+  static const String fieldFormPhotoLabel = 'Photo';
+  static const String fieldFormPhotoTakePhoto = 'Take photo';
+  static const String fieldFormPhotoChooseFromGallery = 'Choose from gallery';
+  static const String fieldFormPhotoRemove = 'Remove photo';
+  static const String fieldFormDeleteNotAllowed =
+      'Field can’t be deleted because it is used in scheduled matches.';
+  static const String fieldFormNameRequiredError = 'Name is required';
+  static const String fieldFormAddressRequiredError = 'Address is required';
+
+  static const String fieldType5v5 = '5v5';
+  static const String fieldType7v7 = '7v7';
+  static const String fieldType11v11 = '11v11';
 }

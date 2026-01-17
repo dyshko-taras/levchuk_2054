@@ -67,8 +67,6 @@
 - [ ] Tactics + Notes + Do/Don’t
 - [ ] Settings (default team, reminders, first-launch)
 
-### - [ ] Phase 3 — Repositories (Data access layer)
-
 ### - [x] Phase 3 — Repositories (Data access layer)
 
 - [x] `front/lib/data/repositories/settings_repository.dart`
@@ -112,21 +110,19 @@
 - [x] Kit SVG preview (2 colors): `front/lib/ui/widgets/team_studio/kit_preview.dart`
 - [x] Color picker row: `front/lib/ui/widgets/team_studio/preset_color_row.dart`
 
-### - [ ] Phase 9 — Screen: Teams Directory (`/teams`)
-
 ### - [x] Phase 9 — Screen: Teams Directory (`/teams`)
 
 - [x] `front/lib/ui/pages/teams_directory_page.dart` (header Back/+; список команд; Open; More: set default/delete; empty state)
 
-### - [ ] Phase 10 — Screen: Fields Registry (`/fields`)
+### - [x] Phase 10 — Screen: Fields Registry (`/fields`)
 
-- [ ] `front/lib/ui/pages/fields_registry_page.dart` (список полів, картки, переходи)
-- [ ] За потреби: `front/lib/ui/widgets/` (field card)
+- [x] `front/lib/ui/pages/fields_registry_page.dart` (список полів, картки, переходи)
+- [x] `front/lib/ui/widgets/fields/field_registry_card.dart` (field card)
 
-### - [ ] Phase 11 — Screen: Field Form (`/field-form`)
+### - [x] Phase 11 — Screen: Field Form (`/field-form`)
 
-- [ ] `front/lib/ui/pages/field_form_page.dart` (create/edit, валідації, save)
-- [ ] За потреби: `front/lib/ui/widgets/` (inputs, photo placeholder)
+- [x] `front/lib/ui/pages/field_form_page.dart` (create/edit, валідації, save, delete rules)
+- [x] Delete constraint: `planned` matches prevent delete (provider + DAO)
 
 ### - [ ] Phase 12 — Screen: Availability Grid (`/availability`)
 

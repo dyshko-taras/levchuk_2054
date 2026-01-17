@@ -16,4 +16,7 @@ class FieldsRepository {
 
   Future<void> deleteFieldById(int fieldId) =>
       _database.fieldsDao.deleteFieldById(fieldId);
+
+  Future<int> countPlannedMatchesByFieldId(int fieldId) =>
+      _database.matchesDao.countPlannedMatchesByFieldId(fieldId);
 }

@@ -6,3 +6,10 @@ class MatchComposerPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => const Scaffold(body: SizedBox.shrink());
 }
+
+class MatchComposerArgs {
+  const MatchComposerArgs({this.prefillTeamId, this.prefillFieldId});
+
+  final int? prefillTeamId;
+  final int? prefillFieldId;
+}
