@@ -57,5 +57,23 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
+
+  @override
+  MigrationStrategy get migration => MigrationStrategy(
+    onCreate: (m) async => m.createAll(),
+    onUpgrade: (m, from, to) async {
+      await m.drop(settingsEntries);
+      await m.drop(doDontItems);
+      await m.drop(tactics);
+      await m.drop(attendance);
+      await m.drop(lineupSlots);
+      await m.drop(lineups);
+      await m.drop(matches);
+      await m.drop(fields);
+      await m.drop(players);
+      await m.drop(teams);
+      await m.createAll();
+    },
+  );
 }

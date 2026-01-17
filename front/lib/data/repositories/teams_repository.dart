@@ -15,6 +15,15 @@ class TeamsRepository {
   Future<void> deleteTeamById(int teamId) =>
       _database.teamsDao.deleteTeamById(teamId);
 
+  Future<Team?> findTeamByName(String name) =>
+      _database.teamsDao.findByName(name);
+
+  Future<void> setDefaultTeamFlag(int teamId) =>
+      _database.teamsDao.setDefaultTeamFlag(teamId);
+
+  Future<int> countMatchesByTeamId(int teamId) =>
+      _database.matchesDao.countMatchesByTeamId(teamId);
+
   Stream<List<Player>> watchPlayersByTeam(int teamId) =>
       _database.teamsDao.watchPlayersByTeam(teamId);
 

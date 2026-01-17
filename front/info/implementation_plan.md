@@ -105,10 +105,12 @@
 - [x] `front/lib/ui/widgets/navigation/quick_bar.dart` (2–3 items: full width, без scroll; 4+: scroll)
 - [x] `front/lib/ui/widgets/hub/hub_cards.dart` (hub cards)
 
-### - [ ] Phase 8 — Screen: Team Studio (`/team-studio`)
+### - [x] Phase 8 — Screen: Team Studio (`/team-studio`)
 
-- [ ] `front/lib/ui/pages/team_studio_page.dart` (tabs Profile/Roster, save, menu actions)
-- [ ] За потреби: `front/lib/ui/widgets/` (color picker trigger, roster row, badge selector)
+- [x] `front/lib/ui/pages/team_studio_page.dart` (Profile/Roster, Save, More menu: delete/set default)
+- [x] Badge picker: `front/lib/ui/widgets/team_studio/badge_picker.dart`
+- [x] Kit SVG preview (2 colors): `front/lib/ui/widgets/team_studio/kit_preview.dart`
+- [x] Color picker row: `front/lib/ui/widgets/team_studio/preset_color_row.dart`
 
 ### - [ ] Phase 9 — Screen: Teams Directory (`/teams`)
 

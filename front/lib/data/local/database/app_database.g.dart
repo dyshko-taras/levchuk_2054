@@ -41,23 +41,69 @@ class $TeamsTable extends Teams with TableInfo<$TeamsTable, Team> {
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _homeColorMeta = const VerificationMeta(
-    'homeColor',
+  static const VerificationMeta _homeKitTemplateIdMeta = const VerificationMeta(
+    'homeKitTemplateId',
   );
   @override
-  late final GeneratedColumn<int> homeColor = GeneratedColumn<int>(
-    'home_color',
+  late final GeneratedColumn<String> homeKitTemplateId =
+      GeneratedColumn<String>(
+        'home_kit_template_id',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+        defaultValue: const Constant('default'),
+      );
+  static const VerificationMeta _homePrimaryColorMeta = const VerificationMeta(
+    'homePrimaryColor',
+  );
+  @override
+  late final GeneratedColumn<int> homePrimaryColor = GeneratedColumn<int>(
+    'home_primary_color',
     aliasedName,
     true,
     type: DriftSqlType.int,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _awayColorMeta = const VerificationMeta(
-    'awayColor',
+  static const VerificationMeta _homeSecondaryColorMeta =
+      const VerificationMeta('homeSecondaryColor');
+  @override
+  late final GeneratedColumn<int> homeSecondaryColor = GeneratedColumn<int>(
+    'home_secondary_color',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _awayKitTemplateIdMeta = const VerificationMeta(
+    'awayKitTemplateId',
   );
   @override
-  late final GeneratedColumn<int> awayColor = GeneratedColumn<int>(
-    'away_color',
+  late final GeneratedColumn<String> awayKitTemplateId =
+      GeneratedColumn<String>(
+        'away_kit_template_id',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+        defaultValue: const Constant('default'),
+      );
+  static const VerificationMeta _awayPrimaryColorMeta = const VerificationMeta(
+    'awayPrimaryColor',
+  );
+  @override
+  late final GeneratedColumn<int> awayPrimaryColor = GeneratedColumn<int>(
+    'away_primary_color',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _awaySecondaryColorMeta =
+      const VerificationMeta('awaySecondaryColor');
+  @override
+  late final GeneratedColumn<int> awaySecondaryColor = GeneratedColumn<int>(
+    'away_secondary_color',
     aliasedName,
     true,
     type: DriftSqlType.int,
@@ -106,8 +152,12 @@ class $TeamsTable extends Teams with TableInfo<$TeamsTable, Team> {
     id,
     name,
     badgeIcon,
-    homeColor,
-    awayColor,
+    homeKitTemplateId,
+    homePrimaryColor,
+    homeSecondaryColor,
+    awayKitTemplateId,
+    awayPrimaryColor,
+    awaySecondaryColor,
     isDefault,
     createdAt,
     updatedAt,
@@ -141,16 +191,58 @@ class $TeamsTable extends Teams with TableInfo<$TeamsTable, Team> {
         badgeIcon.isAcceptableOrUnknown(data['badge_icon']!, _badgeIconMeta),
       );
     }
-    if (data.containsKey('home_color')) {
+    if (data.containsKey('home_kit_template_id')) {
       context.handle(
-        _homeColorMeta,
-        homeColor.isAcceptableOrUnknown(data['home_color']!, _homeColorMeta),
+        _homeKitTemplateIdMeta,
+        homeKitTemplateId.isAcceptableOrUnknown(
+          data['home_kit_template_id']!,
+          _homeKitTemplateIdMeta,
+        ),
       );
     }
-    if (data.containsKey('away_color')) {
+    if (data.containsKey('home_primary_color')) {
       context.handle(
-        _awayColorMeta,
-        awayColor.isAcceptableOrUnknown(data['away_color']!, _awayColorMeta),
+        _homePrimaryColorMeta,
+        homePrimaryColor.isAcceptableOrUnknown(
+          data['home_primary_color']!,
+          _homePrimaryColorMeta,
+        ),
+      );
+    }
+    if (data.containsKey('home_secondary_color')) {
+      context.handle(
+        _homeSecondaryColorMeta,
+        homeSecondaryColor.isAcceptableOrUnknown(
+          data['home_secondary_color']!,
+          _homeSecondaryColorMeta,
+        ),
+      );
+    }
+    if (data.containsKey('away_kit_template_id')) {
+      context.handle(
+        _awayKitTemplateIdMeta,
+        awayKitTemplateId.isAcceptableOrUnknown(
+          data['away_kit_template_id']!,
+          _awayKitTemplateIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('away_primary_color')) {
+      context.handle(
+        _awayPrimaryColorMeta,
+        awayPrimaryColor.isAcceptableOrUnknown(
+          data['away_primary_color']!,
+          _awayPrimaryColorMeta,
+        ),
+      );
+    }
+    if (data.containsKey('away_secondary_color')) {
+      context.handle(
+        _awaySecondaryColorMeta,
+        awaySecondaryColor.isAcceptableOrUnknown(
+          data['away_secondary_color']!,
+          _awaySecondaryColorMeta,
+        ),
       );
     }
     if (data.containsKey('is_default')) {
@@ -192,13 +284,29 @@ class $TeamsTable extends Teams with TableInfo<$TeamsTable, Team> {
         DriftSqlType.string,
         data['${effectivePrefix}badge_icon'],
       ),
-      homeColor: attachedDatabase.typeMapping.read(
+      homeKitTemplateId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}home_kit_template_id'],
+      )!,
+      homePrimaryColor: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
-        data['${effectivePrefix}home_color'],
+        data['${effectivePrefix}home_primary_color'],
       ),
-      awayColor: attachedDatabase.typeMapping.read(
+      homeSecondaryColor: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
-        data['${effectivePrefix}away_color'],
+        data['${effectivePrefix}home_secondary_color'],
+      ),
+      awayKitTemplateId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}away_kit_template_id'],
+      )!,
+      awayPrimaryColor: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}away_primary_color'],
+      ),
+      awaySecondaryColor: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}away_secondary_color'],
       ),
       isDefault: attachedDatabase.typeMapping.read(
         DriftSqlType.bool,
@@ -225,8 +333,12 @@ class Team extends DataClass implements Insertable<Team> {
   final int id;
   final String name;
   final String? badgeIcon;
-  final int? homeColor;
-  final int? awayColor;
+  final String homeKitTemplateId;
+  final int? homePrimaryColor;
+  final int? homeSecondaryColor;
+  final String awayKitTemplateId;
+  final int? awayPrimaryColor;
+  final int? awaySecondaryColor;
   final bool isDefault;
   final DateTime createdAt;
   final DateTime? updatedAt;
@@ -234,8 +346,12 @@ class Team extends DataClass implements Insertable<Team> {
     required this.id,
     required this.name,
     this.badgeIcon,
-    this.homeColor,
-    this.awayColor,
+    required this.homeKitTemplateId,
+    this.homePrimaryColor,
+    this.homeSecondaryColor,
+    required this.awayKitTemplateId,
+    this.awayPrimaryColor,
+    this.awaySecondaryColor,
     required this.isDefault,
     required this.createdAt,
     this.updatedAt,
@@ -248,11 +364,19 @@ class Team extends DataClass implements Insertable<Team> {
     if (!nullToAbsent || badgeIcon != null) {
       map['badge_icon'] = Variable<String>(badgeIcon);
     }
-    if (!nullToAbsent || homeColor != null) {
-      map['home_color'] = Variable<int>(homeColor);
+    map['home_kit_template_id'] = Variable<String>(homeKitTemplateId);
+    if (!nullToAbsent || homePrimaryColor != null) {
+      map['home_primary_color'] = Variable<int>(homePrimaryColor);
     }
-    if (!nullToAbsent || awayColor != null) {
-      map['away_color'] = Variable<int>(awayColor);
+    if (!nullToAbsent || homeSecondaryColor != null) {
+      map['home_secondary_color'] = Variable<int>(homeSecondaryColor);
+    }
+    map['away_kit_template_id'] = Variable<String>(awayKitTemplateId);
+    if (!nullToAbsent || awayPrimaryColor != null) {
+      map['away_primary_color'] = Variable<int>(awayPrimaryColor);
+    }
+    if (!nullToAbsent || awaySecondaryColor != null) {
+      map['away_secondary_color'] = Variable<int>(awaySecondaryColor);
     }
     map['is_default'] = Variable<bool>(isDefault);
     map['created_at'] = Variable<DateTime>(createdAt);
@@ -269,12 +393,20 @@ class Team extends DataClass implements Insertable<Team> {
       badgeIcon: badgeIcon == null && nullToAbsent
           ? const Value.absent()
           : Value(badgeIcon),
-      homeColor: homeColor == null && nullToAbsent
+      homeKitTemplateId: Value(homeKitTemplateId),
+      homePrimaryColor: homePrimaryColor == null && nullToAbsent
           ? const Value.absent()
-          : Value(homeColor),
-      awayColor: awayColor == null && nullToAbsent
+          : Value(homePrimaryColor),
+      homeSecondaryColor: homeSecondaryColor == null && nullToAbsent
           ? const Value.absent()
-          : Value(awayColor),
+          : Value(homeSecondaryColor),
+      awayKitTemplateId: Value(awayKitTemplateId),
+      awayPrimaryColor: awayPrimaryColor == null && nullToAbsent
+          ? const Value.absent()
+          : Value(awayPrimaryColor),
+      awaySecondaryColor: awaySecondaryColor == null && nullToAbsent
+          ? const Value.absent()
+          : Value(awaySecondaryColor),
       isDefault: Value(isDefault),
       createdAt: Value(createdAt),
       updatedAt: updatedAt == null && nullToAbsent
@@ -292,8 +424,12 @@ class Team extends DataClass implements Insertable<Team> {
       id: serializer.fromJson<int>(json['id']),
       name: serializer.fromJson<String>(json['name']),
       badgeIcon: serializer.fromJson<String?>(json['badgeIcon']),
-      homeColor: serializer.fromJson<int?>(json['homeColor']),
-      awayColor: serializer.fromJson<int?>(json['awayColor']),
+      homeKitTemplateId: serializer.fromJson<String>(json['homeKitTemplateId']),
+      homePrimaryColor: serializer.fromJson<int?>(json['homePrimaryColor']),
+      homeSecondaryColor: serializer.fromJson<int?>(json['homeSecondaryColor']),
+      awayKitTemplateId: serializer.fromJson<String>(json['awayKitTemplateId']),
+      awayPrimaryColor: serializer.fromJson<int?>(json['awayPrimaryColor']),
+      awaySecondaryColor: serializer.fromJson<int?>(json['awaySecondaryColor']),
       isDefault: serializer.fromJson<bool>(json['isDefault']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime?>(json['updatedAt']),
@@ -306,8 +442,12 @@ class Team extends DataClass implements Insertable<Team> {
       'id': serializer.toJson<int>(id),
       'name': serializer.toJson<String>(name),
       'badgeIcon': serializer.toJson<String?>(badgeIcon),
-      'homeColor': serializer.toJson<int?>(homeColor),
-      'awayColor': serializer.toJson<int?>(awayColor),
+      'homeKitTemplateId': serializer.toJson<String>(homeKitTemplateId),
+      'homePrimaryColor': serializer.toJson<int?>(homePrimaryColor),
+      'homeSecondaryColor': serializer.toJson<int?>(homeSecondaryColor),
+      'awayKitTemplateId': serializer.toJson<String>(awayKitTemplateId),
+      'awayPrimaryColor': serializer.toJson<int?>(awayPrimaryColor),
+      'awaySecondaryColor': serializer.toJson<int?>(awaySecondaryColor),
       'isDefault': serializer.toJson<bool>(isDefault),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime?>(updatedAt),
@@ -318,8 +458,12 @@ class Team extends DataClass implements Insertable<Team> {
     int? id,
     String? name,
     Value<String?> badgeIcon = const Value.absent(),
-    Value<int?> homeColor = const Value.absent(),
-    Value<int?> awayColor = const Value.absent(),
+    String? homeKitTemplateId,
+    Value<int?> homePrimaryColor = const Value.absent(),
+    Value<int?> homeSecondaryColor = const Value.absent(),
+    String? awayKitTemplateId,
+    Value<int?> awayPrimaryColor = const Value.absent(),
+    Value<int?> awaySecondaryColor = const Value.absent(),
     bool? isDefault,
     DateTime? createdAt,
     Value<DateTime?> updatedAt = const Value.absent(),
@@ -327,8 +471,20 @@ class Team extends DataClass implements Insertable<Team> {
     id: id ?? this.id,
     name: name ?? this.name,
     badgeIcon: badgeIcon.present ? badgeIcon.value : this.badgeIcon,
-    homeColor: homeColor.present ? homeColor.value : this.homeColor,
-    awayColor: awayColor.present ? awayColor.value : this.awayColor,
+    homeKitTemplateId: homeKitTemplateId ?? this.homeKitTemplateId,
+    homePrimaryColor: homePrimaryColor.present
+        ? homePrimaryColor.value
+        : this.homePrimaryColor,
+    homeSecondaryColor: homeSecondaryColor.present
+        ? homeSecondaryColor.value
+        : this.homeSecondaryColor,
+    awayKitTemplateId: awayKitTemplateId ?? this.awayKitTemplateId,
+    awayPrimaryColor: awayPrimaryColor.present
+        ? awayPrimaryColor.value
+        : this.awayPrimaryColor,
+    awaySecondaryColor: awaySecondaryColor.present
+        ? awaySecondaryColor.value
+        : this.awaySecondaryColor,
     isDefault: isDefault ?? this.isDefault,
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt.present ? updatedAt.value : this.updatedAt,
@@ -338,8 +494,24 @@ class Team extends DataClass implements Insertable<Team> {
       id: data.id.present ? data.id.value : this.id,
       name: data.name.present ? data.name.value : this.name,
       badgeIcon: data.badgeIcon.present ? data.badgeIcon.value : this.badgeIcon,
-      homeColor: data.homeColor.present ? data.homeColor.value : this.homeColor,
-      awayColor: data.awayColor.present ? data.awayColor.value : this.awayColor,
+      homeKitTemplateId: data.homeKitTemplateId.present
+          ? data.homeKitTemplateId.value
+          : this.homeKitTemplateId,
+      homePrimaryColor: data.homePrimaryColor.present
+          ? data.homePrimaryColor.value
+          : this.homePrimaryColor,
+      homeSecondaryColor: data.homeSecondaryColor.present
+          ? data.homeSecondaryColor.value
+          : this.homeSecondaryColor,
+      awayKitTemplateId: data.awayKitTemplateId.present
+          ? data.awayKitTemplateId.value
+          : this.awayKitTemplateId,
+      awayPrimaryColor: data.awayPrimaryColor.present
+          ? data.awayPrimaryColor.value
+          : this.awayPrimaryColor,
+      awaySecondaryColor: data.awaySecondaryColor.present
+          ? data.awaySecondaryColor.value
+          : this.awaySecondaryColor,
       isDefault: data.isDefault.present ? data.isDefault.value : this.isDefault,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
@@ -352,8 +524,12 @@ class Team extends DataClass implements Insertable<Team> {
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('badgeIcon: $badgeIcon, ')
-          ..write('homeColor: $homeColor, ')
-          ..write('awayColor: $awayColor, ')
+          ..write('homeKitTemplateId: $homeKitTemplateId, ')
+          ..write('homePrimaryColor: $homePrimaryColor, ')
+          ..write('homeSecondaryColor: $homeSecondaryColor, ')
+          ..write('awayKitTemplateId: $awayKitTemplateId, ')
+          ..write('awayPrimaryColor: $awayPrimaryColor, ')
+          ..write('awaySecondaryColor: $awaySecondaryColor, ')
           ..write('isDefault: $isDefault, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt')
@@ -366,8 +542,12 @@ class Team extends DataClass implements Insertable<Team> {
     id,
     name,
     badgeIcon,
-    homeColor,
-    awayColor,
+    homeKitTemplateId,
+    homePrimaryColor,
+    homeSecondaryColor,
+    awayKitTemplateId,
+    awayPrimaryColor,
+    awaySecondaryColor,
     isDefault,
     createdAt,
     updatedAt,
@@ -379,8 +559,12 @@ class Team extends DataClass implements Insertable<Team> {
           other.id == this.id &&
           other.name == this.name &&
           other.badgeIcon == this.badgeIcon &&
-          other.homeColor == this.homeColor &&
-          other.awayColor == this.awayColor &&
+          other.homeKitTemplateId == this.homeKitTemplateId &&
+          other.homePrimaryColor == this.homePrimaryColor &&
+          other.homeSecondaryColor == this.homeSecondaryColor &&
+          other.awayKitTemplateId == this.awayKitTemplateId &&
+          other.awayPrimaryColor == this.awayPrimaryColor &&
+          other.awaySecondaryColor == this.awaySecondaryColor &&
           other.isDefault == this.isDefault &&
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt);
@@ -390,8 +574,12 @@ class TeamsCompanion extends UpdateCompanion<Team> {
   final Value<int> id;
   final Value<String> name;
   final Value<String?> badgeIcon;
-  final Value<int?> homeColor;
-  final Value<int?> awayColor;
+  final Value<String> homeKitTemplateId;
+  final Value<int?> homePrimaryColor;
+  final Value<int?> homeSecondaryColor;
+  final Value<String> awayKitTemplateId;
+  final Value<int?> awayPrimaryColor;
+  final Value<int?> awaySecondaryColor;
   final Value<bool> isDefault;
   final Value<DateTime> createdAt;
   final Value<DateTime?> updatedAt;
@@ -399,8 +587,12 @@ class TeamsCompanion extends UpdateCompanion<Team> {
     this.id = const Value.absent(),
     this.name = const Value.absent(),
     this.badgeIcon = const Value.absent(),
-    this.homeColor = const Value.absent(),
-    this.awayColor = const Value.absent(),
+    this.homeKitTemplateId = const Value.absent(),
+    this.homePrimaryColor = const Value.absent(),
+    this.homeSecondaryColor = const Value.absent(),
+    this.awayKitTemplateId = const Value.absent(),
+    this.awayPrimaryColor = const Value.absent(),
+    this.awaySecondaryColor = const Value.absent(),
     this.isDefault = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
@@ -409,8 +601,12 @@ class TeamsCompanion extends UpdateCompanion<Team> {
     this.id = const Value.absent(),
     required String name,
     this.badgeIcon = const Value.absent(),
-    this.homeColor = const Value.absent(),
-    this.awayColor = const Value.absent(),
+    this.homeKitTemplateId = const Value.absent(),
+    this.homePrimaryColor = const Value.absent(),
+    this.homeSecondaryColor = const Value.absent(),
+    this.awayKitTemplateId = const Value.absent(),
+    this.awayPrimaryColor = const Value.absent(),
+    this.awaySecondaryColor = const Value.absent(),
     this.isDefault = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
@@ -419,8 +615,12 @@ class TeamsCompanion extends UpdateCompanion<Team> {
     Expression<int>? id,
     Expression<String>? name,
     Expression<String>? badgeIcon,
-    Expression<int>? homeColor,
-    Expression<int>? awayColor,
+    Expression<String>? homeKitTemplateId,
+    Expression<int>? homePrimaryColor,
+    Expression<int>? homeSecondaryColor,
+    Expression<String>? awayKitTemplateId,
+    Expression<int>? awayPrimaryColor,
+    Expression<int>? awaySecondaryColor,
     Expression<bool>? isDefault,
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
@@ -429,8 +629,14 @@ class TeamsCompanion extends UpdateCompanion<Team> {
       if (id != null) 'id': id,
       if (name != null) 'name': name,
       if (badgeIcon != null) 'badge_icon': badgeIcon,
-      if (homeColor != null) 'home_color': homeColor,
-      if (awayColor != null) 'away_color': awayColor,
+      if (homeKitTemplateId != null) 'home_kit_template_id': homeKitTemplateId,
+      if (homePrimaryColor != null) 'home_primary_color': homePrimaryColor,
+      if (homeSecondaryColor != null)
+        'home_secondary_color': homeSecondaryColor,
+      if (awayKitTemplateId != null) 'away_kit_template_id': awayKitTemplateId,
+      if (awayPrimaryColor != null) 'away_primary_color': awayPrimaryColor,
+      if (awaySecondaryColor != null)
+        'away_secondary_color': awaySecondaryColor,
       if (isDefault != null) 'is_default': isDefault,
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
@@ -441,8 +647,12 @@ class TeamsCompanion extends UpdateCompanion<Team> {
     Value<int>? id,
     Value<String>? name,
     Value<String?>? badgeIcon,
-    Value<int?>? homeColor,
-    Value<int?>? awayColor,
+    Value<String>? homeKitTemplateId,
+    Value<int?>? homePrimaryColor,
+    Value<int?>? homeSecondaryColor,
+    Value<String>? awayKitTemplateId,
+    Value<int?>? awayPrimaryColor,
+    Value<int?>? awaySecondaryColor,
     Value<bool>? isDefault,
     Value<DateTime>? createdAt,
     Value<DateTime?>? updatedAt,
@@ -451,8 +661,12 @@ class TeamsCompanion extends UpdateCompanion<Team> {
       id: id ?? this.id,
       name: name ?? this.name,
       badgeIcon: badgeIcon ?? this.badgeIcon,
-      homeColor: homeColor ?? this.homeColor,
-      awayColor: awayColor ?? this.awayColor,
+      homeKitTemplateId: homeKitTemplateId ?? this.homeKitTemplateId,
+      homePrimaryColor: homePrimaryColor ?? this.homePrimaryColor,
+      homeSecondaryColor: homeSecondaryColor ?? this.homeSecondaryColor,
+      awayKitTemplateId: awayKitTemplateId ?? this.awayKitTemplateId,
+      awayPrimaryColor: awayPrimaryColor ?? this.awayPrimaryColor,
+      awaySecondaryColor: awaySecondaryColor ?? this.awaySecondaryColor,
       isDefault: isDefault ?? this.isDefault,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
@@ -471,11 +685,23 @@ class TeamsCompanion extends UpdateCompanion<Team> {
     if (badgeIcon.present) {
       map['badge_icon'] = Variable<String>(badgeIcon.value);
     }
-    if (homeColor.present) {
-      map['home_color'] = Variable<int>(homeColor.value);
+    if (homeKitTemplateId.present) {
+      map['home_kit_template_id'] = Variable<String>(homeKitTemplateId.value);
     }
-    if (awayColor.present) {
-      map['away_color'] = Variable<int>(awayColor.value);
+    if (homePrimaryColor.present) {
+      map['home_primary_color'] = Variable<int>(homePrimaryColor.value);
+    }
+    if (homeSecondaryColor.present) {
+      map['home_secondary_color'] = Variable<int>(homeSecondaryColor.value);
+    }
+    if (awayKitTemplateId.present) {
+      map['away_kit_template_id'] = Variable<String>(awayKitTemplateId.value);
+    }
+    if (awayPrimaryColor.present) {
+      map['away_primary_color'] = Variable<int>(awayPrimaryColor.value);
+    }
+    if (awaySecondaryColor.present) {
+      map['away_secondary_color'] = Variable<int>(awaySecondaryColor.value);
     }
     if (isDefault.present) {
       map['is_default'] = Variable<bool>(isDefault.value);
@@ -495,8 +721,12 @@ class TeamsCompanion extends UpdateCompanion<Team> {
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('badgeIcon: $badgeIcon, ')
-          ..write('homeColor: $homeColor, ')
-          ..write('awayColor: $awayColor, ')
+          ..write('homeKitTemplateId: $homeKitTemplateId, ')
+          ..write('homePrimaryColor: $homePrimaryColor, ')
+          ..write('homeSecondaryColor: $homeSecondaryColor, ')
+          ..write('awayKitTemplateId: $awayKitTemplateId, ')
+          ..write('awayPrimaryColor: $awayPrimaryColor, ')
+          ..write('awaySecondaryColor: $awaySecondaryColor, ')
           ..write('isDefault: $isDefault, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt')
@@ -552,6 +782,15 @@ class $PlayersTable extends Players with TableInfo<$PlayersTable, Player> {
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _numberMeta = const VerificationMeta('number');
+  @override
+  late final GeneratedColumn<int> number = GeneratedColumn<int>(
+    'number',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _isCaptainMeta = const VerificationMeta(
     'isCaptain',
   );
@@ -596,6 +835,7 @@ class $PlayersTable extends Players with TableInfo<$PlayersTable, Player> {
     teamId,
     name,
     position,
+    number,
     isCaptain,
     createdAt,
     updatedAt,
@@ -635,6 +875,12 @@ class $PlayersTable extends Players with TableInfo<$PlayersTable, Player> {
       context.handle(
         _positionMeta,
         position.isAcceptableOrUnknown(data['position']!, _positionMeta),
+      );
+    }
+    if (data.containsKey('number')) {
+      context.handle(
+        _numberMeta,
+        number.isAcceptableOrUnknown(data['number']!, _numberMeta),
       );
     }
     if (data.containsKey('is_captain')) {
@@ -680,6 +926,10 @@ class $PlayersTable extends Players with TableInfo<$PlayersTable, Player> {
         DriftSqlType.string,
         data['${effectivePrefix}position'],
       ),
+      number: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}number'],
+      ),
       isCaptain: attachedDatabase.typeMapping.read(
         DriftSqlType.bool,
         data['${effectivePrefix}is_captain'],
@@ -706,6 +956,7 @@ class Player extends DataClass implements Insertable<Player> {
   final int teamId;
   final String name;
   final String? position;
+  final int? number;
   final bool isCaptain;
   final DateTime createdAt;
   final DateTime? updatedAt;
@@ -714,6 +965,7 @@ class Player extends DataClass implements Insertable<Player> {
     required this.teamId,
     required this.name,
     this.position,
+    this.number,
     required this.isCaptain,
     required this.createdAt,
     this.updatedAt,
@@ -726,6 +978,9 @@ class Player extends DataClass implements Insertable<Player> {
     map['name'] = Variable<String>(name);
     if (!nullToAbsent || position != null) {
       map['position'] = Variable<String>(position);
+    }
+    if (!nullToAbsent || number != null) {
+      map['number'] = Variable<int>(number);
     }
     map['is_captain'] = Variable<bool>(isCaptain);
     map['created_at'] = Variable<DateTime>(createdAt);
@@ -743,6 +998,9 @@ class Player extends DataClass implements Insertable<Player> {
       position: position == null && nullToAbsent
           ? const Value.absent()
           : Value(position),
+      number: number == null && nullToAbsent
+          ? const Value.absent()
+          : Value(number),
       isCaptain: Value(isCaptain),
       createdAt: Value(createdAt),
       updatedAt: updatedAt == null && nullToAbsent
@@ -761,6 +1019,7 @@ class Player extends DataClass implements Insertable<Player> {
       teamId: serializer.fromJson<int>(json['teamId']),
       name: serializer.fromJson<String>(json['name']),
       position: serializer.fromJson<String?>(json['position']),
+      number: serializer.fromJson<int?>(json['number']),
       isCaptain: serializer.fromJson<bool>(json['isCaptain']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime?>(json['updatedAt']),
@@ -774,6 +1033,7 @@ class Player extends DataClass implements Insertable<Player> {
       'teamId': serializer.toJson<int>(teamId),
       'name': serializer.toJson<String>(name),
       'position': serializer.toJson<String?>(position),
+      'number': serializer.toJson<int?>(number),
       'isCaptain': serializer.toJson<bool>(isCaptain),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime?>(updatedAt),
@@ -785,6 +1045,7 @@ class Player extends DataClass implements Insertable<Player> {
     int? teamId,
     String? name,
     Value<String?> position = const Value.absent(),
+    Value<int?> number = const Value.absent(),
     bool? isCaptain,
     DateTime? createdAt,
     Value<DateTime?> updatedAt = const Value.absent(),
@@ -793,6 +1054,7 @@ class Player extends DataClass implements Insertable<Player> {
     teamId: teamId ?? this.teamId,
     name: name ?? this.name,
     position: position.present ? position.value : this.position,
+    number: number.present ? number.value : this.number,
     isCaptain: isCaptain ?? this.isCaptain,
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt.present ? updatedAt.value : this.updatedAt,
@@ -803,6 +1065,7 @@ class Player extends DataClass implements Insertable<Player> {
       teamId: data.teamId.present ? data.teamId.value : this.teamId,
       name: data.name.present ? data.name.value : this.name,
       position: data.position.present ? data.position.value : this.position,
+      number: data.number.present ? data.number.value : this.number,
       isCaptain: data.isCaptain.present ? data.isCaptain.value : this.isCaptain,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
@@ -816,6 +1079,7 @@ class Player extends DataClass implements Insertable<Player> {
           ..write('teamId: $teamId, ')
           ..write('name: $name, ')
           ..write('position: $position, ')
+          ..write('number: $number, ')
           ..write('isCaptain: $isCaptain, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt')
@@ -824,8 +1088,16 @@ class Player extends DataClass implements Insertable<Player> {
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, teamId, name, position, isCaptain, createdAt, updatedAt);
+  int get hashCode => Object.hash(
+    id,
+    teamId,
+    name,
+    position,
+    number,
+    isCaptain,
+    createdAt,
+    updatedAt,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -834,6 +1106,7 @@ class Player extends DataClass implements Insertable<Player> {
           other.teamId == this.teamId &&
           other.name == this.name &&
           other.position == this.position &&
+          other.number == this.number &&
           other.isCaptain == this.isCaptain &&
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt);
@@ -844,6 +1117,7 @@ class PlayersCompanion extends UpdateCompanion<Player> {
   final Value<int> teamId;
   final Value<String> name;
   final Value<String?> position;
+  final Value<int?> number;
   final Value<bool> isCaptain;
   final Value<DateTime> createdAt;
   final Value<DateTime?> updatedAt;
@@ -852,6 +1126,7 @@ class PlayersCompanion extends UpdateCompanion<Player> {
     this.teamId = const Value.absent(),
     this.name = const Value.absent(),
     this.position = const Value.absent(),
+    this.number = const Value.absent(),
     this.isCaptain = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
@@ -861,6 +1136,7 @@ class PlayersCompanion extends UpdateCompanion<Player> {
     required int teamId,
     required String name,
     this.position = const Value.absent(),
+    this.number = const Value.absent(),
     this.isCaptain = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
@@ -871,6 +1147,7 @@ class PlayersCompanion extends UpdateCompanion<Player> {
     Expression<int>? teamId,
     Expression<String>? name,
     Expression<String>? position,
+    Expression<int>? number,
     Expression<bool>? isCaptain,
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
@@ -880,6 +1157,7 @@ class PlayersCompanion extends UpdateCompanion<Player> {
       if (teamId != null) 'team_id': teamId,
       if (name != null) 'name': name,
       if (position != null) 'position': position,
+      if (number != null) 'number': number,
       if (isCaptain != null) 'is_captain': isCaptain,
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
@@ -891,6 +1169,7 @@ class PlayersCompanion extends UpdateCompanion<Player> {
     Value<int>? teamId,
     Value<String>? name,
     Value<String?>? position,
+    Value<int?>? number,
     Value<bool>? isCaptain,
     Value<DateTime>? createdAt,
     Value<DateTime?>? updatedAt,
@@ -900,6 +1179,7 @@ class PlayersCompanion extends UpdateCompanion<Player> {
       teamId: teamId ?? this.teamId,
       name: name ?? this.name,
       position: position ?? this.position,
+      number: number ?? this.number,
       isCaptain: isCaptain ?? this.isCaptain,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
@@ -921,6 +1201,9 @@ class PlayersCompanion extends UpdateCompanion<Player> {
     if (position.present) {
       map['position'] = Variable<String>(position.value);
     }
+    if (number.present) {
+      map['number'] = Variable<int>(number.value);
+    }
     if (isCaptain.present) {
       map['is_captain'] = Variable<bool>(isCaptain.value);
     }
@@ -940,6 +1223,7 @@ class PlayersCompanion extends UpdateCompanion<Player> {
           ..write('teamId: $teamId, ')
           ..write('name: $name, ')
           ..write('position: $position, ')
+          ..write('number: $number, ')
           ..write('isCaptain: $isCaptain, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt')
@@ -4294,8 +4578,12 @@ typedef $$TeamsTableCreateCompanionBuilder =
       Value<int> id,
       required String name,
       Value<String?> badgeIcon,
-      Value<int?> homeColor,
-      Value<int?> awayColor,
+      Value<String> homeKitTemplateId,
+      Value<int?> homePrimaryColor,
+      Value<int?> homeSecondaryColor,
+      Value<String> awayKitTemplateId,
+      Value<int?> awayPrimaryColor,
+      Value<int?> awaySecondaryColor,
       Value<bool> isDefault,
       Value<DateTime> createdAt,
       Value<DateTime?> updatedAt,
@@ -4305,8 +4593,12 @@ typedef $$TeamsTableUpdateCompanionBuilder =
       Value<int> id,
       Value<String> name,
       Value<String?> badgeIcon,
-      Value<int?> homeColor,
-      Value<int?> awayColor,
+      Value<String> homeKitTemplateId,
+      Value<int?> homePrimaryColor,
+      Value<int?> homeSecondaryColor,
+      Value<String> awayKitTemplateId,
+      Value<int?> awayPrimaryColor,
+      Value<int?> awaySecondaryColor,
       Value<bool> isDefault,
       Value<DateTime> createdAt,
       Value<DateTime?> updatedAt,
@@ -4335,13 +4627,33 @@ class $$TeamsTableFilterComposer extends Composer<_$AppDatabase, $TeamsTable> {
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<int> get homeColor => $composableBuilder(
-    column: $table.homeColor,
+  ColumnFilters<String> get homeKitTemplateId => $composableBuilder(
+    column: $table.homeKitTemplateId,
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<int> get awayColor => $composableBuilder(
-    column: $table.awayColor,
+  ColumnFilters<int> get homePrimaryColor => $composableBuilder(
+    column: $table.homePrimaryColor,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get homeSecondaryColor => $composableBuilder(
+    column: $table.homeSecondaryColor,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get awayKitTemplateId => $composableBuilder(
+    column: $table.awayKitTemplateId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get awayPrimaryColor => $composableBuilder(
+    column: $table.awayPrimaryColor,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get awaySecondaryColor => $composableBuilder(
+    column: $table.awaySecondaryColor,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -4385,13 +4697,33 @@ class $$TeamsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<int> get homeColor => $composableBuilder(
-    column: $table.homeColor,
+  ColumnOrderings<String> get homeKitTemplateId => $composableBuilder(
+    column: $table.homeKitTemplateId,
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<int> get awayColor => $composableBuilder(
-    column: $table.awayColor,
+  ColumnOrderings<int> get homePrimaryColor => $composableBuilder(
+    column: $table.homePrimaryColor,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get homeSecondaryColor => $composableBuilder(
+    column: $table.homeSecondaryColor,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get awayKitTemplateId => $composableBuilder(
+    column: $table.awayKitTemplateId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get awayPrimaryColor => $composableBuilder(
+    column: $table.awayPrimaryColor,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get awaySecondaryColor => $composableBuilder(
+    column: $table.awaySecondaryColor,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -4429,11 +4761,35 @@ class $$TeamsTableAnnotationComposer
   GeneratedColumn<String> get badgeIcon =>
       $composableBuilder(column: $table.badgeIcon, builder: (column) => column);
 
-  GeneratedColumn<int> get homeColor =>
-      $composableBuilder(column: $table.homeColor, builder: (column) => column);
+  GeneratedColumn<String> get homeKitTemplateId => $composableBuilder(
+    column: $table.homeKitTemplateId,
+    builder: (column) => column,
+  );
 
-  GeneratedColumn<int> get awayColor =>
-      $composableBuilder(column: $table.awayColor, builder: (column) => column);
+  GeneratedColumn<int> get homePrimaryColor => $composableBuilder(
+    column: $table.homePrimaryColor,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get homeSecondaryColor => $composableBuilder(
+    column: $table.homeSecondaryColor,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get awayKitTemplateId => $composableBuilder(
+    column: $table.awayKitTemplateId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get awayPrimaryColor => $composableBuilder(
+    column: $table.awayPrimaryColor,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get awaySecondaryColor => $composableBuilder(
+    column: $table.awaySecondaryColor,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<bool> get isDefault =>
       $composableBuilder(column: $table.isDefault, builder: (column) => column);
@@ -4476,8 +4832,12 @@ class $$TeamsTableTableManager
                 Value<int> id = const Value.absent(),
                 Value<String> name = const Value.absent(),
                 Value<String?> badgeIcon = const Value.absent(),
-                Value<int?> homeColor = const Value.absent(),
-                Value<int?> awayColor = const Value.absent(),
+                Value<String> homeKitTemplateId = const Value.absent(),
+                Value<int?> homePrimaryColor = const Value.absent(),
+                Value<int?> homeSecondaryColor = const Value.absent(),
+                Value<String> awayKitTemplateId = const Value.absent(),
+                Value<int?> awayPrimaryColor = const Value.absent(),
+                Value<int?> awaySecondaryColor = const Value.absent(),
                 Value<bool> isDefault = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime?> updatedAt = const Value.absent(),
@@ -4485,8 +4845,12 @@ class $$TeamsTableTableManager
                 id: id,
                 name: name,
                 badgeIcon: badgeIcon,
-                homeColor: homeColor,
-                awayColor: awayColor,
+                homeKitTemplateId: homeKitTemplateId,
+                homePrimaryColor: homePrimaryColor,
+                homeSecondaryColor: homeSecondaryColor,
+                awayKitTemplateId: awayKitTemplateId,
+                awayPrimaryColor: awayPrimaryColor,
+                awaySecondaryColor: awaySecondaryColor,
                 isDefault: isDefault,
                 createdAt: createdAt,
                 updatedAt: updatedAt,
@@ -4496,8 +4860,12 @@ class $$TeamsTableTableManager
                 Value<int> id = const Value.absent(),
                 required String name,
                 Value<String?> badgeIcon = const Value.absent(),
-                Value<int?> homeColor = const Value.absent(),
-                Value<int?> awayColor = const Value.absent(),
+                Value<String> homeKitTemplateId = const Value.absent(),
+                Value<int?> homePrimaryColor = const Value.absent(),
+                Value<int?> homeSecondaryColor = const Value.absent(),
+                Value<String> awayKitTemplateId = const Value.absent(),
+                Value<int?> awayPrimaryColor = const Value.absent(),
+                Value<int?> awaySecondaryColor = const Value.absent(),
                 Value<bool> isDefault = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime?> updatedAt = const Value.absent(),
@@ -4505,8 +4873,12 @@ class $$TeamsTableTableManager
                 id: id,
                 name: name,
                 badgeIcon: badgeIcon,
-                homeColor: homeColor,
-                awayColor: awayColor,
+                homeKitTemplateId: homeKitTemplateId,
+                homePrimaryColor: homePrimaryColor,
+                homeSecondaryColor: homeSecondaryColor,
+                awayKitTemplateId: awayKitTemplateId,
+                awayPrimaryColor: awayPrimaryColor,
+                awaySecondaryColor: awaySecondaryColor,
                 isDefault: isDefault,
                 createdAt: createdAt,
                 updatedAt: updatedAt,
@@ -4539,6 +4911,7 @@ typedef $$PlayersTableCreateCompanionBuilder =
       required int teamId,
       required String name,
       Value<String?> position,
+      Value<int?> number,
       Value<bool> isCaptain,
       Value<DateTime> createdAt,
       Value<DateTime?> updatedAt,
@@ -4549,6 +4922,7 @@ typedef $$PlayersTableUpdateCompanionBuilder =
       Value<int> teamId,
       Value<String> name,
       Value<String?> position,
+      Value<int?> number,
       Value<bool> isCaptain,
       Value<DateTime> createdAt,
       Value<DateTime?> updatedAt,
@@ -4580,6 +4954,11 @@ class $$PlayersTableFilterComposer
 
   ColumnFilters<String> get position => $composableBuilder(
     column: $table.position,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get number => $composableBuilder(
+    column: $table.number,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -4628,6 +5007,11 @@ class $$PlayersTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<int> get number => $composableBuilder(
+    column: $table.number,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<bool> get isCaptain => $composableBuilder(
     column: $table.isCaptain,
     builder: (column) => ColumnOrderings(column),
@@ -4664,6 +5048,9 @@ class $$PlayersTableAnnotationComposer
 
   GeneratedColumn<String> get position =>
       $composableBuilder(column: $table.position, builder: (column) => column);
+
+  GeneratedColumn<int> get number =>
+      $composableBuilder(column: $table.number, builder: (column) => column);
 
   GeneratedColumn<bool> get isCaptain =>
       $composableBuilder(column: $table.isCaptain, builder: (column) => column);
@@ -4707,6 +5094,7 @@ class $$PlayersTableTableManager
                 Value<int> teamId = const Value.absent(),
                 Value<String> name = const Value.absent(),
                 Value<String?> position = const Value.absent(),
+                Value<int?> number = const Value.absent(),
                 Value<bool> isCaptain = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime?> updatedAt = const Value.absent(),
@@ -4715,6 +5103,7 @@ class $$PlayersTableTableManager
                 teamId: teamId,
                 name: name,
                 position: position,
+                number: number,
                 isCaptain: isCaptain,
                 createdAt: createdAt,
                 updatedAt: updatedAt,
@@ -4725,6 +5114,7 @@ class $$PlayersTableTableManager
                 required int teamId,
                 required String name,
                 Value<String?> position = const Value.absent(),
+                Value<int?> number = const Value.absent(),
                 Value<bool> isCaptain = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime?> updatedAt = const Value.absent(),
@@ -4733,6 +5123,7 @@ class $$PlayersTableTableManager
                 teamId: teamId,
                 name: name,
                 position: position,
+                number: number,
                 isCaptain: isCaptain,
                 createdAt: createdAt,
                 updatedAt: updatedAt,

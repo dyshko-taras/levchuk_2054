@@ -23,12 +23,23 @@ class AppImages {
   static const String hubFieldSnapshotCardBackground =
       'assets/images/img_hub_field_snapshot_card_bg.jpg';
 
-  static const String teamBadgeIcons =
-      'assets/images/badges_team_badge_icons.svg';
-  static const String teamKitHomePreview =
-      'assets/images/img_team_kit_home_preview.webp';
-  static const String teamKitAwayPreview =
-      'assets/images/img_team_kit_away_preview.webp';
+  static const String kitTemplateDefault =
+      'assets/images/team_kit_template.svg';
+
+  static const List<String> teamBadges = [
+    'assets/images/badge_01.png',
+    'assets/images/badge_02.png',
+    'assets/images/badge_03.png',
+    'assets/images/badge_04.png',
+    'assets/images/badge_05.png',
+    'assets/images/badge_06.png',
+    'assets/images/badge_07.png',
+    'assets/images/badge_08.png',
+    'assets/images/badge_09.png',
+    'assets/images/badge_10.png',
+    'assets/images/badge_11.png',
+    'assets/images/badge_12.png',
+  ];
 
   static const String fieldsRegistryCardBackground =
       'assets/images/img_fields_registry_card_bg.jpg';

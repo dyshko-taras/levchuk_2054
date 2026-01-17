@@ -42,4 +42,32 @@ class AppStrings {
   static const String hubLinkAllFields = 'All Fields';
 
   static const String settingsTitle = 'Settings';
+
+  static const String teamStudioTitle = 'Team Studio';
+  static const String teamStudioTabProfile = 'Profile';
+  static const String teamStudioTabRoster = 'Roster';
+  static const String teamStudioTeamNameLabel = 'Team name';
+  static const String teamStudioTeamNameRequiredMarker = '*';
+  static const String teamStudioTeamNameHint = 'Enter name';
+  static const String teamStudioBadgeIconLabel = 'Badge icon';
+  static const String teamStudioHomeColorsLabel = 'Home colors';
+  static const String teamStudioAwayColorsLabel = 'Away colors';
+  static const String teamStudioSave = 'Save';
+  static const String teamStudioMenuDeleteTeam = 'Delete team';
+  static const String teamStudioMenuSetAsDefault = 'Set as default';
+  static const String teamStudioRosterAddPlayer = '+ Add Player';
+  static const String teamStudioPlayerDialogTitle = 'Add player';
+  static const String teamStudioPlayerNameLabel = 'Name';
+  static const String teamStudioPlayerNameHint = 'Enter name';
+  static const String teamStudioPlayerPositionLabel = 'Position';
+  static const String teamStudioPlayerNumberLabel = '#';
+  static const String commonCancel = 'Cancel';
+  static const String commonAdd = 'Add';
+  static const String commonSave = 'Save';
+  static const String commonDelete = 'Delete';
+  static const String commonOk = 'OK';
+  static const String teamStudioNameRequiredError = 'Team name is required';
+  static const String teamStudioNameNotUniqueError = 'Team name must be unique';
+  static const String teamStudioDeleteNotAllowed =
+      'Team can’t be deleted because it is used in matches.';
 }

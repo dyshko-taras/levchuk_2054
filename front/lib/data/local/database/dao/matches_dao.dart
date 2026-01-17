@@ -18,4 +18,13 @@ class MatchesDao extends DatabaseAccessor<AppDatabase> with _$MatchesDaoMixin {
 
   Future<void> deleteMatchById(int matchId) =>
       (delete(matches)..where((m) => m.id.equals(matchId))).go();
+
+  Future<int> countMatchesByTeamId(int teamId) async {
+    final expr =
+        matches.teamAId.equals(teamId) | matches.teamBId.equals(teamId);
+    final query = selectOnly(matches)..addColumns([matches.id.count()]);
+    query.where(expr);
+    final row = await query.getSingle();
+    return row.read(matches.id.count()) ?? 0;
+  }
 }

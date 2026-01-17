@@ -21,6 +21,21 @@ class TeamsDao extends DatabaseAccessor<AppDatabase> with _$TeamsDaoMixin {
     await (delete(teams)..where((t) => t.id.equals(teamId))).go();
   }
 
+  Future<Team?> findByName(String name) {
+    return (select(teams)..where((t) => t.name.equals(name))).getSingleOrNull();
+  }
+
+  Future<void> setDefaultTeamFlag(int teamId) async {
+    await transaction(() async {
+      await (update(teams)..where((t) => t.isDefault.equals(true))).write(
+        const TeamsCompanion(isDefault: Value(false)),
+      );
+      await (update(teams)..where((t) => t.id.equals(teamId))).write(
+        const TeamsCompanion(isDefault: Value(true)),
+      );
+    });
+  }
+
   Stream<List<Player>> watchPlayersByTeam(int teamId) {
     return (select(players)
           ..where((p) => p.teamId.equals(teamId))

@@ -6,8 +6,15 @@ class Teams extends Table {
   TextColumn get name => text()();
   TextColumn get badgeIcon => text().nullable()();
 
-  IntColumn get homeColor => integer().nullable()();
-  IntColumn get awayColor => integer().nullable()();
+  TextColumn get homeKitTemplateId =>
+      text().withDefault(const Constant('default'))();
+  IntColumn get homePrimaryColor => integer().nullable()();
+  IntColumn get homeSecondaryColor => integer().nullable()();
+
+  TextColumn get awayKitTemplateId =>
+      text().withDefault(const Constant('default'))();
+  IntColumn get awayPrimaryColor => integer().nullable()();
+  IntColumn get awaySecondaryColor => integer().nullable()();
 
   BoolColumn get isDefault => boolean().withDefault(const Constant(false))();
 

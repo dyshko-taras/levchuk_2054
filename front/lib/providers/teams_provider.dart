@@ -28,15 +28,23 @@ class TeamsProvider extends ChangeNotifier {
   Future<int> createTeam({
     required String name,
     String? badgeIcon,
-    int? homeColor,
-    int? awayColor,
+    String homeKitTemplateId = 'default',
+    int? homePrimaryColor,
+    int? homeSecondaryColor,
+    String awayKitTemplateId = 'default',
+    int? awayPrimaryColor,
+    int? awaySecondaryColor,
   }) {
     return _repository.createTeam(
       TeamsCompanion.insert(
         name: name,
         badgeIcon: Value(badgeIcon),
-        homeColor: Value(homeColor),
-        awayColor: Value(awayColor),
+        homeKitTemplateId: Value(homeKitTemplateId),
+        homePrimaryColor: Value(homePrimaryColor),
+        homeSecondaryColor: Value(homeSecondaryColor),
+        awayKitTemplateId: Value(awayKitTemplateId),
+        awayPrimaryColor: Value(awayPrimaryColor),
+        awaySecondaryColor: Value(awaySecondaryColor),
       ),
     );
   }
@@ -49,6 +57,7 @@ class TeamsProvider extends ChangeNotifier {
     required int teamId,
     required String name,
     String? position,
+    int? number,
     bool isCaptain = false,
   }) {
     return _repository.createPlayer(
@@ -56,6 +65,7 @@ class TeamsProvider extends ChangeNotifier {
         teamId: teamId,
         name: name,
         position: Value(position),
+        number: Value(number),
         isCaptain: Value(isCaptain),
       ),
     );
@@ -65,6 +75,21 @@ class TeamsProvider extends ChangeNotifier {
 
   Future<void> deletePlayerById(int playerId) =>
       _repository.deletePlayerById(playerId);
+
+  Future<bool> isTeamNameUnique(String name, {int? excludeTeamId}) async {
+    final existing = await _repository.findTeamByName(name);
+    if (existing == null) return true;
+    if (excludeTeamId == null) return false;
+    return existing.id == excludeTeamId;
+  }
+
+  Future<bool> canDeleteTeam(int teamId) async {
+    final usedMatchesCount = await _repository.countMatchesByTeamId(teamId);
+    return usedMatchesCount == 0;
+  }
+
+  Future<void> setDefaultTeamFlag(int teamId) =>
+      _repository.setDefaultTeamFlag(teamId);
 
   @override
   void dispose() {
