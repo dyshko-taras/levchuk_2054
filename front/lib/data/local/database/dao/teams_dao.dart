@@ -57,6 +57,12 @@ class TeamsDao extends DatabaseAccessor<AppDatabase> with _$TeamsDaoMixin {
     });
   }
 
+  Future<void> clearDefaultTeamFlag() async {
+    await (update(teams)..where((t) => t.isDefault.equals(true))).write(
+      const TeamsCompanion(isDefault: Value(false)),
+    );
+  }
+
   Stream<List<Player>> watchPlayersByTeam(int teamId) {
     return (select(players)
           ..where((p) => p.teamId.equals(teamId))

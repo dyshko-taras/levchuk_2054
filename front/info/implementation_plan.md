@@ -21,6 +21,7 @@
 - [x] Прогнати `flutter pub get` та `flutter analyze` (без помилок).
 
 #### Файли (мінімальний каркас, якщо їх ще немає)
+
 - [x] `front/lib/main.dart` (не змінювати `main()`, лише доповнення якщо треба для init)
 - [x] `front/lib/app.dart`
 - [x] `front/lib/core/env.dart`
@@ -29,6 +30,7 @@
 ### - [x] Phase 1 — Constants (tokens/assets/strings/routes) + Theme (M3) + App shell
 
 #### Constants — контракт (без хардкоду в UI)
+
 - [x] `front/lib/constants/app_config.dart` (app-level конфіги: мінімум)
 - [x] `front/lib/constants/app_routes.dart` (маршрути зі списку екранів у `front/info/prd.md`)
 - [x] `front/lib/constants/app_strings.dart` (усі статичні тексти тільки тут; ключі з `front/info/prd.md`)
@@ -40,26 +42,31 @@
 - [x] `front/lib/constants/app_durations.dart` (AppDurations — splash min 2s + анімації/UX)
 
 #### Theme — єдине джерело стилів
+
 - [x] `front/lib/ui/theme/app_colors.dart` (кольори з `front/info/visual_style.md`)
 - [x] `front/lib/ui/theme/app_fonts.dart` (OpenSans Regular/SemiBold; зв’язок з pubspec fonts)
 - [x] `front/lib/ui/theme/app_theme.dart` (ThemeData, Material 3, colorScheme, textTheme)
 
 #### App shell
+
 - [x] `front/lib/app.dart`: `MultiProvider` (поки провайдери можна підключати порожнім списком) + `MaterialApp` + `routes: AppRoutes.routes` + `theme: appTheme`
 - [x] Підключений variable font `OpenSans-VariableFont_wdth,wght.ttf` у `front/pubspec.yaml`.
 
 ### - [x] Phase 2 — Local storage: Drift DB + Prefs + Models
 
 #### Файли БД/Prefs
+
 - [x] `front/lib/data/local/prefs_store.dart` (first launch, local reminders enabled, default team id тощо)
 - [x] `front/lib/data/local/database/app_database.dart`
 - [x] `front/lib/data/local/database/schema/` (таблиці/entitites для MVP)
 - [x] `front/lib/data/local/database/dao/` (typed queries)
 
 #### Models (за потреби для UI/DTO, без вигадування полів)
+
 - [ ] `front/lib/data/models/` (моделі, які реально потрібні; якщо все локально — можна обійтись drift-типами)
 
 #### Мінімальні домени MVP у сховищі
+
 - [ ] Teams + Players
 - [ ] Fields
 - [ ] Matches/Fixtures (планування + статус)
@@ -151,9 +158,9 @@
 
 - [x] `front/lib/ui/pages/stats_page.dart` (Teams/Matches/Fields tabs + chart via `fl_chart`)
 
-### - [ ] Phase 17 — Screen: Settings (`/settings`)
+### - [x] Phase 17 — Screen: Settings (`/settings`)
 
-- [ ] `front/lib/ui/pages/settings_page.dart` (default team, reminders toggle, version, privacy, clear all data + confirm)
+- [x] `front/lib/ui/pages/settings_page.dart` (default team, reminders toggle (без реальних нотифікацій), version, privacy, clear all data + confirm)
 
 ### - [x] Phase 18 — Privacy (method placeholder)
 

@@ -25,6 +25,9 @@ class TeamsRepository {
   Future<void> setDefaultTeamFlag(int teamId) =>
       _database.teamsDao.setDefaultTeamFlag(teamId);
 
+  Future<void> clearDefaultTeamFlag() =>
+      _database.teamsDao.clearDefaultTeamFlag();
+
   Future<int> countMatchesByTeamId(int teamId) =>
       _database.matchesDao.countMatchesByTeamId(teamId);
 

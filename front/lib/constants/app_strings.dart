@@ -162,6 +162,21 @@ class AppStrings {
   static const String statsMatchesFinished = 'Finished';
   static const String statsFieldsUsagePrefix = 'Used:';
 
+  static const String settingsHeaderTitle = 'Settings';
+  static const String settingsSectionDefaults = 'Defaults:';
+  static const String settingsRowDefaultTeam = 'Default team';
+  static const String settingsSectionNotifications = 'Notifications:';
+  static const String settingsRowLocalMatchReminders = 'Local match reminders';
+  static const String settingsSectionAbout = 'About:';
+  static const String settingsRowVersion = 'Version';
+  static const String settingsRowPrivacy = 'Privacy';
+  static const String settingsRowOpenSourceLicenses = 'Open source licenses';
+  static const String settingsClearAllData = 'Clear all data';
+  static const String settingsClearAllDataConfirmTitle = 'Clear all data?';
+  static const String settingsClearAllDataConfirmMessage =
+      'This will delete all local data on this device.';
+  static const String settingsDefaultTeamNone = 'None';
+
   static const String fieldFormRequiredMarker = '*';
   static const String fieldFormNameLabel = 'Name';
   static const String fieldFormNameHint = 'Enter name';

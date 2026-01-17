@@ -95,6 +95,8 @@ class TeamsProvider extends ChangeNotifier {
   Future<void> setDefaultTeamFlag(int teamId) =>
       _repository.setDefaultTeamFlag(teamId);
 
+  Future<void> clearDefaultTeamFlag() => _repository.clearDefaultTeamFlag();
+
   @override
   void dispose() {
     _teamsSubscription?.cancel();
