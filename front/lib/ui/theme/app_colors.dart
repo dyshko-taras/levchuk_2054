@@ -12,4 +12,8 @@ class AppColors {
   static const Color whiteOverlay10 = Color(0x1AFFFFFF);
   static const Color whiteOverlay20 = Color(0x33FFFFFF);
   static const Color whiteOverlay70 = Color(0xB3FFFFFF);
+
+  static const Color statsCreated = Color(0xFFE1006A);
+  static const Color statsScheduled = Color(0xFFFFC300);
+  static const Color statsFinished = Color(0xFF6A00FF);
 }

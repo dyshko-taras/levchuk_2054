@@ -44,4 +44,11 @@ class AppSizes {
   static const double matchCenterResultIndicatorCheckSize = 14;
   static const double matchCenterScoreFieldWidth = 52;
   static const double matchCenterScoreFontSize = 28;
+
+  static const double statsChartHeight = 160;
+  static const double statsTabContentMaxWidth = 520;
+  static const double statsChartBarWidth = 14;
+  static const double statsChartBarRadius = 6;
+  static const double statsMetricDividerHeight = 36;
+  static const double statsMetricDividerWidth = 1;
 }

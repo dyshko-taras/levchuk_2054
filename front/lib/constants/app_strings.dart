@@ -151,6 +151,17 @@ class AppStrings {
   static const String matchCenterFinalizeCancel = 'Cancel';
   static const String matchCenterFinalizeWinRequired = 'Select winner';
 
+  static const String statsTitle = 'Stats';
+  static const String statsTabTeams = 'Teams';
+  static const String statsTabMatches = 'Matches';
+  static const String statsTabFields = 'Fields';
+  static const String statsTeamsPlayersPrefix = 'Players:';
+  static const String statsTeamsAvgRosterLabel = 'Avg rt. sz:';
+  static const String statsMatchesCreated = 'Created';
+  static const String statsMatchesScheduled = 'Scheduled';
+  static const String statsMatchesFinished = 'Finished';
+  static const String statsFieldsUsagePrefix = 'Used:';
+
   static const String fieldFormRequiredMarker = '*';
   static const String fieldFormNameLabel = 'Name';
   static const String fieldFormNameHint = 'Enter name';

@@ -147,9 +147,9 @@
 - [ ] Tab Logistics: attendance, fee split, match sheet notes, copy summary
 - [ ] Kit clash detector (MVP): автоматично, без UI
 
-### - [ ] Phase 16 — Screen: Stats (`/stats`)
+### - [x] Phase 16 — Screen: Stats (`/stats`)
 
-- [ ] `front/lib/ui/pages/stats_page.dart` (тільки те, що прямо визначено у `front/info/technical_spec.md`)
+- [x] `front/lib/ui/pages/stats_page.dart` (Teams/Matches/Fields tabs + chart via `fl_chart`)
 
 ### - [ ] Phase 17 — Screen: Settings (`/settings`)
 
