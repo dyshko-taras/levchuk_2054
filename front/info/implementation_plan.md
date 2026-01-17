@@ -114,8 +114,9 @@
 
 ### - [ ] Phase 9 — Screen: Teams Directory (`/teams`)
 
-- [ ] `front/lib/ui/pages/teams_directory_page.dart` (список команд, вибір дефолтної, переходи)
-- [ ] За потреби: `front/lib/ui/widgets/` (team list tile)
+### - [x] Phase 9 — Screen: Teams Directory (`/teams`)
+
+- [x] `front/lib/ui/pages/teams_directory_page.dart` (header Back/+; список команд; Open; More: set default/delete; empty state)
 
 ### - [ ] Phase 10 — Screen: Fields Registry (`/fields`)
 

@@ -32,6 +32,10 @@ class _HubPageState extends State<HubPage> {
     await Navigator.of(context).pushNamed(AppRoutes.settings);
   }
 
+  Future<void> _openTeamsDirectory() async {
+    await Navigator.of(context).pushNamed(AppRoutes.teamsDirectory);
+  }
+
   Future<void> _openMatchComposer() async {
     await Navigator.of(context).pushNamed(AppRoutes.matchComposer);
   }
@@ -155,7 +159,7 @@ class _HubPageState extends State<HubPage> {
                         BlendMode.srcIn,
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: _openTeamsDirectory,
                   ),
                 ],
               ),

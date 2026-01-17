@@ -1,4 +1,5 @@
 import '../local/database/app_database.dart';
+import '../models/team_directory_item.dart';
 
 class TeamsRepository {
   const TeamsRepository({required AppDatabase database}) : _database = database;
@@ -6,6 +7,9 @@ class TeamsRepository {
   final AppDatabase _database;
 
   Stream<List<Team>> watchTeams() => _database.teamsDao.watchTeams();
+
+  Stream<List<TeamDirectoryItem>> watchTeamsDirectory() =>
+      _database.teamsDao.watchTeamsDirectory();
 
   Future<int> createTeam(TeamsCompanion entry) =>
       _database.teamsDao.createTeam(entry);

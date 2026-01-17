@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart';
 
 import '../app_database.dart';
+import '../../../models/team_directory_item.dart';
 import '../schema/players.dart';
 import '../schema/teams.dart';
 
@@ -11,6 +12,26 @@ class TeamsDao extends DatabaseAccessor<AppDatabase> with _$TeamsDaoMixin {
   TeamsDao(super.db);
 
   Stream<List<Team>> watchTeams() => select(teams).watch();
+
+  Stream<List<TeamDirectoryItem>> watchTeamsDirectory() {
+    final query =
+        select(teams).join([
+            leftOuterJoin(players, players.teamId.equalsExp(teams.id)),
+          ])
+          ..addColumns([players.id.count()])
+          ..groupBy([teams.id])
+          ..orderBy([OrderingTerm.asc(teams.name)]);
+
+    return query.watch().map((rows) {
+      return rows
+          .map((row) {
+            final team = row.readTable(teams);
+            final count = row.read(players.id.count()) ?? 0;
+            return TeamDirectoryItem(team: team, playersCount: count);
+          })
+          .toList(growable: false);
+    });
+  }
 
   Future<int> createTeam(TeamsCompanion entry) => into(teams).insert(entry);
 

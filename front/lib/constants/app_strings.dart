@@ -70,4 +70,9 @@ class AppStrings {
   static const String teamStudioNameNotUniqueError = 'Team name must be unique';
   static const String teamStudioDeleteNotAllowed =
       'Team can’t be deleted because it is used in matches.';
+
+  static const String teamsDirectoryTitle = 'Teams Directory';
+  static const String teamsDirectoryEmpty = 'No teams created yet.';
+  static const String teamsDirectoryNewTeam = '+ New Team';
+  static const String teamsDirectoryPlayersCountPrefix = 'Players:';
 }

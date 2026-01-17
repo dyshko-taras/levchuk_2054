@@ -4,6 +4,7 @@ import 'package:drift/drift.dart';
 import 'package:flutter/foundation.dart';
 
 import '../data/local/database/app_database.dart';
+import '../data/models/team_directory_item.dart';
 import '../data/repositories/teams_repository.dart';
 
 class TeamsProvider extends ChangeNotifier {
@@ -24,6 +25,9 @@ class TeamsProvider extends ChangeNotifier {
 
   Stream<List<Player>> watchPlayersByTeam(int teamId) =>
       _repository.watchPlayersByTeam(teamId);
+
+  Stream<List<TeamDirectoryItem>> watchTeamsDirectory() =>
+      _repository.watchTeamsDirectory();
 
   Future<int> createTeam({
     required String name,

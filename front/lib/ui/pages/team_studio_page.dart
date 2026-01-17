@@ -56,7 +56,18 @@ class _TeamStudioPageState extends State<TeamStudioPage> {
     final settings = context.read<SettingsProvider>();
     final defaultId = settings.defaultTeamId;
 
-    final Team? team = defaultId == null
+    final args = ModalRoute.of(context)?.settings.arguments;
+    final requestedTeamId = args is TeamStudioArgs ? args.teamId : null;
+    final createNew = args is TeamStudioArgs ? args.createNew : false;
+
+    if (createNew) {
+      setState(() => _loading = false);
+      return;
+    }
+
+    final Team? team = requestedTeamId != null
+        ? teams.where((t) => t.id == requestedTeamId).firstOrNull
+        : defaultId == null
         ? (teams.isEmpty ? null : teams.first)
         : teams.where((t) => t.id == defaultId).firstOrNull;
 
@@ -783,4 +794,11 @@ class _PlayerDialogState extends State<_PlayerDialog> {
 
 extension on Iterable<Team> {
   Team? get firstOrNull => isEmpty ? null : first;
+}
+
+class TeamStudioArgs {
+  const TeamStudioArgs({this.teamId, this.createNew = false});
+
+  final int? teamId;
+  final bool createNew;
 }
