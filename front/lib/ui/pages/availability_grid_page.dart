@@ -729,7 +729,8 @@ class _SelectedMatchCard extends StatelessWidget {
     final fieldText =
         _fieldName(fields, match.fieldId) ?? AppStrings.commonPlaceholderDash;
 
-    final statusLabel = match.status == 'finished'
+    final isFinished = match.status == 'finished';
+    final statusLabel = isFinished
         ? AppStrings.availabilityStatusFinished
         : AppStrings.availabilityMatchPlanned;
 
@@ -782,14 +783,33 @@ class _SelectedMatchCard extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: AppColors.whiteOverlay10,
                       borderRadius: AppRadius.pill,
-                      border: Border.all(color: AppColors.limeGreen),
+                      border: Border.all(
+                        color:
+                            isFinished
+                                ? AppColors.statsScheduled
+                                : AppColors.limeGreen,
+                      ),
                     ),
                     alignment: Alignment.center,
-                    child: Text(
-                      statusLabel,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          height: AppSizes.hubStatusDotSize,
+                          width: AppSizes.hubStatusDotSize,
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: AppColors.white,
+                          ),
+                        ),
+                        Gaps.wSm,
+                        Text(
+                          statusLabel,
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],

@@ -22,6 +22,7 @@ class AppSizes {
   static const double hubCardHeight = 180;
   static const double hubFabSize = 64;
   static const double hubStatusChipHeight = 30;
+  static const double hubStatusDotSize = 6;
   static const double hubPillButtonHeight = 44;
   static const double hubEmptyCtaWidth = 160;
   static const double hubOpenButtonWidth = 140;

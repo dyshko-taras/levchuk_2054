@@ -10,6 +10,7 @@ import '../../constants/app_sizes.dart';
 import '../../constants/app_spacing.dart';
 import '../../constants/app_strings.dart';
 import '../../data/local/database/app_database.dart';
+import '../../providers/fields_provider.dart';
 import '../../providers/settings_provider.dart';
 import '../../providers/teams_provider.dart';
 import '../../utils/app_version.dart';
@@ -24,6 +25,7 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final settings = context.watch<SettingsProvider>();
     final teams = context.watch<TeamsProvider>().teams;
+    final fields = context.watch<FieldsProvider>().fields;
 
     final defaultTeamName = settings.defaultTeamId == null
         ? AppStrings.settingsDefaultTeamNone
@@ -33,6 +35,15 @@ class SettingsPage extends StatelessWidget {
                   .cast<String?>()
                   .firstWhere((t) => t != null, orElse: () => null) ??
               AppStrings.settingsDefaultTeamNone;
+
+    final defaultFieldName = settings.defaultFieldId == null
+        ? AppStrings.settingsDefaultFieldNone
+        : fields
+                  .where((f) => f.id == settings.defaultFieldId)
+                  .map((f) => f.name)
+                  .cast<String?>()
+                  .firstWhere((f) => f != null, orElse: () => null) ??
+              AppStrings.settingsDefaultFieldNone;
 
     return Scaffold(
       body: ColoredBox(
@@ -89,6 +100,24 @@ class SettingsPage extends StatelessWidget {
                           await context
                               .read<TeamsProvider>()
                               .setDefaultTeamFlag(selectedId);
+                        },
+                      ),
+                      Gaps.hSm,
+                      _RowButton(
+                        label: AppStrings.settingsRowDefaultField,
+                        trailingText: defaultFieldName,
+                        onTap: () async {
+                          final selectedId = await _pickDefaultFieldId(
+                            context,
+                            fields: fields,
+                            currentId: settings.defaultFieldId,
+                          );
+                          if (selectedId == null) return;
+                          if (selectedId == 0) {
+                            await settings.setDefaultFieldId(null);
+                            return;
+                          }
+                          await settings.setDefaultFieldId(selectedId);
                         },
                       ),
                       Gaps.hMd,
@@ -385,6 +414,65 @@ Future<int?> _pickDefaultTeamId(
                   onTap: () => Navigator.of(context).pop(team.id),
                 ),
                 if (team != teams.last)
+                  const Divider(height: 1, color: AppColors.whiteOverlay20),
+              ],
+            ],
+          ),
+        ),
+      );
+    },
+  );
+  return result;
+}
+
+Future<int?> _pickDefaultFieldId(
+  BuildContext context, {
+  required List<Field> fields,
+  required int? currentId,
+}) async {
+  final result = await showModalBottomSheet<int>(
+    context: context,
+    backgroundColor: Colors.transparent,
+    builder: (context) {
+      return Padding(
+        padding: Insets.allMd,
+        child: Container(
+          decoration: BoxDecoration(
+            color: AppColors.whiteOverlay10,
+            borderRadius: BorderRadius.circular(AppSpacing.lg),
+            border: Border.all(color: AppColors.whiteOverlay20),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                title: Text(
+                  AppStrings.settingsDefaultFieldNone,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                onTap: () => Navigator.of(context).pop(0),
+              ),
+              const Divider(height: 1, color: AppColors.whiteOverlay20),
+              for (final field in fields) ...[
+                ListTile(
+                  title: Text(
+                    field.name,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  trailing: currentId == field.id
+                      ? SvgPicture.asset(
+                          AppIcons.check,
+                          width: AppSizes.iconMd,
+                          height: AppSizes.iconMd,
+                          colorFilter: const ColorFilter.mode(
+                            AppColors.limeGreen,
+                            BlendMode.srcIn,
+                          ),
+                        )
+                      : null,
+                  onTap: () => Navigator.of(context).pop(field.id),
+                ),
+                if (field != fields.last)
                   const Divider(height: 1, color: AppColors.whiteOverlay20),
               ],
             ],

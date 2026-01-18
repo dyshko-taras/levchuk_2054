@@ -23,7 +23,7 @@ class AppStrings {
 
   static const String hubAppTitle = 'FieldCaptain';
   static const String hubTabMatch = '+ Match';
-  static const String hubTabMySquad = 'My Squad';
+  static const String hubTabMySquad = 'Teams';
   static const String hubTabFields = 'Fields';
   static const String hubTabStats = 'Stats';
   static const String hubTabAvailability = 'Availability';
@@ -33,14 +33,18 @@ class AppStrings {
   static const String hubActionOpen = 'Open';
   static const String hubCtaAddMatch = '+ Match';
   static const String hubEmptyNoMatchPlanned = 'No match planned.';
+  static const String hubNoUpcomingMatch = 'No upcoming match.';
 
-  static const String hubSectionMySquad = 'My Squad';
+  static const String hubSectionMySquad = 'Teams';
   static const String hubLabelTeamName = 'Team name';
   static String hubLabelPlayersCount(int count) => 'Players: $count';
   static const String hubActionLineup = 'Lineup';
+  static const String hubLinkAllTeams = 'All teams';
+  static const String hubEmptyNoDefaultTeam = 'No default team.';
 
-  static const String hubSectionFieldsSnapshot = 'Fields Snapshot';
+  static const String hubSectionFieldsSnapshot = 'Fields';
   static const String hubLinkAllFields = 'All Fields';
+  static const String hubEmptyNoDefaultField = 'No default field.';
 
   static const String settingsTitle = 'Settings';
 
@@ -263,6 +267,7 @@ class AppStrings {
   static const String settingsHeaderTitle = 'Settings';
   static const String settingsSectionDefaults = 'Defaults:';
   static const String settingsRowDefaultTeam = 'Default team';
+  static const String settingsRowDefaultField = 'Default field';
   static const String settingsSectionNotifications = 'Notifications:';
   static const String settingsRowLocalMatchReminders = 'Local match reminders';
   static const String settingsSectionAbout = 'About:';
@@ -274,6 +279,7 @@ class AppStrings {
   static const String settingsClearAllDataConfirmMessage =
       'This will delete all local data on this device.';
   static const String settingsDefaultTeamNone = 'None';
+  static const String settingsDefaultFieldNone = 'None';
 
   static const String fieldFormRequiredMarker = '*';
   static const String fieldFormNameLabel = 'Name';

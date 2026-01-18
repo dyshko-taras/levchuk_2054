@@ -14,6 +14,8 @@ class SettingsProvider extends ChangeNotifier {
 
   int? get defaultTeamId => _repository.prefs.defaultTeamId;
 
+  int? get defaultFieldId => _repository.prefs.defaultFieldId;
+
   Future<void> setFirstLaunchCompleted() async {
     await _repository.prefs.setFirstLaunchCompleted();
     notifyListeners();
@@ -26,6 +28,11 @@ class SettingsProvider extends ChangeNotifier {
 
   Future<void> setDefaultTeamId(int? teamId) async {
     await _repository.prefs.setDefaultTeamId(teamId);
+    notifyListeners();
+  }
+
+  Future<void> setDefaultFieldId(int? fieldId) async {
+    await _repository.prefs.setDefaultFieldId(fieldId);
     notifyListeners();
   }
 

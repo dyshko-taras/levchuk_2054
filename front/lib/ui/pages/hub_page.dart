@@ -17,8 +17,10 @@ import '../theme/app_colors.dart';
 import '../widgets/buttons/app_buttons.dart';
 import '../widgets/hub/hub_cards.dart';
 import '../widgets/navigation/quick_bar.dart';
+import 'field_form_page.dart';
 import 'match_center_page.dart';
 import 'lineup_tactics_board_page.dart';
+import 'team_studio_page.dart';
 
 class HubPage extends StatefulWidget {
   const HubPage({super.key});
@@ -42,8 +44,18 @@ class _HubPageState extends State<HubPage> {
     await Navigator.of(context).pushNamed(AppRoutes.matchComposer);
   }
 
-  Future<void> _openTeamStudio() async {
-    await Navigator.of(context).pushNamed(AppRoutes.teamStudio);
+  Future<void> _createTeam() async {
+    await Navigator.of(context).pushNamed(
+      AppRoutes.teamStudio,
+      arguments: const TeamStudioArgs(createNew: true),
+    );
+  }
+
+  Future<void> _createField() async {
+    await Navigator.of(context).pushNamed(
+      AppRoutes.fieldForm,
+      arguments: const FieldFormArgs(createNew: true),
+    );
   }
 
   Future<void> _openFieldsRegistry() async {
@@ -53,7 +65,12 @@ class _HubPageState extends State<HubPage> {
   Future<void> _openLineupBoard() async {
     final matches = context.read<MatchesProvider>().matches;
     final nextMatch = _findNextMatch(matches);
-    if (nextMatch == null) return;
+    if (nextMatch == null) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text(AppStrings.hubNoUpcomingMatch)));
+      return;
+    }
 
     await Navigator.of(context).pushNamed(
       AppRoutes.lineupTactics,
@@ -74,7 +91,9 @@ class _HubPageState extends State<HubPage> {
     final matches = context.watch<MatchesProvider>().matches;
     final fields = context.watch<FieldsProvider>().fields;
     final teams = context.watch<TeamsProvider>().teams;
-    final defaultTeamId = context.watch<SettingsProvider>().defaultTeamId;
+    final settings = context.watch<SettingsProvider>();
+    final defaultTeamId = settings.defaultTeamId;
+    final defaultFieldId = settings.defaultFieldId;
 
     final nextMatch = _findNextMatch(matches);
     final nextMatchDate = nextMatch == null
@@ -89,8 +108,12 @@ class _HubPageState extends State<HubPage> {
               .firstWhere((n) => n != null, orElse: () => null);
 
     final Team? defaultTeam = defaultTeamId == null
-        ? (teams.isEmpty ? null : teams.first)
+        ? null
         : teams.where((t) => t.id == defaultTeamId).firstOrNull;
+
+    final Field? defaultField = defaultFieldId == null
+        ? null
+        : fields.where((f) => f.id == defaultFieldId).cast<Field?>().firstOrNull;
 
     final quickBarItems = <QuickBarItem>[
       QuickBarItem(
@@ -100,8 +123,8 @@ class _HubPageState extends State<HubPage> {
       ),
       QuickBarItem(
         label: AppStrings.hubTabMySquad,
-        isSelected: _tab == _HubTab.mySquad,
-        onPressed: () => setState(() => _tab = _HubTab.mySquad),
+        isSelected: _tab == _HubTab.teams,
+        onPressed: () => setState(() => _tab = _HubTab.teams),
       ),
       QuickBarItem(
         label: AppStrings.hubTabFields,
@@ -126,7 +149,11 @@ class _HubPageState extends State<HubPage> {
         width: AppSizes.hubFabSize,
         child: FloatingActionButton(
           backgroundColor: AppColors.limeGreen,
-          onPressed: _openMatchComposer,
+          onPressed: switch (_tab) {
+            _HubTab.match => _openMatchComposer,
+            _HubTab.teams => _createTeam,
+            _HubTab.fields => _createField,
+          },
           child: SvgPicture.asset(
             AppIcons.add,
             colorFilter: const ColorFilter.mode(
@@ -159,17 +186,6 @@ class _HubPageState extends State<HubPage> {
                     ),
                     onPressed: _openSettings,
                   ),
-                  Gaps.wSm,
-                  AppIconCircleButton(
-                    icon: SvgPicture.asset(
-                      AppIcons.more,
-                      colorFilter: const ColorFilter.mode(
-                        AppColors.white,
-                        BlendMode.srcIn,
-                      ),
-                    ),
-                    onPressed: _openTeamsDirectory,
-                  ),
                 ],
               ),
               Gaps.hMd,
@@ -178,13 +194,19 @@ class _HubPageState extends State<HubPage> {
               _SectionHeader(
                 title: _tab == _HubTab.match
                     ? AppStrings.hubSectionNextMatch
-                    : _tab == _HubTab.mySquad
+                    : _tab == _HubTab.teams
                     ? AppStrings.hubSectionMySquad
                     : AppStrings.hubSectionFieldsSnapshot,
-                actionLabel: _tab == _HubTab.fields
+                actionLabel: _tab == _HubTab.teams
+                    ? AppStrings.hubLinkAllTeams
+                    : _tab == _HubTab.fields
                     ? AppStrings.hubLinkAllFields
                     : null,
-                onAction: _tab == _HubTab.fields ? _openFieldsRegistry : null,
+                onAction: _tab == _HubTab.teams
+                    ? _openTeamsDirectory
+                    : _tab == _HubTab.fields
+                    ? _openFieldsRegistry
+                    : null,
               ),
               Gaps.hSm,
               Expanded(
@@ -192,6 +214,12 @@ class _HubPageState extends State<HubPage> {
                   tab: _tab,
                   nextMatchDate: nextMatchDate,
                   nextMatchFieldName: nextMatchFieldName,
+                  nextMatchStatusLabel: nextMatch == null
+                      ? null
+                      : (nextMatch.status == 'finished'
+                            ? AppStrings.availabilityStatusFinished
+                            : AppStrings.availabilityMatchPlanned),
+                  nextMatchIsFinished: nextMatch?.status == 'finished',
                   onOpenNextMatch: () {
                     if (nextMatch == null) return;
                     Navigator.of(context).pushNamed(
@@ -200,12 +228,19 @@ class _HubPageState extends State<HubPage> {
                     );
                   },
                   onAddMatch: _openMatchComposer,
-                  teamName: defaultTeam?.name ?? AppStrings.hubLabelTeamName,
-                  playersCount: 0,
-                  onOpenTeam: _openTeamStudio,
+                  defaultTeam: defaultTeam,
+                  onOpenTeam: (teamId) => Navigator.of(context).pushNamed(
+                    AppRoutes.teamStudio,
+                    arguments: TeamStudioArgs(teamId: teamId),
+                  ),
+                  onCreateTeam: _createTeam,
                   onOpenLineup: _openLineupBoard,
-                  fields: fields,
-                  onOpenFields: _openFieldsRegistry,
+                  defaultField: defaultField,
+                  onOpenField: (fieldId) => Navigator.of(context).pushNamed(
+                    AppRoutes.fieldForm,
+                    arguments: FieldFormArgs(fieldId: fieldId),
+                  ),
+                  onCreateField: _createField,
                 ),
               ),
             ],
@@ -224,7 +259,7 @@ class _HubPageState extends State<HubPage> {
   }
 }
 
-enum _HubTab { match, mySquad, fields }
+enum _HubTab { match, teams, fields }
 
 class _SectionHeader extends StatelessWidget {
   const _SectionHeader({
@@ -275,30 +310,36 @@ class _HubBody extends StatelessWidget {
     required this.tab,
     required this.nextMatchDate,
     required this.nextMatchFieldName,
+    required this.nextMatchStatusLabel,
+    required this.nextMatchIsFinished,
     required this.onOpenNextMatch,
     required this.onAddMatch,
-    required this.teamName,
-    required this.playersCount,
+    required this.defaultTeam,
     required this.onOpenTeam,
+    required this.onCreateTeam,
     required this.onOpenLineup,
-    required this.fields,
-    required this.onOpenFields,
+    required this.defaultField,
+    required this.onOpenField,
+    required this.onCreateField,
   });
 
   final _HubTab tab;
 
   final String? nextMatchDate;
   final String? nextMatchFieldName;
+  final String? nextMatchStatusLabel;
+  final bool? nextMatchIsFinished;
   final VoidCallback onOpenNextMatch;
   final VoidCallback onAddMatch;
 
-  final String teamName;
-  final int playersCount;
-  final VoidCallback onOpenTeam;
+  final Team? defaultTeam;
+  final ValueChanged<int> onOpenTeam;
+  final VoidCallback onCreateTeam;
   final VoidCallback onOpenLineup;
 
-  final List<Field> fields;
-  final VoidCallback onOpenFields;
+  final Field? defaultField;
+  final ValueChanged<int> onOpenField;
+  final VoidCallback onCreateField;
 
   @override
   Widget build(BuildContext context) {
@@ -314,34 +355,44 @@ class _HubBody extends StatelessWidget {
             child: NextMatchCard(
               matchDateTime: nextMatchDate,
               matchFieldName: nextMatchFieldName,
+              statusLabel: nextMatchStatusLabel,
+              isFinished: nextMatchIsFinished ?? false,
               onOpen: onOpenNextMatch,
               onAddMatch: onAddMatch,
             ),
           ),
-          _HubTab.mySquad => SizedBox(
+          _HubTab.teams => SizedBox(
             height: AppSizes.hubCardHeight,
-            child: MySquadCard(
-              teamName: teamName,
-              playersCount: playersCount,
-              onOpen: onOpenTeam,
-              onLineup: onOpenLineup,
-            ),
-          ),
-          _HubTab.fields => ListView(
-            padding: EdgeInsets.zero,
-            children: [
-              for (var i = 0; i < fields.take(2).length; i++) ...[
-                SizedBox(
-                  height: AppSizes.hubCardHeight,
-                  child: FieldsSnapshotCard(
-                    title: fields[i].name,
-                    subtitle: fields[i].address ?? '',
-                    onOpen: onOpenFields,
+            child: defaultTeam == null
+                ? DefaultTeamCard(
+                    teamName: null,
+                    playersCount: null,
+                    onOpen: onCreateTeam,
+                    onLineup: onOpenLineup,
+                  )
+                : StreamBuilder<List<Player>>(
+                    stream: context
+                        .read<TeamsProvider>()
+                        .watchPlayersByTeam(defaultTeam!.id),
+                    builder: (context, snapshot) {
+                      return DefaultTeamCard(
+                        teamName: defaultTeam!.name,
+                        playersCount: snapshot.data?.length ?? 0,
+                        onOpen: () => onOpenTeam(defaultTeam!.id),
+                        onLineup: onOpenLineup,
+                      );
+                    },
                   ),
-                ),
-                if (i != fields.take(2).length - 1) Gaps.hSm,
-              ],
-            ],
+          ),
+          _HubTab.fields => SizedBox(
+            height: AppSizes.hubCardHeight,
+            child: DefaultFieldCard(
+              fieldName: defaultField?.name,
+              fieldSubtitle: defaultField?.address,
+              onOpen: defaultField == null
+                  ? onCreateField
+                  : () => onOpenField(defaultField!.id),
+            ),
           ),
         },
       ),

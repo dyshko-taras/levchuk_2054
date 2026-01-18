@@ -18,6 +18,7 @@ class SettingsRepository {
       await _database.delete(_database.attendance).go();
       await _database.delete(_database.lineupSlots).go();
       await _database.delete(_database.lineups).go();
+      await _database.delete(_database.matchLogistics).go();
       await _database.delete(_database.matches).go();
       await _database.delete(_database.fields).go();
       await _database.delete(_database.players).go();
