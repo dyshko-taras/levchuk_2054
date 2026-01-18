@@ -16,7 +16,7 @@ ThemeData get appTheme => ThemeData(
   textTheme: const TextTheme(
     displayLarge: TextStyle(
       fontFamily: AppFonts.family,
-      fontSize: 44,
+      fontSize: 28,
       fontWeight: AppFonts.semibold,
       color: AppColors.white,
       height: 1.0,

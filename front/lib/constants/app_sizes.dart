@@ -10,10 +10,11 @@ class AppSizes {
   static const double splashLoaderStrokeWidth = 3;
 
   static const double onboardingPhonePreviewWidth = 320;
+  static const double onboardingSlidePreviewScale = 0.66;
   static const double onboardingDotsSize = 10;
   static const double onboardingDotsGap = 12;
-  static const double onboardingPrimaryButtonHeight = 64;
-  static const double onboardingSecondaryButtonHeight = 64;
+  static const double onboardingPrimaryButtonHeight = 50;
+  static const double onboardingSecondaryButtonHeight = 50;
   static const double onboardingBottomFadeHeight = 360;
 
   static const double hubQuickBarHeight = 58;

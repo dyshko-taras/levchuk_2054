@@ -101,7 +101,7 @@ class _SplashPageState extends State<SplashPage> {
           ),
           const SafeArea(
             child: Padding(
-              padding: const EdgeInsets.only(bottom: AppSpacing.xl),
+              padding: EdgeInsets.only(bottom: AppSpacing.xl),
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: SizedBox(

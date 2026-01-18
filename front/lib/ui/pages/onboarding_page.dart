@@ -77,7 +77,14 @@ class _OnboardingPageState extends State<OnboardingPage> {
     await _goTo(_index - 1);
   }
 
-  Future<void> _skip() async => _goTo(2);
+  Future<void> _skip() async {
+    if (_busy) return;
+    if (_index == 2) {
+      await _next();
+      return;
+    }
+    await _goTo(2);
+  }
 
   Future<void> _openPrivacy() async {
     await openPrivacy(context);
@@ -108,6 +115,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   padding: Insets.allMd,
                   child: _TopBar(
                     showBack: _index > 0,
+                    showSkip: !isLast,
                     onBack: _back,
                     onSkip: _skip,
                   ),
@@ -132,7 +140,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
                       Center(child: _Dots(activeIndex: _index)),
                       Gaps.hLg,
                       AppPrimaryButton(
-                        label: AppStrings.onboardingNext,
+                        label:
+                            isLast ? AppStrings.onboardingStart : AppStrings.onboardingNext,
                         onPressed: _next,
                       ),
                       if (isLast) ...[
@@ -157,11 +166,13 @@ class _OnboardingPageState extends State<OnboardingPage> {
 class _TopBar extends StatelessWidget {
   const _TopBar({
     required this.showBack,
+    required this.showSkip,
     required this.onBack,
     required this.onSkip,
   });
 
   final bool showBack;
+  final bool showSkip;
   final VoidCallback onBack;
   final VoidCallback onSkip;
 
@@ -184,10 +195,13 @@ class _TopBar extends StatelessWidget {
         else
           const SizedBox.shrink(),
         const Spacer(),
-        AppTopBarTextButton(
-          label: AppStrings.onboardingSkip,
-          onPressed: onSkip,
-        ),
+        if (showSkip)
+          AppTopBarTextButton(
+            label: AppStrings.onboardingSkip,
+            onPressed: onSkip,
+          )
+        else
+          const SizedBox.shrink(),
       ],
     );
   }
@@ -206,8 +220,10 @@ class _OnboardingSlideBackground extends StatelessWidget {
         Center(
           child: Image.asset(
             image,
-            width: MediaQuery.of(context).size.width / 1.5,
-            height: MediaQuery.of(context).size.height / 1.5,
+            width: MediaQuery.of(context).size.width *
+                AppSizes.onboardingSlidePreviewScale,
+            height: MediaQuery.of(context).size.height *
+                AppSizes.onboardingSlidePreviewScale,
             fit: BoxFit.contain,
           ),
         ),

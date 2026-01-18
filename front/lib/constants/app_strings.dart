@@ -9,6 +9,7 @@ class AppStrings {
   static const String onboardingSkip = 'Skip';
   static const String onboardingBack = 'Back';
   static const String onboardingNext = 'Next';
+  static const String onboardingStart = 'Start';
   static const String onboardingPrivacy = 'Privacy';
   static const String onboardingSlide1Title = 'Build squads fast';
   static const String onboardingSlide1Subtitle =
