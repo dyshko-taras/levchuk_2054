@@ -151,6 +151,103 @@ class AppStrings {
   static const String matchCenterFinalizeCancel = 'Cancel';
   static const String matchCenterFinalizeWinRequired = 'Select winner';
 
+  static const String lineupBoardTopTitle = 'Lineup & Tactics Board';
+  static const String lineupBoardTabLineup = 'Lineup';
+  static const String lineupBoardTabTactics = 'Tactics';
+  static const String lineupBoardTabLogistics = 'Logistics';
+  static const String lineupBoardTeamBNotAssigned = 'Team B not assigned';
+
+  static String lineupBoardTitle(String teamA, String teamB) =>
+      '$teamA vs $teamB — Match Board';
+  static String lineupBoardSubline({
+    required String kickOff,
+    required String fieldName,
+  }) =>
+      'Kick-off: $kickOff · Field: $fieldName';
+
+  static const String lineupBoardDiscardTitle = 'Discard changes?';
+  static const String lineupBoardKeepEditing = 'Keep editing';
+  static const String lineupBoardDiscard = 'Discard';
+
+  static const String lineupBoardFormationLabel = 'Formation';
+  static const String lineupBoardFormation442 = '4-4-2';
+  static const String lineupBoardFormation433 = '4-3-3';
+  static const String lineupBoardFormation352 = '3-5-2';
+  static const String lineupBoardFormation532 = '5-3-2';
+  static const String lineupBoardFormationNote = 'Slots update with formation';
+  static const String lineupBoardAutoArrange = 'Auto-arrange';
+  static const String lineupBoardClearLineup = 'Clear lineup';
+  static const String lineupBoardSearchPlayersHint = 'Search players...';
+  static const String lineupBoardAvailableTitle = 'Available';
+
+  static const String lineupBoardWarningNoGoalkeeper = 'No goalkeeper assigned';
+  static const String lineupBoardWarningIncomplete = 'Lineup incomplete';
+
+  static const String lineupBoardPressingLabel = 'Pressing';
+  static const String lineupBoardPressingLow = 'Low';
+  static const String lineupBoardPressingMedium = 'Medium';
+  static const String lineupBoardPressingHigh = 'High (segmented)';
+  static const String lineupBoardWidthLabel = 'Width';
+  static const String lineupBoardWidthNarrow = 'Narrow';
+  static const String lineupBoardWidthBalanced = 'Balanced';
+  static const String lineupBoardWidthWide = 'Wide';
+  static const String lineupBoardBuildUpLabel = 'Build-up';
+  static const String lineupBoardBuildUpDirect = 'Direct';
+  static const String lineupBoardBuildUpMixed = 'Mixed';
+  static const String lineupBoardBuildUpShort = 'Short';
+
+  static const String lineupBoardNotesHint = 'Enter Notes';
+  static const String lineupBoardSetPiecesNotesTitle = 'Set Pieces Notes';
+  static const String lineupBoardCornersLabel = 'Corners';
+  static const String lineupBoardFreeKicksLabel = 'Free-kicks';
+
+  static const String lineupBoardQuickMatchNotesTitle = 'Quick Match Notes';
+  static const String lineupBoardKeyMatchupsLabel = 'Key matchups';
+  static const String lineupBoardDoDontTitle = 'Do / Don’t bullets';
+  static const String lineupBoardAddDoDontTitle = 'Add item';
+  static const String lineupBoardAddDoDontHint = 'Enter';
+
+  static const String lineupBoardAttendanceTitle = 'Attendance';
+  static String lineupBoardConfirmedCount(int confirmed, int total) =>
+      'Confirmed: $confirmed / Total: $total';
+  static String lineupBoardAttendancePos(String position) => 'POS  $position';
+
+  static const String lineupBoardFeeSplitTitle = 'Fee Split';
+  static const String lineupBoardPitchFeeTotalLabel = 'Pitch fee (total)';
+  static const String lineupBoardPitchFeeTotalHint = r'$0';
+  static const String lineupBoardSplitConfirmedOnly = 'confirmed only';
+  static const String lineupBoardSplitAllRoster = 'All roster';
+  static String lineupBoardPerPlayer(double? value) => value == null
+      ? 'Per player: ${AppStrings.commonPlaceholderDash}'
+      : 'Per player: \$${value.toStringAsFixed(2)}';
+  static const String lineupBoardFeeSplitHelperNote =
+      'This is a helper calculation.';
+
+  static const String lineupBoardMatchSheetNotesTitle = 'Match Sheet Notes';
+  static const String lineupBoardMeetTimeLabel = 'Meet time';
+  static const String lineupBoardMeetTimeHint = 'Meet time';
+  static const String lineupBoardWhatToBringLabel = 'What to bring';
+  static const String lineupBoardBringCash = 'Cash';
+  static const String lineupBoardBringBibs = 'Bibs';
+  static const String lineupBoardBringBall = 'Ball';
+  static const String lineupBoardBringWater = 'Water';
+  static const String lineupBoardCrewNotesLabel = 'Crew notes';
+  static const String lineupBoardCrewNotesHint = 'Enter Notes';
+
+  static const String lineupBoardCopySummary = 'Copy summary';
+  static const String lineupBoardCopied = 'Copied';
+
+  static String lineupBoardSummaryHeader(String teamA, String teamB) =>
+      '$teamA vs $teamB';
+  static String lineupBoardSummaryKickoff(String value) => 'Kick-off: $value';
+  static String lineupBoardSummaryField(String value) => 'Field: $value';
+  static String lineupBoardSummaryConfirmed(int confirmed, int total) =>
+      'Confirmed: $confirmed / Total: $total';
+  static String lineupBoardSummaryFeePerPlayer(double? value) => value == null
+      ? 'Per player: ${AppStrings.commonPlaceholderDash}'
+      : 'Per player: \$${value.toStringAsFixed(2)}';
+  static String lineupBoardSummaryCrewNotes(String value) => 'Crew notes: $value';
+
   static const String statsTitle = 'Stats';
   static const String statsTabTeams = 'Teams';
   static const String statsTabMatches = 'Matches';

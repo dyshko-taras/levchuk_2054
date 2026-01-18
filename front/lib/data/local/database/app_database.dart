@@ -15,6 +15,7 @@ import 'schema/do_dont_items.dart';
 import 'schema/fields.dart';
 import 'schema/lineup_slots.dart';
 import 'schema/lineups.dart';
+import 'schema/match_logistics.dart';
 import 'schema/matches.dart';
 import 'schema/players.dart';
 import 'schema/settings_entries.dart';
@@ -40,6 +41,7 @@ LazyDatabase _openConnection() {
     Lineups,
     LineupSlots,
     Attendance,
+    MatchLogistics,
     Tactics,
     DoDontItems,
     SettingsEntries,
@@ -57,7 +59,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 5;
+  int get schemaVersion => 6;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -66,6 +68,7 @@ class AppDatabase extends _$AppDatabase {
       await m.drop(settingsEntries);
       await m.drop(doDontItems);
       await m.drop(tactics);
+      await m.drop(matchLogistics);
       await m.drop(attendance);
       await m.drop(lineupSlots);
       await m.drop(lineups);

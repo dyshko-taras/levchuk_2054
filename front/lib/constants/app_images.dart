@@ -48,8 +48,4 @@ class AppImages {
 
   static const String lineupBoardPitch =
       'assets/images/img_lineup_board_pitch.jpg';
-  static const String lineupBoardTeamAKit =
-      'assets/images/img_lineup_board_team_a_kit.webp';
-  static const String lineupBoardTeamBKit =
-      'assets/images/img_lineup_board_team_b_kit.webp';
 }

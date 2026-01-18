@@ -45,6 +45,12 @@ class AppSizes {
   static const double matchCenterScoreFieldWidth = 52;
   static const double matchCenterScoreFontSize = 28;
 
+  static const double lineupPitchAspectRatio = 0.85;
+  static const double lineupSlotKitSize = 28;
+  static const double lineupAvailablePlayerHeight = 44;
+  static const double lineupPlayerNumberDotSize = 28;
+  static const double lineupPlayerChipMinWidth = 72;
+
   static const double statsChartHeight = 160;
   static const double statsTabContentMaxWidth = 520;
   static const double statsChartBarWidth = 14;

@@ -18,6 +18,7 @@ import '../../providers/matches_provider.dart';
 import '../../providers/teams_provider.dart';
 import '../theme/app_colors.dart';
 import '../widgets/buttons/app_buttons.dart';
+import 'lineup_tactics_board_page.dart';
 import 'match_composer_page.dart';
 
 class MatchCenterPage extends StatefulWidget {
@@ -185,6 +186,7 @@ class _MatchCenterPageState extends State<MatchCenterPage> {
                         onOpenLineup: !isFinished
                             ? () => Navigator.of(context).pushNamed(
                                 AppRoutes.lineupTactics,
+                                arguments: LineupTacticsArgs(matchId: match.id),
                               )
                             : null,
                       ),
@@ -232,6 +234,7 @@ class _MatchCenterPageState extends State<MatchCenterPage> {
                         onOpenLineup: !isFinished
                             ? () => Navigator.of(context).pushNamed(
                                 AppRoutes.lineupTactics,
+                                arguments: LineupTacticsArgs(matchId: match.id),
                               )
                             : null,
                       ),

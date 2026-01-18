@@ -18,6 +18,7 @@ import '../widgets/buttons/app_buttons.dart';
 import '../widgets/hub/hub_cards.dart';
 import '../widgets/navigation/quick_bar.dart';
 import 'match_center_page.dart';
+import 'lineup_tactics_board_page.dart';
 
 class HubPage extends StatefulWidget {
   const HubPage({super.key});
@@ -50,7 +51,14 @@ class _HubPageState extends State<HubPage> {
   }
 
   Future<void> _openLineupBoard() async {
-    await Navigator.of(context).pushNamed(AppRoutes.lineupTactics);
+    final matches = context.read<MatchesProvider>().matches;
+    final nextMatch = _findNextMatch(matches);
+    if (nextMatch == null) return;
+
+    await Navigator.of(context).pushNamed(
+      AppRoutes.lineupTactics,
+      arguments: LineupTacticsArgs(matchId: nextMatch.id),
+    );
   }
 
   Future<void> _openStats() async {

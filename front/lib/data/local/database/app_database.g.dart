@@ -3623,6 +3623,621 @@ class AttendanceCompanion extends UpdateCompanion<AttendanceData> {
   }
 }
 
+class $MatchLogisticsTable extends MatchLogistics
+    with TableInfo<$MatchLogisticsTable, MatchLogistic> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $MatchLogisticsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _matchIdMeta = const VerificationMeta(
+    'matchId',
+  );
+  @override
+  late final GeneratedColumn<int> matchId = GeneratedColumn<int>(
+    'match_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _pitchFeeTotalMeta = const VerificationMeta(
+    'pitchFeeTotal',
+  );
+  @override
+  late final GeneratedColumn<double> pitchFeeTotal = GeneratedColumn<double>(
+    'pitch_fee_total',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _splitModeMeta = const VerificationMeta(
+    'splitMode',
+  );
+  @override
+  late final GeneratedColumn<String> splitMode = GeneratedColumn<String>(
+    'split_mode',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('confirmed'),
+  );
+  static const VerificationMeta _meetTimeMeta = const VerificationMeta(
+    'meetTime',
+  );
+  @override
+  late final GeneratedColumn<DateTime> meetTime = GeneratedColumn<DateTime>(
+    'meet_time',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _bringCashMeta = const VerificationMeta(
+    'bringCash',
+  );
+  @override
+  late final GeneratedColumn<bool> bringCash = GeneratedColumn<bool>(
+    'bring_cash',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("bring_cash" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _bringBibsMeta = const VerificationMeta(
+    'bringBibs',
+  );
+  @override
+  late final GeneratedColumn<bool> bringBibs = GeneratedColumn<bool>(
+    'bring_bibs',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("bring_bibs" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _bringBallMeta = const VerificationMeta(
+    'bringBall',
+  );
+  @override
+  late final GeneratedColumn<bool> bringBall = GeneratedColumn<bool>(
+    'bring_ball',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("bring_ball" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _bringWaterMeta = const VerificationMeta(
+    'bringWater',
+  );
+  @override
+  late final GeneratedColumn<bool> bringWater = GeneratedColumn<bool>(
+    'bring_water',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("bring_water" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _crewNotesMeta = const VerificationMeta(
+    'crewNotes',
+  );
+  @override
+  late final GeneratedColumn<String> crewNotes = GeneratedColumn<String>(
+    'crew_notes',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    matchId,
+    pitchFeeTotal,
+    splitMode,
+    meetTime,
+    bringCash,
+    bringBibs,
+    bringBall,
+    bringWater,
+    crewNotes,
+    updatedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'match_logistics';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<MatchLogistic> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('match_id')) {
+      context.handle(
+        _matchIdMeta,
+        matchId.isAcceptableOrUnknown(data['match_id']!, _matchIdMeta),
+      );
+    }
+    if (data.containsKey('pitch_fee_total')) {
+      context.handle(
+        _pitchFeeTotalMeta,
+        pitchFeeTotal.isAcceptableOrUnknown(
+          data['pitch_fee_total']!,
+          _pitchFeeTotalMeta,
+        ),
+      );
+    }
+    if (data.containsKey('split_mode')) {
+      context.handle(
+        _splitModeMeta,
+        splitMode.isAcceptableOrUnknown(data['split_mode']!, _splitModeMeta),
+      );
+    }
+    if (data.containsKey('meet_time')) {
+      context.handle(
+        _meetTimeMeta,
+        meetTime.isAcceptableOrUnknown(data['meet_time']!, _meetTimeMeta),
+      );
+    }
+    if (data.containsKey('bring_cash')) {
+      context.handle(
+        _bringCashMeta,
+        bringCash.isAcceptableOrUnknown(data['bring_cash']!, _bringCashMeta),
+      );
+    }
+    if (data.containsKey('bring_bibs')) {
+      context.handle(
+        _bringBibsMeta,
+        bringBibs.isAcceptableOrUnknown(data['bring_bibs']!, _bringBibsMeta),
+      );
+    }
+    if (data.containsKey('bring_ball')) {
+      context.handle(
+        _bringBallMeta,
+        bringBall.isAcceptableOrUnknown(data['bring_ball']!, _bringBallMeta),
+      );
+    }
+    if (data.containsKey('bring_water')) {
+      context.handle(
+        _bringWaterMeta,
+        bringWater.isAcceptableOrUnknown(data['bring_water']!, _bringWaterMeta),
+      );
+    }
+    if (data.containsKey('crew_notes')) {
+      context.handle(
+        _crewNotesMeta,
+        crewNotes.isAcceptableOrUnknown(data['crew_notes']!, _crewNotesMeta),
+      );
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {matchId};
+  @override
+  MatchLogistic map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return MatchLogistic(
+      matchId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}match_id'],
+      )!,
+      pitchFeeTotal: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}pitch_fee_total'],
+      ),
+      splitMode: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}split_mode'],
+      )!,
+      meetTime: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}meet_time'],
+      ),
+      bringCash: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}bring_cash'],
+      )!,
+      bringBibs: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}bring_bibs'],
+      )!,
+      bringBall: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}bring_ball'],
+      )!,
+      bringWater: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}bring_water'],
+      )!,
+      crewNotes: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}crew_notes'],
+      ),
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      ),
+    );
+  }
+
+  @override
+  $MatchLogisticsTable createAlias(String alias) {
+    return $MatchLogisticsTable(attachedDatabase, alias);
+  }
+}
+
+class MatchLogistic extends DataClass implements Insertable<MatchLogistic> {
+  final int matchId;
+  final double? pitchFeeTotal;
+  final String splitMode;
+  final DateTime? meetTime;
+  final bool bringCash;
+  final bool bringBibs;
+  final bool bringBall;
+  final bool bringWater;
+  final String? crewNotes;
+  final DateTime? updatedAt;
+  const MatchLogistic({
+    required this.matchId,
+    this.pitchFeeTotal,
+    required this.splitMode,
+    this.meetTime,
+    required this.bringCash,
+    required this.bringBibs,
+    required this.bringBall,
+    required this.bringWater,
+    this.crewNotes,
+    this.updatedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['match_id'] = Variable<int>(matchId);
+    if (!nullToAbsent || pitchFeeTotal != null) {
+      map['pitch_fee_total'] = Variable<double>(pitchFeeTotal);
+    }
+    map['split_mode'] = Variable<String>(splitMode);
+    if (!nullToAbsent || meetTime != null) {
+      map['meet_time'] = Variable<DateTime>(meetTime);
+    }
+    map['bring_cash'] = Variable<bool>(bringCash);
+    map['bring_bibs'] = Variable<bool>(bringBibs);
+    map['bring_ball'] = Variable<bool>(bringBall);
+    map['bring_water'] = Variable<bool>(bringWater);
+    if (!nullToAbsent || crewNotes != null) {
+      map['crew_notes'] = Variable<String>(crewNotes);
+    }
+    if (!nullToAbsent || updatedAt != null) {
+      map['updated_at'] = Variable<DateTime>(updatedAt);
+    }
+    return map;
+  }
+
+  MatchLogisticsCompanion toCompanion(bool nullToAbsent) {
+    return MatchLogisticsCompanion(
+      matchId: Value(matchId),
+      pitchFeeTotal: pitchFeeTotal == null && nullToAbsent
+          ? const Value.absent()
+          : Value(pitchFeeTotal),
+      splitMode: Value(splitMode),
+      meetTime: meetTime == null && nullToAbsent
+          ? const Value.absent()
+          : Value(meetTime),
+      bringCash: Value(bringCash),
+      bringBibs: Value(bringBibs),
+      bringBall: Value(bringBall),
+      bringWater: Value(bringWater),
+      crewNotes: crewNotes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(crewNotes),
+      updatedAt: updatedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(updatedAt),
+    );
+  }
+
+  factory MatchLogistic.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return MatchLogistic(
+      matchId: serializer.fromJson<int>(json['matchId']),
+      pitchFeeTotal: serializer.fromJson<double?>(json['pitchFeeTotal']),
+      splitMode: serializer.fromJson<String>(json['splitMode']),
+      meetTime: serializer.fromJson<DateTime?>(json['meetTime']),
+      bringCash: serializer.fromJson<bool>(json['bringCash']),
+      bringBibs: serializer.fromJson<bool>(json['bringBibs']),
+      bringBall: serializer.fromJson<bool>(json['bringBall']),
+      bringWater: serializer.fromJson<bool>(json['bringWater']),
+      crewNotes: serializer.fromJson<String?>(json['crewNotes']),
+      updatedAt: serializer.fromJson<DateTime?>(json['updatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'matchId': serializer.toJson<int>(matchId),
+      'pitchFeeTotal': serializer.toJson<double?>(pitchFeeTotal),
+      'splitMode': serializer.toJson<String>(splitMode),
+      'meetTime': serializer.toJson<DateTime?>(meetTime),
+      'bringCash': serializer.toJson<bool>(bringCash),
+      'bringBibs': serializer.toJson<bool>(bringBibs),
+      'bringBall': serializer.toJson<bool>(bringBall),
+      'bringWater': serializer.toJson<bool>(bringWater),
+      'crewNotes': serializer.toJson<String?>(crewNotes),
+      'updatedAt': serializer.toJson<DateTime?>(updatedAt),
+    };
+  }
+
+  MatchLogistic copyWith({
+    int? matchId,
+    Value<double?> pitchFeeTotal = const Value.absent(),
+    String? splitMode,
+    Value<DateTime?> meetTime = const Value.absent(),
+    bool? bringCash,
+    bool? bringBibs,
+    bool? bringBall,
+    bool? bringWater,
+    Value<String?> crewNotes = const Value.absent(),
+    Value<DateTime?> updatedAt = const Value.absent(),
+  }) => MatchLogistic(
+    matchId: matchId ?? this.matchId,
+    pitchFeeTotal: pitchFeeTotal.present
+        ? pitchFeeTotal.value
+        : this.pitchFeeTotal,
+    splitMode: splitMode ?? this.splitMode,
+    meetTime: meetTime.present ? meetTime.value : this.meetTime,
+    bringCash: bringCash ?? this.bringCash,
+    bringBibs: bringBibs ?? this.bringBibs,
+    bringBall: bringBall ?? this.bringBall,
+    bringWater: bringWater ?? this.bringWater,
+    crewNotes: crewNotes.present ? crewNotes.value : this.crewNotes,
+    updatedAt: updatedAt.present ? updatedAt.value : this.updatedAt,
+  );
+  MatchLogistic copyWithCompanion(MatchLogisticsCompanion data) {
+    return MatchLogistic(
+      matchId: data.matchId.present ? data.matchId.value : this.matchId,
+      pitchFeeTotal: data.pitchFeeTotal.present
+          ? data.pitchFeeTotal.value
+          : this.pitchFeeTotal,
+      splitMode: data.splitMode.present ? data.splitMode.value : this.splitMode,
+      meetTime: data.meetTime.present ? data.meetTime.value : this.meetTime,
+      bringCash: data.bringCash.present ? data.bringCash.value : this.bringCash,
+      bringBibs: data.bringBibs.present ? data.bringBibs.value : this.bringBibs,
+      bringBall: data.bringBall.present ? data.bringBall.value : this.bringBall,
+      bringWater: data.bringWater.present
+          ? data.bringWater.value
+          : this.bringWater,
+      crewNotes: data.crewNotes.present ? data.crewNotes.value : this.crewNotes,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MatchLogistic(')
+          ..write('matchId: $matchId, ')
+          ..write('pitchFeeTotal: $pitchFeeTotal, ')
+          ..write('splitMode: $splitMode, ')
+          ..write('meetTime: $meetTime, ')
+          ..write('bringCash: $bringCash, ')
+          ..write('bringBibs: $bringBibs, ')
+          ..write('bringBall: $bringBall, ')
+          ..write('bringWater: $bringWater, ')
+          ..write('crewNotes: $crewNotes, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    matchId,
+    pitchFeeTotal,
+    splitMode,
+    meetTime,
+    bringCash,
+    bringBibs,
+    bringBall,
+    bringWater,
+    crewNotes,
+    updatedAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is MatchLogistic &&
+          other.matchId == this.matchId &&
+          other.pitchFeeTotal == this.pitchFeeTotal &&
+          other.splitMode == this.splitMode &&
+          other.meetTime == this.meetTime &&
+          other.bringCash == this.bringCash &&
+          other.bringBibs == this.bringBibs &&
+          other.bringBall == this.bringBall &&
+          other.bringWater == this.bringWater &&
+          other.crewNotes == this.crewNotes &&
+          other.updatedAt == this.updatedAt);
+}
+
+class MatchLogisticsCompanion extends UpdateCompanion<MatchLogistic> {
+  final Value<int> matchId;
+  final Value<double?> pitchFeeTotal;
+  final Value<String> splitMode;
+  final Value<DateTime?> meetTime;
+  final Value<bool> bringCash;
+  final Value<bool> bringBibs;
+  final Value<bool> bringBall;
+  final Value<bool> bringWater;
+  final Value<String?> crewNotes;
+  final Value<DateTime?> updatedAt;
+  const MatchLogisticsCompanion({
+    this.matchId = const Value.absent(),
+    this.pitchFeeTotal = const Value.absent(),
+    this.splitMode = const Value.absent(),
+    this.meetTime = const Value.absent(),
+    this.bringCash = const Value.absent(),
+    this.bringBibs = const Value.absent(),
+    this.bringBall = const Value.absent(),
+    this.bringWater = const Value.absent(),
+    this.crewNotes = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+  });
+  MatchLogisticsCompanion.insert({
+    this.matchId = const Value.absent(),
+    this.pitchFeeTotal = const Value.absent(),
+    this.splitMode = const Value.absent(),
+    this.meetTime = const Value.absent(),
+    this.bringCash = const Value.absent(),
+    this.bringBibs = const Value.absent(),
+    this.bringBall = const Value.absent(),
+    this.bringWater = const Value.absent(),
+    this.crewNotes = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+  });
+  static Insertable<MatchLogistic> custom({
+    Expression<int>? matchId,
+    Expression<double>? pitchFeeTotal,
+    Expression<String>? splitMode,
+    Expression<DateTime>? meetTime,
+    Expression<bool>? bringCash,
+    Expression<bool>? bringBibs,
+    Expression<bool>? bringBall,
+    Expression<bool>? bringWater,
+    Expression<String>? crewNotes,
+    Expression<DateTime>? updatedAt,
+  }) {
+    return RawValuesInsertable({
+      if (matchId != null) 'match_id': matchId,
+      if (pitchFeeTotal != null) 'pitch_fee_total': pitchFeeTotal,
+      if (splitMode != null) 'split_mode': splitMode,
+      if (meetTime != null) 'meet_time': meetTime,
+      if (bringCash != null) 'bring_cash': bringCash,
+      if (bringBibs != null) 'bring_bibs': bringBibs,
+      if (bringBall != null) 'bring_ball': bringBall,
+      if (bringWater != null) 'bring_water': bringWater,
+      if (crewNotes != null) 'crew_notes': crewNotes,
+      if (updatedAt != null) 'updated_at': updatedAt,
+    });
+  }
+
+  MatchLogisticsCompanion copyWith({
+    Value<int>? matchId,
+    Value<double?>? pitchFeeTotal,
+    Value<String>? splitMode,
+    Value<DateTime?>? meetTime,
+    Value<bool>? bringCash,
+    Value<bool>? bringBibs,
+    Value<bool>? bringBall,
+    Value<bool>? bringWater,
+    Value<String?>? crewNotes,
+    Value<DateTime?>? updatedAt,
+  }) {
+    return MatchLogisticsCompanion(
+      matchId: matchId ?? this.matchId,
+      pitchFeeTotal: pitchFeeTotal ?? this.pitchFeeTotal,
+      splitMode: splitMode ?? this.splitMode,
+      meetTime: meetTime ?? this.meetTime,
+      bringCash: bringCash ?? this.bringCash,
+      bringBibs: bringBibs ?? this.bringBibs,
+      bringBall: bringBall ?? this.bringBall,
+      bringWater: bringWater ?? this.bringWater,
+      crewNotes: crewNotes ?? this.crewNotes,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (matchId.present) {
+      map['match_id'] = Variable<int>(matchId.value);
+    }
+    if (pitchFeeTotal.present) {
+      map['pitch_fee_total'] = Variable<double>(pitchFeeTotal.value);
+    }
+    if (splitMode.present) {
+      map['split_mode'] = Variable<String>(splitMode.value);
+    }
+    if (meetTime.present) {
+      map['meet_time'] = Variable<DateTime>(meetTime.value);
+    }
+    if (bringCash.present) {
+      map['bring_cash'] = Variable<bool>(bringCash.value);
+    }
+    if (bringBibs.present) {
+      map['bring_bibs'] = Variable<bool>(bringBibs.value);
+    }
+    if (bringBall.present) {
+      map['bring_ball'] = Variable<bool>(bringBall.value);
+    }
+    if (bringWater.present) {
+      map['bring_water'] = Variable<bool>(bringWater.value);
+    }
+    if (crewNotes.present) {
+      map['crew_notes'] = Variable<String>(crewNotes.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MatchLogisticsCompanion(')
+          ..write('matchId: $matchId, ')
+          ..write('pitchFeeTotal: $pitchFeeTotal, ')
+          ..write('splitMode: $splitMode, ')
+          ..write('meetTime: $meetTime, ')
+          ..write('bringCash: $bringCash, ')
+          ..write('bringBibs: $bringBibs, ')
+          ..write('bringBall: $bringBall, ')
+          ..write('bringWater: $bringWater, ')
+          ..write('crewNotes: $crewNotes, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $TacticsTable extends Tactics with TableInfo<$TacticsTable, Tactic> {
   @override
   final GeneratedDatabase attachedDatabase;
@@ -4920,6 +5535,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $LineupsTable lineups = $LineupsTable(this);
   late final $LineupSlotsTable lineupSlots = $LineupSlotsTable(this);
   late final $AttendanceTable attendance = $AttendanceTable(this);
+  late final $MatchLogisticsTable matchLogistics = $MatchLogisticsTable(this);
   late final $TacticsTable tactics = $TacticsTable(this);
   late final $DoDontItemsTable doDontItems = $DoDontItemsTable(this);
   late final $SettingsEntriesTable settingsEntries = $SettingsEntriesTable(
@@ -4943,6 +5559,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     lineups,
     lineupSlots,
     attendance,
+    matchLogistics,
     tactics,
     doDontItems,
     settingsEntries,
@@ -6737,6 +7354,301 @@ typedef $$AttendanceTableProcessedTableManager =
       AttendanceData,
       PrefetchHooks Function()
     >;
+typedef $$MatchLogisticsTableCreateCompanionBuilder =
+    MatchLogisticsCompanion Function({
+      Value<int> matchId,
+      Value<double?> pitchFeeTotal,
+      Value<String> splitMode,
+      Value<DateTime?> meetTime,
+      Value<bool> bringCash,
+      Value<bool> bringBibs,
+      Value<bool> bringBall,
+      Value<bool> bringWater,
+      Value<String?> crewNotes,
+      Value<DateTime?> updatedAt,
+    });
+typedef $$MatchLogisticsTableUpdateCompanionBuilder =
+    MatchLogisticsCompanion Function({
+      Value<int> matchId,
+      Value<double?> pitchFeeTotal,
+      Value<String> splitMode,
+      Value<DateTime?> meetTime,
+      Value<bool> bringCash,
+      Value<bool> bringBibs,
+      Value<bool> bringBall,
+      Value<bool> bringWater,
+      Value<String?> crewNotes,
+      Value<DateTime?> updatedAt,
+    });
+
+class $$MatchLogisticsTableFilterComposer
+    extends Composer<_$AppDatabase, $MatchLogisticsTable> {
+  $$MatchLogisticsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get matchId => $composableBuilder(
+    column: $table.matchId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get pitchFeeTotal => $composableBuilder(
+    column: $table.pitchFeeTotal,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get splitMode => $composableBuilder(
+    column: $table.splitMode,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get meetTime => $composableBuilder(
+    column: $table.meetTime,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get bringCash => $composableBuilder(
+    column: $table.bringCash,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get bringBibs => $composableBuilder(
+    column: $table.bringBibs,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get bringBall => $composableBuilder(
+    column: $table.bringBall,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get bringWater => $composableBuilder(
+    column: $table.bringWater,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get crewNotes => $composableBuilder(
+    column: $table.crewNotes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$MatchLogisticsTableOrderingComposer
+    extends Composer<_$AppDatabase, $MatchLogisticsTable> {
+  $$MatchLogisticsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get matchId => $composableBuilder(
+    column: $table.matchId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get pitchFeeTotal => $composableBuilder(
+    column: $table.pitchFeeTotal,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get splitMode => $composableBuilder(
+    column: $table.splitMode,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get meetTime => $composableBuilder(
+    column: $table.meetTime,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get bringCash => $composableBuilder(
+    column: $table.bringCash,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get bringBibs => $composableBuilder(
+    column: $table.bringBibs,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get bringBall => $composableBuilder(
+    column: $table.bringBall,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get bringWater => $composableBuilder(
+    column: $table.bringWater,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get crewNotes => $composableBuilder(
+    column: $table.crewNotes,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$MatchLogisticsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $MatchLogisticsTable> {
+  $$MatchLogisticsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get matchId =>
+      $composableBuilder(column: $table.matchId, builder: (column) => column);
+
+  GeneratedColumn<double> get pitchFeeTotal => $composableBuilder(
+    column: $table.pitchFeeTotal,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get splitMode =>
+      $composableBuilder(column: $table.splitMode, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get meetTime =>
+      $composableBuilder(column: $table.meetTime, builder: (column) => column);
+
+  GeneratedColumn<bool> get bringCash =>
+      $composableBuilder(column: $table.bringCash, builder: (column) => column);
+
+  GeneratedColumn<bool> get bringBibs =>
+      $composableBuilder(column: $table.bringBibs, builder: (column) => column);
+
+  GeneratedColumn<bool> get bringBall =>
+      $composableBuilder(column: $table.bringBall, builder: (column) => column);
+
+  GeneratedColumn<bool> get bringWater => $composableBuilder(
+    column: $table.bringWater,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get crewNotes =>
+      $composableBuilder(column: $table.crewNotes, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+}
+
+class $$MatchLogisticsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $MatchLogisticsTable,
+          MatchLogistic,
+          $$MatchLogisticsTableFilterComposer,
+          $$MatchLogisticsTableOrderingComposer,
+          $$MatchLogisticsTableAnnotationComposer,
+          $$MatchLogisticsTableCreateCompanionBuilder,
+          $$MatchLogisticsTableUpdateCompanionBuilder,
+          (
+            MatchLogistic,
+            BaseReferences<_$AppDatabase, $MatchLogisticsTable, MatchLogistic>,
+          ),
+          MatchLogistic,
+          PrefetchHooks Function()
+        > {
+  $$MatchLogisticsTableTableManager(
+    _$AppDatabase db,
+    $MatchLogisticsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$MatchLogisticsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$MatchLogisticsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$MatchLogisticsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> matchId = const Value.absent(),
+                Value<double?> pitchFeeTotal = const Value.absent(),
+                Value<String> splitMode = const Value.absent(),
+                Value<DateTime?> meetTime = const Value.absent(),
+                Value<bool> bringCash = const Value.absent(),
+                Value<bool> bringBibs = const Value.absent(),
+                Value<bool> bringBall = const Value.absent(),
+                Value<bool> bringWater = const Value.absent(),
+                Value<String?> crewNotes = const Value.absent(),
+                Value<DateTime?> updatedAt = const Value.absent(),
+              }) => MatchLogisticsCompanion(
+                matchId: matchId,
+                pitchFeeTotal: pitchFeeTotal,
+                splitMode: splitMode,
+                meetTime: meetTime,
+                bringCash: bringCash,
+                bringBibs: bringBibs,
+                bringBall: bringBall,
+                bringWater: bringWater,
+                crewNotes: crewNotes,
+                updatedAt: updatedAt,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> matchId = const Value.absent(),
+                Value<double?> pitchFeeTotal = const Value.absent(),
+                Value<String> splitMode = const Value.absent(),
+                Value<DateTime?> meetTime = const Value.absent(),
+                Value<bool> bringCash = const Value.absent(),
+                Value<bool> bringBibs = const Value.absent(),
+                Value<bool> bringBall = const Value.absent(),
+                Value<bool> bringWater = const Value.absent(),
+                Value<String?> crewNotes = const Value.absent(),
+                Value<DateTime?> updatedAt = const Value.absent(),
+              }) => MatchLogisticsCompanion.insert(
+                matchId: matchId,
+                pitchFeeTotal: pitchFeeTotal,
+                splitMode: splitMode,
+                meetTime: meetTime,
+                bringCash: bringCash,
+                bringBibs: bringBibs,
+                bringBall: bringBall,
+                bringWater: bringWater,
+                crewNotes: crewNotes,
+                updatedAt: updatedAt,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$MatchLogisticsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $MatchLogisticsTable,
+      MatchLogistic,
+      $$MatchLogisticsTableFilterComposer,
+      $$MatchLogisticsTableOrderingComposer,
+      $$MatchLogisticsTableAnnotationComposer,
+      $$MatchLogisticsTableCreateCompanionBuilder,
+      $$MatchLogisticsTableUpdateCompanionBuilder,
+      (
+        MatchLogistic,
+        BaseReferences<_$AppDatabase, $MatchLogisticsTable, MatchLogistic>,
+      ),
+      MatchLogistic,
+      PrefetchHooks Function()
+    >;
 typedef $$TacticsTableCreateCompanionBuilder =
     TacticsCompanion Function({
       Value<int> matchId,
@@ -7419,6 +8331,8 @@ class $AppDatabaseManager {
       $$LineupSlotsTableTableManager(_db, _db.lineupSlots);
   $$AttendanceTableTableManager get attendance =>
       $$AttendanceTableTableManager(_db, _db.attendance);
+  $$MatchLogisticsTableTableManager get matchLogistics =>
+      $$MatchLogisticsTableTableManager(_db, _db.matchLogistics);
   $$TacticsTableTableManager get tactics =>
       $$TacticsTableTableManager(_db, _db.tactics);
   $$DoDontItemsTableTableManager get doDontItems =>

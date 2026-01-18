@@ -10,8 +10,25 @@ class LineupProvider extends ChangeNotifier {
 
   final LineupRepository _repository;
 
+  Stream<Lineup?> watchLineup(int matchId, int teamId) =>
+      _repository.watchLineup(matchId, teamId);
+
   Stream<List<LineupSlot>> watchLineupSlots(int matchId, int teamId) =>
       _repository.watchLineupSlots(matchId, teamId);
+
+  Future<void> replaceLineupSlots({
+    required int matchId,
+    required int teamId,
+    required List<LineupSlotsCompanion> entries,
+  }) {
+    return _repository.replaceLineupSlots(matchId, teamId, entries);
+  }
+
+  Stream<List<AttendanceData>> watchAttendance(int matchId, int teamId) =>
+      _repository.watchAttendance(matchId, teamId);
+
+  Stream<MatchLogistic?> watchMatchLogistics(int matchId) =>
+      _repository.watchMatchLogistics(matchId);
 
   Future<void> upsertLineup({
     required int matchId,
@@ -23,6 +40,7 @@ class LineupProvider extends ChangeNotifier {
         matchId: matchId,
         teamId: teamId,
         formation: Value(formation),
+        updatedAt: Value(DateTime.now()),
       ),
     );
   }
@@ -57,6 +75,33 @@ class LineupProvider extends ChangeNotifier {
         teamId: teamId,
         playerId: playerId,
         isComing: Value(isComing),
+      ),
+    );
+  }
+
+  Future<void> upsertMatchLogistics({
+    required int matchId,
+    double? pitchFeeTotal,
+    String splitMode = 'confirmed',
+    DateTime? meetTime,
+    bool bringCash = false,
+    bool bringBibs = false,
+    bool bringBall = false,
+    bool bringWater = false,
+    String? crewNotes,
+  }) {
+    return _repository.upsertMatchLogistics(
+      MatchLogisticsCompanion.insert(
+        matchId: Value(matchId),
+        pitchFeeTotal: Value(pitchFeeTotal),
+        splitMode: Value(splitMode),
+        meetTime: Value(meetTime),
+        bringCash: Value(bringCash),
+        bringBibs: Value(bringBibs),
+        bringBall: Value(bringBall),
+        bringWater: Value(bringWater),
+        crewNotes: Value(crewNotes),
+        updatedAt: Value(DateTime.now()),
       ),
     );
   }

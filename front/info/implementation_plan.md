@@ -146,13 +146,13 @@
 - [x] `front/lib/ui/pages/match_center_page.dart` (summary, roster preview, actions, finalize match)
 - [x] `front/lib/data/local/database/schema/matches.dart` (result/score fields)
 
-### - [ ] Phase 15 — Screen: Lineup & Tactics Board (`/lineup-tactics`)
+### - [x] Phase 15 — Screen: Lineup & Tactics Board (`/lineup-tactics`)
 
-- [ ] `front/lib/ui/pages/lineup_tactics_board_page.dart` (3 tabs: Lineup/Tactics/Logistics)
-- [ ] Tab Lineup: formation, slots, auto-arrange, clear, soft warnings (save дозволено)
-- [ ] Tab Tactics: pressing/width/build-up, set pieces notes, quick notes, do/don’t з чекбоксами
-- [ ] Tab Logistics: attendance, fee split, match sheet notes, copy summary
-- [ ] Kit clash detector (MVP): автоматично, без UI
+- [x] `front/lib/ui/pages/lineup_tactics_board_page.dart` (3 tabs: Lineup/Tactics/Logistics)
+- [x] Tab Lineup: formation, slots, auto-arrange, clear, soft warnings (save дозволено)
+- [x] Tab Tactics: pressing/width/build-up, set pieces notes, quick notes, do/don’t з чекбоксами
+- [x] Tab Logistics: attendance, fee split, match sheet notes, copy summary
+- [x] Kit clash detector (MVP): автоматично, без UI
 
 ### - [x] Phase 16 — Screen: Stats (`/stats`)
 
@@ -164,7 +164,7 @@
 
 ### - [x] Phase 18 — Privacy (method placeholder)
 
-- [x] `front/lib/ui/privacy/privacy_actions.dart` (TODO: статичний privacy текст як модал, без зовнішніх лінків)
+- [x] `front/lib/ui/privacy/privacy_actions.dart` (TODO: статичний privacy текст  як модал, без зовнішніх лінків)
 
 ### - [ ] Phase 19 — Дизайн-полірування, UX та перевірка відповідності (по скрінах)
 
