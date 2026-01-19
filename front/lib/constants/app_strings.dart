@@ -304,9 +304,19 @@ class AppStrings {
   static const String notificationsPermissionDenied =
       'Allow notifications in system settings to enable reminders.';
   static const String notificationsOpenSettings = 'Open settings';
+  static const String notificationsRationaleTitle = 'Enable notifications?';
+  static const String notificationsRationaleMessage =
+      'Get reminders 15 minutes before your matches so you never miss a game.';
+  static const String notificationsRationaleAllow = 'Allow';
+  static const String notificationsRationaleNotNow = 'Not now';
+  static const String notificationsBlockedTitle = 'Notifications blocked';
+  static const String notificationsBlockedMessage =
+      'Notifications are disabled in system settings. '
+      'Open settings to allow notifications for match reminders.';
   static const String settingsSectionAbout = 'About:';
   static const String settingsRowVersion = 'Version';
   static const String settingsRowPrivacy = 'Privacy';
+  static const String settingsRowSupport = 'Support';
   static const String settingsRowOpenSourceLicenses = 'Open source licenses';
   static const String settingsClearAllData = 'Clear all data';
   static const String settingsClearAllDataConfirmTitle = 'Clear all data?';

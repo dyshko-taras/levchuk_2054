@@ -22,7 +22,7 @@ class TeamsDirectoryPage extends StatelessWidget {
     return const Scaffold(
       body: const ColoredBox(
         color: AppColors.darkNavy,
-        child: SafeArea(child: _Body()),
+        child: SafeArea(bottom: false, child: _Body()),
       ),
     );
   }

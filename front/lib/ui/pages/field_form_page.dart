@@ -304,7 +304,7 @@ class _FieldFormPageState extends State<FieldFormPage> {
       return const Scaffold(
         body: ColoredBox(
           color: AppColors.darkNavy,
-          child: SafeArea(child: SizedBox.shrink()),
+          child: SafeArea(bottom: false, child: SizedBox.shrink()),
         ),
       );
     }
@@ -313,6 +313,7 @@ class _FieldFormPageState extends State<FieldFormPage> {
       body: ColoredBox(
         color: AppColors.darkNavy,
         child: SafeArea(
+          bottom: false,
           child: Padding(
             padding: Insets.allMd,
             child: Column(

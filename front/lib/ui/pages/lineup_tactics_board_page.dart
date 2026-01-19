@@ -128,6 +128,7 @@ class _LineupTacticsBoardPageState extends State<LineupTacticsBoardPage> {
         children: [
           const ColoredBox(color: AppColors.darkNavy),
           SafeArea(
+            bottom: false,
             child: Center(
               child: ConstrainedBox(
                 constraints: const BoxConstraints(
@@ -1601,27 +1602,33 @@ class _PillPickerButton extends StatelessWidget {
           padding: EdgeInsets.zero,
         ),
         onPressed: enabled ? onPressed : null,
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              value == null || value!.isEmpty ? label : value!,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: AppColors.white,
-                fontWeight: FontWeight.w600,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+          child: Row(
+            children: [
+              Flexible(
+                child: Text(
+                  value == null || value!.isEmpty ? label : value!,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: AppColors.white,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                ),
               ),
-            ),
-            Gaps.wXs,
-            SvgPicture.asset(
-              AppIcons.chevronDown,
-              width: AppSizes.iconMd,
-              height: AppSizes.iconMd,
-              colorFilter: const ColorFilter.mode(
-                AppColors.white,
-                BlendMode.srcIn,
+              Gaps.wXs,
+              SvgPicture.asset(
+                AppIcons.chevronDown,
+                width: AppSizes.iconMd,
+                height: AppSizes.iconMd,
+                colorFilter: const ColorFilter.mode(
+                  AppColors.white,
+                  BlendMode.srcIn,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

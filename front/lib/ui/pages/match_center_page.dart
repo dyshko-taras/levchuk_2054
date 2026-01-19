@@ -67,6 +67,7 @@ class _MatchCenterPageState extends State<MatchCenterPage> {
         body: ColoredBox(
           color: AppColors.darkNavy,
           child: SafeArea(
+            bottom: false,
             child: Center(
               child: Text(AppStrings.matchCenterMatchNotFound),
             ),
@@ -119,6 +120,7 @@ class _MatchCenterPageState extends State<MatchCenterPage> {
       body: ColoredBox(
         color: AppColors.darkNavy,
         child: SafeArea(
+          bottom: false,
           child: Padding(
             padding: Insets.allMd,
             child: Column(

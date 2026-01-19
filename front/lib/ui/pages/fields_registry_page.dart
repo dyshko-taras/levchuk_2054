@@ -25,7 +25,7 @@ class FieldsRegistryPage extends StatelessWidget {
     return const Scaffold(
       body: ColoredBox(
         color: AppColors.darkNavy,
-        child: SafeArea(child: _Body()),
+        child: SafeArea(bottom: false, child: _Body()),
       ),
     );
   }

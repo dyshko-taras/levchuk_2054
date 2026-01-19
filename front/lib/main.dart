@@ -13,6 +13,12 @@ Future<void> main() async {
     DeviceOrientation.portraitDown,
   ]);
 
+  // Enable immersive sticky mode - hides navigation bar, respects top safe area
+  await SystemChrome.setEnabledSystemUIMode(
+    SystemUiMode.immersiveSticky,
+    overlays: [SystemUiOverlay.top],
+  );
+
   await NotificationService.initialize();
   final prefs = await PrefsStore.create();
   if (prefs.localRemindersEnabled &&

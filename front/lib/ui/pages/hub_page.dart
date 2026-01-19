@@ -164,6 +164,7 @@ class _HubPageState extends State<HubPage> {
         ),
       ),
       body: SafeArea(
+        bottom: false,
         child: Padding(
           padding: Insets.allMd,
           child: Column(

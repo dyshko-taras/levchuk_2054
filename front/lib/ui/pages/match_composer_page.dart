@@ -595,6 +595,7 @@ class _MatchComposerPageState extends State<MatchComposerPage> {
       body: ColoredBox(
         color: AppColors.darkNavy,
         child: SafeArea(
+          bottom: false,
           child: Padding(
             padding: Insets.allMd,
             child: Column(

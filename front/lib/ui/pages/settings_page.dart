@@ -19,13 +19,204 @@ import '../privacy/privacy_actions.dart';
 import '../theme/app_colors.dart';
 import '../widgets/buttons/app_buttons.dart';
 
-class SettingsPage extends StatelessWidget {
+class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
 
-  static DateTime? _lastNotificationsDeniedSnackAt;
-  static const Duration _notificationsDeniedSnackCooldown = Duration(
-    seconds: 6,
-  );
+  @override
+  State<SettingsPage> createState() => _SettingsPageState();
+}
+
+class _SettingsPageState extends State<SettingsPage> with WidgetsBindingObserver {
+  bool _notificationsAllowed = true;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    _syncNotificationState();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // Re-check permission when app resumes (e.g., returning from system settings)
+    if (state == AppLifecycleState.resumed) {
+      _syncNotificationState();
+    }
+  }
+
+  Future<void> _syncNotificationState() async {
+    final allowed = await NotificationService.areNotificationsEnabled();
+    if (!mounted) return;
+
+    setState(() => _notificationsAllowed = allowed);
+
+    // If system permission is denied, ensure our setting is also off
+    if (!allowed) {
+      final settings = context.read<SettingsProvider>();
+      if (settings.localRemindersEnabled) {
+        await settings.setLocalRemindersEnabled(false);
+        await NotificationService.setMatchRemindersEnabled(false);
+      }
+    }
+  }
+
+  Future<void> _onNotificationToggleChanged(bool value) async {
+    final settings = context.read<SettingsProvider>();
+
+    // Turning off - just disable
+    if (!value) {
+      await settings.setLocalRemindersEnabled(false);
+      await NotificationService.setMatchRemindersEnabled(false);
+      return;
+    }
+
+    // Turning on - check permission first
+    final alreadyAllowed = await NotificationService.areNotificationsEnabled();
+
+    if (alreadyAllowed) {
+      // Permission already granted, just enable
+      await settings.setLocalRemindersEnabled(true);
+      await NotificationService.setMatchRemindersEnabled(true);
+      return;
+    }
+
+    // Show rationale dialog before requesting permission
+    if (!mounted) return;
+    final shouldRequest = await _showRationaleDialog();
+    if (shouldRequest != true) return;
+
+    // Request permission
+    await NotificationService.requestPermissionsIfNeeded();
+    if (!mounted) return;
+
+    // Check if granted after request
+    final granted = await NotificationService.areNotificationsEnabled();
+    setState(() => _notificationsAllowed = granted);
+
+    if (granted) {
+      await settings.setLocalRemindersEnabled(true);
+      await NotificationService.setMatchRemindersEnabled(true);
+    } else {
+      // Permission denied - show blocked dialog
+      if (!mounted) return;
+      await _showBlockedDialog();
+    }
+  }
+
+  Future<bool?> _showRationaleDialog() {
+    return showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          backgroundColor: AppColors.darkNavy,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppSpacing.lg),
+            side: const BorderSide(color: AppColors.whiteOverlay20),
+          ),
+          child: Padding(
+            padding: Insets.allMd,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  AppStrings.notificationsRationaleTitle,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                Gaps.hSm,
+                Text(
+                  AppStrings.notificationsRationaleMessage,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: AppColors.whiteOverlay70,
+                  ),
+                ),
+                Gaps.hMd,
+                Row(
+                  children: [
+                    Expanded(
+                      child: AppSecondaryButton(
+                        label: AppStrings.notificationsRationaleNotNow,
+                        onPressed: () => Navigator.of(context).pop(false),
+                      ),
+                    ),
+                    Gaps.wSm,
+                    Expanded(
+                      child: AppPrimaryButton(
+                        label: AppStrings.notificationsRationaleAllow,
+                        onPressed: () => Navigator.of(context).pop(true),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _showBlockedDialog() {
+    return showDialog<void>(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          backgroundColor: AppColors.darkNavy,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppSpacing.lg),
+            side: const BorderSide(color: AppColors.whiteOverlay20),
+          ),
+          child: Padding(
+            padding: Insets.allMd,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  AppStrings.notificationsBlockedTitle,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                Gaps.hSm,
+                Text(
+                  AppStrings.notificationsBlockedMessage,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: AppColors.whiteOverlay70,
+                  ),
+                ),
+                Gaps.hMd,
+                Row(
+                  children: [
+                    Expanded(
+                      child: AppSecondaryButton(
+                        label: AppStrings.notificationsRationaleNotNow,
+                        onPressed: () => Navigator.of(context).pop(),
+                      ),
+                    ),
+                    Gaps.wSm,
+                    Expanded(
+                      child: AppPrimaryButton(
+                        label: AppStrings.notificationsOpenSettings,
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          NotificationService.openAppNotificationSettings();
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,10 +242,15 @@ class SettingsPage extends StatelessWidget {
                   .firstWhere((f) => f != null, orElse: () => null) ??
               AppStrings.settingsDefaultFieldNone;
 
+    // Toggle is ON only if both user setting AND system permission are enabled
+    final notificationsEffectivelyEnabled =
+        settings.localRemindersEnabled && _notificationsAllowed;
+
     return Scaffold(
       body: ColoredBox(
         color: AppColors.darkNavy,
         child: SafeArea(
+          bottom: false,
           child: Padding(
             padding: Insets.allMd,
             child: Column(
@@ -136,72 +332,9 @@ class SettingsPage extends StatelessWidget {
                               ),
                               Gaps.hSm,
                               _RowSwitch(
-                                label:
-                                    AppStrings.settingsRowLocalMatchReminders,
-                                value: settings.localRemindersEnabled,
-                                onChanged: (value) async {
-                                  if (!value) {
-                                    await settings.setLocalRemindersEnabled(
-                                      false,
-                                    );
-                                    await NotificationService.setMatchRemindersEnabled(
-                                      false,
-                                    );
-                                    return;
-                                  }
-
-                                  final granted =
-                                      await NotificationService.ensureNotificationPermission();
-                                  if (!context.mounted) return;
-
-                                  if (!granted) {
-                                    await settings.setLocalRemindersEnabled(
-                                      false,
-                                    );
-                                    await NotificationService.setMatchRemindersEnabled(
-                                      false,
-                                    );
-
-                                    final now = DateTime.now();
-                                    final last =
-                                        _lastNotificationsDeniedSnackAt;
-                                    final canShow =
-                                        last == null ||
-                                        now.difference(last) >
-                                            _notificationsDeniedSnackCooldown;
-                                    if (canShow) {
-                                      _lastNotificationsDeniedSnackAt = now;
-                                      final messenger = ScaffoldMessenger.of(
-                                        context,
-                                      );
-                                      messenger.hideCurrentSnackBar();
-                                      messenger.showSnackBar(
-                                        SnackBar(
-                                          content: const Text(
-                                            AppStrings
-                                                .notificationsPermissionDenied,
-                                          ),
-                                          duration: const Duration(seconds: 4),
-                                          showCloseIcon: true,
-                                          action: SnackBarAction(
-                                            label: AppStrings
-                                                .notificationsOpenSettings,
-                                            onPressed: () {
-                                              messenger.hideCurrentSnackBar();
-                                              NotificationService.openAppNotificationSettings();
-                                            },
-                                          ),
-                                        ),
-                                      );
-                                    }
-                                    return;
-                                  }
-
-                                  await settings.setLocalRemindersEnabled(true);
-                                  await NotificationService.setMatchRemindersEnabled(
-                                    true,
-                                  );
-                                },
+                                label: AppStrings.settingsRowLocalMatchReminders,
+                                value: notificationsEffectivelyEnabled,
+                                onChanged: _onNotificationToggleChanged,
                               ),
                               Gaps.hMd,
                               const _SectionTitle(
@@ -253,6 +386,14 @@ class SettingsPage extends StatelessWidget {
                                 label: AppStrings.settingsRowPrivacy,
                                 trailingText: null,
                                 onTap: () => openPrivacy(context),
+                              ),
+                              Gaps.hSm,
+                              _RowButton(
+                                label: AppStrings.settingsRowSupport,
+                                trailingText: null,
+                                onTap: () {
+                                  // TODO: Implement support action
+                                },
                               ),
                             ],
                           ),

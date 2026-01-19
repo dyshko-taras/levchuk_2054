@@ -282,6 +282,7 @@ class _TeamStudioPageState extends State<TeamStudioPage> {
         children: [
           const ColoredBox(color: AppColors.darkNavy),
           SafeArea(
+            bottom: false,
             child: Padding(
               padding: Insets.allMd,
               child: Column(

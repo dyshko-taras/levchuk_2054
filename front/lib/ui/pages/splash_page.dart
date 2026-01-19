@@ -8,7 +8,9 @@ import '../../constants/app_sizes.dart';
 import '../../constants/app_spacing.dart';
 import '../../constants/app_strings.dart';
 import '../../data/local/database/app_database.dart';
+import '../../data/local/prefs_store.dart';
 import '../../providers/settings_provider.dart';
+import '../../services/demo_data_seeder.dart';
 import '../theme/app_colors.dart';
 
 class SplashPage extends StatefulWidget {
@@ -34,6 +36,10 @@ class _SplashPageState extends State<SplashPage> {
     try {
       final db = context.read<AppDatabase>();
       await db.customSelect('SELECT 1').getSingleOrNull();
+
+      final prefs = context.read<PrefsStore>();
+      final seeder = DemoDataSeeder(database: db, prefs: prefs);
+      await seeder.seedIfNeeded();
 
       final settings = context.read<SettingsProvider>();
       final targetRoute = settings.isFirstLaunch
@@ -100,6 +106,7 @@ class _SplashPageState extends State<SplashPage> {
             ),
           ),
           const SafeArea(
+            bottom: false,
             child: Padding(
               padding: EdgeInsets.only(bottom: AppSpacing.xl),
               child: Align(

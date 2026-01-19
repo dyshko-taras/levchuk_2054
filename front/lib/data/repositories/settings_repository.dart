@@ -28,5 +28,7 @@ class SettingsRepository {
       await _database.delete(_database.settingsEntries).go();
     });
     await _prefs.clear();
+    // Prevent demo data from being re-seeded after user clears data
+    await _prefs.setDemoDataSeeded();
   }
 }

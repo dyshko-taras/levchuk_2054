@@ -10,7 +10,6 @@ import '../../constants/app_sizes.dart';
 import '../../constants/app_spacing.dart';
 import '../../constants/app_strings.dart';
 import '../../providers/settings_provider.dart';
-import '../privacy/privacy_actions.dart';
 import '../theme/app_colors.dart';
 import '../widgets/buttons/app_buttons.dart';
 
@@ -86,10 +85,6 @@ class _OnboardingPageState extends State<OnboardingPage> {
     await _goTo(2);
   }
 
-  Future<void> _openPrivacy() async {
-    await openPrivacy(context);
-  }
-
   @override
   Widget build(BuildContext context) {
     final isLast = _index == 2;
@@ -109,6 +104,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 .toList(growable: false),
           ),
           SafeArea(
+            bottom: false,
             child: Column(
               children: [
                 Padding(
@@ -144,13 +140,6 @@ class _OnboardingPageState extends State<OnboardingPage> {
                             isLast ? AppStrings.onboardingStart : AppStrings.onboardingNext,
                         onPressed: _next,
                       ),
-                      if (isLast) ...[
-                        Gaps.hMd,
-                        AppSecondaryButton(
-                          label: AppStrings.onboardingPrivacy,
-                          onPressed: _openPrivacy,
-                        ),
-                      ],
                     ],
                   ),
                 ),

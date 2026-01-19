@@ -9,6 +9,7 @@ class PrefsStore {
   static const String _keyLocalRemindersEnabled = 'local_reminders_enabled';
   static const String _keyDefaultTeamId = 'default_team_id';
   static const String _keyDefaultFieldId = 'default_field_id';
+  static const String _keyDemoDataSeeded = 'demo_data_seeded';
 
   static Future<PrefsStore> create() async {
     final prefs = await SharedPreferences.getInstance();
@@ -47,6 +48,11 @@ class PrefsStore {
 
     await _prefs.setInt(_keyDefaultFieldId, fieldId);
   }
+
+  bool get isDemoDataSeeded => _prefs.getBool(_keyDemoDataSeeded).isTrue;
+
+  Future<void> setDemoDataSeeded() =>
+      _prefs.setBool(_keyDemoDataSeeded, true);
 
   Future<void> clear() => _prefs.clear();
 }
