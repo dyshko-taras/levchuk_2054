@@ -1,9 +1,12 @@
 import 'package:drift/drift.dart' show Value;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants/app_icons.dart';
+import '../../constants/app_images.dart';
+import '../../constants/app_limits.dart';
 import '../../constants/app_sizes.dart';
 import '../../constants/app_spacing.dart';
 import '../../constants/app_strings.dart';
@@ -40,6 +43,8 @@ class _TeamStudioPageState extends State<TeamStudioPage> {
   bool _loading = true;
   bool _saving = false;
 
+  final List<_DraftPlayer> _draftPlayers = [];
+
   @override
   void initState() {
     super.initState();
@@ -62,6 +67,7 @@ class _TeamStudioPageState extends State<TeamStudioPage> {
     final createNew = args is TeamStudioArgs ? args.createNew : false;
 
     if (createNew) {
+      _badgeId ??= AppImages.teamBadges.firstOrNull;
       setState(() => _loading = false);
       return;
     }
@@ -75,7 +81,7 @@ class _TeamStudioPageState extends State<TeamStudioPage> {
     if (team != null) {
       _editingTeamId = team.id;
       _nameController.text = team.name;
-      _badgeId = team.badgeIcon;
+      _badgeId = team.badgeIcon ?? AppImages.teamBadges.firstOrNull;
 
       _homePrimary = team.homePrimaryColor == null
           ? _homePrimary
@@ -91,6 +97,7 @@ class _TeamStudioPageState extends State<TeamStudioPage> {
           : Color(team.awaySecondaryColor!);
     }
 
+    _badgeId ??= AppImages.teamBadges.firstOrNull;
     setState(() => _loading = false);
   }
 
@@ -101,6 +108,13 @@ class _TeamStudioPageState extends State<TeamStudioPage> {
     if (name.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text(AppStrings.teamStudioNameRequiredError)),
+      );
+      return;
+    }
+
+    if (_badgeId == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text(AppStrings.teamStudioBadgeRequiredError)),
       );
       return;
     }
@@ -133,6 +147,19 @@ class _TeamStudioPageState extends State<TeamStudioPage> {
         await settings.setDefaultTeamId(id);
         await teamsProvider.setDefaultTeamFlag(id);
       }
+
+      if (_draftPlayers.isNotEmpty) {
+        for (final draft in List<_DraftPlayer>.from(_draftPlayers)) {
+          await teamsProvider.createPlayer(
+            teamId: id,
+            name: draft.name,
+            position: draft.position,
+            number: draft.number,
+          );
+        }
+        _draftPlayers.clear();
+      }
+
       _editingTeamId = id;
     } else {
       final Team? current = teamsProvider.teams
@@ -157,94 +184,47 @@ class _TeamStudioPageState extends State<TeamStudioPage> {
     Navigator.of(context).pop();
   }
 
-  Future<void> _openMoreMenu() async {
+  Future<void> _openPlayerDialog({
+    Player? player,
+    int? draftIndex,
+  }) async {
     final teamId = _editingTeamId;
-    if (teamId == null) return;
-
-    final canDelete = await context.read<TeamsProvider>().canDeleteTeam(teamId);
-
-    if (!mounted) return;
-    await showModalBottomSheet<void>(
-      context: context,
-      backgroundColor: AppColors.darkNavy,
-      builder: (context) {
-        return Padding(
-          padding: Insets.allMd,
-          child: Container(
-            decoration: BoxDecoration(
-              color: AppColors.whiteOverlay10,
-              borderRadius: BorderRadius.circular(AppSpacing.lg),
-              border: Border.all(color: AppColors.whiteOverlay20),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                ListTile(
-                  title: Text(
-                    AppStrings.teamStudioMenuDeleteTeam,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: canDelete
-                          ? AppColors.darkRed
-                          : AppColors.whiteOverlay70,
-                    ),
-                  ),
-                  onTap: canDelete
-                      ? () async {
-                          Navigator.of(context).pop();
-                          await context.read<TeamsProvider>().deleteTeamById(
-                            teamId,
-                          );
-                          await context
-                              .read<SettingsProvider>()
-                              .setDefaultTeamId(null);
-                          if (!context.mounted) return;
-                          Navigator.of(context).pop();
-                        }
-                      : () {
-                          Navigator.of(context).pop();
-                          ScaffoldMessenger.of(this.context).showSnackBar(
-                            const SnackBar(
-                              content: Text(
-                                AppStrings.teamStudioDeleteNotAllowed,
-                              ),
-                            ),
-                          );
-                        },
-                ),
-                const Divider(height: 1, color: AppColors.whiteOverlay20),
-                ListTile(
-                  title: Text(
-                    AppStrings.teamStudioMenuSetAsDefault,
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                  onTap: () async {
-                    Navigator.of(context).pop();
-                    await context.read<SettingsProvider>().setDefaultTeamId(
-                      teamId,
-                    );
-                    await context.read<TeamsProvider>().setDefaultTeamFlag(
-                      teamId,
-                    );
-                  },
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  Future<void> _openPlayerDialog({Player? player}) async {
-    final teamId = _editingTeamId;
-    if (teamId == null) return;
+    final draft = draftIndex == null
+        ? null
+        : _draftPlayers.elementAtOrNull(draftIndex);
 
     await showDialog<void>(
       context: context,
       builder: (context) {
         return _PlayerDialog(
-          player: player,
+          initialName: player?.name ?? draft?.name ?? '',
+          initialPosition: player?.position ?? draft?.position ?? 'GK',
+          initialNumber: player?.number?.toString() ?? draft?.numberText ?? '',
+          isEditing: player != null || draft != null,
           onSubmit: (name, position, number) async {
+            if (teamId == null) {
+              if (draftIndex == null) {
+                setState(
+                  () => _draftPlayers.add(
+                    _DraftPlayer(
+                      name: name,
+                      position: position,
+                      number: number,
+                    ),
+                  ),
+                );
+              } else {
+                setState(
+                  () => _draftPlayers[draftIndex] = _DraftPlayer(
+                    name: name,
+                    position: position,
+                    number: number,
+                  ),
+                );
+              }
+              return;
+            }
+
             final provider = context.read<TeamsProvider>();
             if (player == null) {
               await provider.createPlayer(
@@ -253,15 +233,16 @@ class _TeamStudioPageState extends State<TeamStudioPage> {
                 position: position,
                 number: number,
               );
-            } else {
-              await provider.updatePlayer(
-                player.copyWith(
-                  name: name,
-                  position: Value(position),
-                  number: Value(number),
-                ),
-              );
+              return;
             }
+
+            await provider.updatePlayer(
+              player.copyWith(
+                name: name,
+                position: Value(position),
+                number: Value(number),
+              ),
+            );
           },
         );
       },
@@ -277,7 +258,7 @@ class _TeamStudioPageState extends State<TeamStudioPage> {
     final teamId = _editingTeamId;
 
     return Scaffold(
-      floatingActionButton: _tab == _Tab.roster && teamId != null
+      floatingActionButton: _tab == _Tab.roster
           ? SizedBox(
               height: AppSizes.hubFabSize,
               width: AppSizes.hubFabSize,
@@ -319,19 +300,6 @@ class _TeamStudioPageState extends State<TeamStudioPage> {
                             BlendMode.srcIn,
                           ),
                         ),
-                      ),
-                      const Spacer(),
-                      AppIconCircleButton(
-                        icon: SvgPicture.asset(
-                          AppIcons.more,
-                          width: AppSizes.iconMd,
-                          height: AppSizes.iconMd,
-                          colorFilter: const ColorFilter.mode(
-                            AppColors.white,
-                            BlendMode.srcIn,
-                          ),
-                        ),
-                        onPressed: _openMoreMenu,
                       ),
                     ],
                   ),
@@ -376,7 +344,12 @@ class _TeamStudioPageState extends State<TeamStudioPage> {
                             )
                           : _RosterTab(
                               teamId: teamId,
-                              onEdit: (p) => _openPlayerDialog(player: p),
+                              draftPlayers: _draftPlayers,
+                              onEditDb: (p) => _openPlayerDialog(player: p),
+                              onEditDraft: (index) =>
+                                  _openPlayerDialog(draftIndex: index),
+                              onDeleteDraft: (index) =>
+                                  setState(() => _draftPlayers.removeAt(index)),
                             ),
                     ),
                   ),
@@ -456,6 +429,9 @@ class _ProfileTab extends StatelessWidget {
               AppPillTextField(
                 controller: nameController,
                 hintText: AppStrings.teamStudioTeamNameHint,
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(AppLimits.teamNameMax),
+                ],
               ),
               Gaps.hLg,
               Text(
@@ -522,40 +498,117 @@ class _ProfileTab extends StatelessWidget {
 class _RosterTab extends StatelessWidget {
   const _RosterTab({
     required this.teamId,
-    required this.onEdit,
+    required this.draftPlayers,
+    required this.onEditDb,
+    required this.onEditDraft,
+    required this.onDeleteDraft,
   });
 
   final int? teamId;
-  final ValueChanged<Player> onEdit;
+  final List<_DraftPlayer> draftPlayers;
+  final ValueChanged<Player> onEditDb;
+  final ValueChanged<int> onEditDraft;
+  final ValueChanged<int> onDeleteDraft;
 
   @override
   Widget build(BuildContext context) {
     if (teamId == null) {
-      return const SizedBox.shrink();
+      return _DraftRosterList(
+        players: draftPlayers,
+        onEdit: onEditDraft,
+        onDelete: onDeleteDraft,
+      );
     }
 
     return StreamBuilder<List<Player>>(
       stream: context.watch<TeamsProvider>().watchPlayersByTeam(teamId!),
       builder: (context, snapshot) {
         final players = snapshot.data ?? const [];
-        return Container(
-          padding: Insets.allMd,
-          decoration: BoxDecoration(
-            color: AppColors.whiteOverlay10,
-            borderRadius: BorderRadius.circular(AppSpacing.lg),
-            border: Border.all(color: AppColors.whiteOverlay20),
-          ),
-          child: Column(
-            children: [
-              for (var i = 0; i < players.length; i++) ...[
-                _PlayerRow(player: players[i], onEdit: onEdit),
-                if (i != players.length - 1)
-                  const Divider(height: 18, color: AppColors.whiteOverlay20),
-              ],
-            ],
-          ),
-        );
+        return _DbRosterList(players: players, onEdit: onEditDb);
       },
+    );
+  }
+}
+
+class _DbRosterList extends StatelessWidget {
+  const _DbRosterList({required this.players, required this.onEdit});
+
+  final List<Player> players;
+  final ValueChanged<Player> onEdit;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: Insets.allMd,
+      decoration: BoxDecoration(
+        color: AppColors.whiteOverlay10,
+        borderRadius: BorderRadius.circular(AppSpacing.lg),
+        border: Border.all(color: AppColors.whiteOverlay20),
+      ),
+      child: Column(
+        children: [
+          for (var i = 0; i < players.length; i++) ...[
+            _PlayerRow(player: players[i], onEdit: onEdit),
+            if (i != players.length - 1)
+              const Divider(height: 18, color: AppColors.whiteOverlay20),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+class _DraftRosterList extends StatelessWidget {
+  const _DraftRosterList({
+    required this.players,
+    required this.onEdit,
+    required this.onDelete,
+  });
+
+  final List<_DraftPlayer> players;
+  final ValueChanged<int> onEdit;
+  final ValueChanged<int> onDelete;
+
+  @override
+  Widget build(BuildContext context) {
+    if (players.isEmpty) {
+      return Container(
+        padding: Insets.allMd,
+        decoration: BoxDecoration(
+          color: AppColors.whiteOverlay10,
+          borderRadius: BorderRadius.circular(AppSpacing.lg),
+          border: Border.all(color: AppColors.whiteOverlay20),
+        ),
+        alignment: Alignment.center,
+        child: Text(
+          AppStrings.teamStudioRosterAddPlayersHint,
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            color: AppColors.whiteOverlay70,
+          ),
+        ),
+      );
+    }
+
+    return Container(
+      padding: Insets.allMd,
+      decoration: BoxDecoration(
+        color: AppColors.whiteOverlay10,
+        borderRadius: BorderRadius.circular(AppSpacing.lg),
+        border: Border.all(color: AppColors.whiteOverlay20),
+      ),
+      child: Column(
+        children: [
+          for (var i = 0; i < players.length; i++) ...[
+            _DraftPlayerRow(
+              player: players[i],
+              onEdit: () => onEdit(i),
+              onDelete: () => onDelete(i),
+            ),
+            if (i != players.length - 1)
+              const Divider(height: 18, color: AppColors.whiteOverlay20),
+          ],
+        ],
+      ),
     );
   }
 }
@@ -631,10 +684,19 @@ class _PlayerRow extends StatelessWidget {
 }
 
 class _PlayerDialog extends StatefulWidget {
-  const _PlayerDialog({required this.player, required this.onSubmit});
+  const _PlayerDialog({
+    required this.initialName,
+    required this.initialPosition,
+    required this.initialNumber,
+    required this.isEditing,
+    required this.onSubmit,
+  });
 
-  final Player? player;
-  final Future<void> Function(String name, String? position, int? number)
+  final String initialName;
+  final String initialPosition;
+  final String initialNumber;
+  final bool isEditing;
+  final Future<void> Function(String name, String position, int number)
   onSubmit;
 
   @override
@@ -643,26 +705,22 @@ class _PlayerDialog extends StatefulWidget {
 
 class _PlayerDialogState extends State<_PlayerDialog> {
   final _nameController = TextEditingController();
-  final _positionController = TextEditingController();
   final _numberController = TextEditingController();
+  String _position = 'GK';
 
   bool _saving = false;
 
   @override
   void initState() {
     super.initState();
-    final p = widget.player;
-    if (p != null) {
-      _nameController.text = p.name;
-      _positionController.text = p.position ?? '';
-      _numberController.text = p.number?.toString() ?? '';
-    }
+    _nameController.text = widget.initialName;
+    _numberController.text = widget.initialNumber;
+    _position = widget.initialPosition;
   }
 
   @override
   void dispose() {
     _nameController.dispose();
-    _positionController.dispose();
     _numberController.dispose();
     super.dispose();
   }
@@ -670,13 +728,26 @@ class _PlayerDialogState extends State<_PlayerDialog> {
   Future<void> _submit() async {
     if (_saving) return;
     final name = _nameController.text.trim();
-    if (name.isEmpty) return;
+    if (name.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text(AppStrings.teamStudioPlayerNameRequired)),
+      );
+      return;
+    }
 
-    final pos = _positionController.text.trim();
-    final number = int.tryParse(_numberController.text.trim());
+    final numberText = _numberController.text.trim();
+    final number = int.tryParse(numberText);
+    if (number == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(AppStrings.teamStudioPlayerNumberRequired),
+        ),
+      );
+      return;
+    }
 
     setState(() => _saving = true);
-    await widget.onSubmit(name, pos.isEmpty ? null : pos, number);
+    await widget.onSubmit(name, _position, number);
     if (!mounted) return;
     Navigator.of(context).pop();
   }
@@ -696,9 +767,9 @@ class _PlayerDialogState extends State<_PlayerDialog> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              widget.player == null
-                  ? AppStrings.teamStudioPlayerDialogTitle
-                  : AppStrings.commonSave,
+              widget.isEditing
+                  ? AppStrings.commonSave
+                  : AppStrings.teamStudioPlayerDialogTitle,
               style: Theme.of(context).textTheme.titleLarge,
             ),
             Gaps.hMd,
@@ -711,6 +782,9 @@ class _PlayerDialogState extends State<_PlayerDialog> {
               controller: _nameController,
               hintText: AppStrings.teamStudioPlayerNameHint,
               suffixIconAsset: null,
+              inputFormatters: [
+                LengthLimitingTextInputFormatter(AppLimits.playerNameMax),
+              ],
             ),
             Gaps.hSm,
             Row(
@@ -724,10 +798,9 @@ class _PlayerDialogState extends State<_PlayerDialog> {
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
                       Gaps.hXs,
-                      AppPillTextField(
-                        controller: _positionController,
-                        hintText: null,
-                        suffixIconAsset: null,
+                      _PositionDropdown(
+                        value: _position,
+                        onChanged: (value) => setState(() => _position = value),
                       ),
                     ],
                   ),
@@ -748,6 +821,12 @@ class _PlayerDialogState extends State<_PlayerDialog> {
                         hintText: null,
                         suffixIconAsset: null,
                         keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                          LengthLimitingTextInputFormatter(
+                            AppLimits.playerNumberMaxDigits,
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -766,9 +845,9 @@ class _PlayerDialogState extends State<_PlayerDialog> {
                 Gaps.wSm,
                 Expanded(
                   child: AppPrimaryButton(
-                    label: widget.player == null
-                        ? AppStrings.commonAdd
-                        : AppStrings.commonSave,
+                    label: widget.isEditing
+                        ? AppStrings.commonSave
+                        : AppStrings.commonAdd,
                     onPressed: _saving ? () {} : _submit,
                   ),
                 ),
@@ -781,8 +860,150 @@ class _PlayerDialogState extends State<_PlayerDialog> {
   }
 }
 
+class _PositionDropdown extends StatelessWidget {
+  const _PositionDropdown({required this.value, required this.onChanged});
+
+  static const List<String> _positions = ['GK', 'DF', 'MF', 'FW'];
+
+  final String value;
+  final ValueChanged<String> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return InputDecorator(
+      decoration: InputDecoration(
+        filled: true,
+        fillColor: AppColors.whiteOverlay10,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(999),
+          borderSide: const BorderSide(color: AppColors.whiteOverlay20),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(999),
+          borderSide: const BorderSide(color: AppColors.whiteOverlay20),
+        ),
+        contentPadding: Insets.hMd,
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<String>(
+          isExpanded: true,
+          value: _positions.contains(value) ? value : _positions.first,
+          dropdownColor: AppColors.darkNavy,
+          icon: const Icon(Icons.arrow_drop_down, color: AppColors.white),
+          items: _positions
+              .map(
+                (p) => DropdownMenuItem<String>(
+                  value: p,
+                  child: Text(
+                    p,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                ),
+              )
+              .toList(),
+          onChanged: (next) {
+            if (next == null) return;
+            onChanged(next);
+          },
+        ),
+      ),
+    );
+  }
+}
+
+class _DraftPlayerRow extends StatelessWidget {
+  const _DraftPlayerRow({
+    required this.player,
+    required this.onEdit,
+    required this.onDelete,
+  });
+
+  final _DraftPlayer player;
+  final VoidCallback onEdit;
+  final VoidCallback onDelete;
+
+  @override
+  Widget build(BuildContext context) {
+    final subtitleParts = <String>[
+      '${AppStrings.teamStudioPlayerPositionLabel}: ${player.position}',
+      '${AppStrings.teamStudioPlayerNumberLabel}: ${player.number}',
+    ];
+
+    return Row(
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                player.name,
+                style: Theme.of(context).textTheme.titleMedium,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              Gaps.hXs,
+              Text(
+                subtitleParts.join(' • '),
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: AppColors.whiteOverlay70,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          ),
+        ),
+        AppIconCircleButton(
+          icon: SvgPicture.asset(
+            AppIcons.edit,
+            width: AppSizes.iconMd,
+            height: AppSizes.iconMd,
+            colorFilter: const ColorFilter.mode(
+              AppColors.white,
+              BlendMode.srcIn,
+            ),
+          ),
+          onPressed: onEdit,
+        ),
+        Gaps.wSm,
+        AppIconCircleButton(
+          icon: SvgPicture.asset(
+            AppIcons.delete,
+            width: AppSizes.iconMd,
+            height: AppSizes.iconMd,
+            colorFilter: const ColorFilter.mode(
+              AppColors.white,
+              BlendMode.srcIn,
+            ),
+          ),
+          onPressed: onDelete,
+        ),
+      ],
+    );
+  }
+}
+
+class _DraftPlayer {
+  const _DraftPlayer({
+    required this.name,
+    required this.position,
+    required this.number,
+  });
+
+  final String name;
+  final String position;
+  final int number;
+
+  String get numberText => number.toString();
+}
+
 extension on Iterable<Team> {
   Team? get firstOrNull => isEmpty ? null : first;
+}
+
+extension<T> on List<T> {
+  T? elementAtOrNull(int index) =>
+      index < 0 || index >= length ? null : this[index];
 }
 
 class TeamStudioArgs {
