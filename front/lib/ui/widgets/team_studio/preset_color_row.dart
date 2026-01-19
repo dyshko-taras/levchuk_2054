@@ -5,6 +5,7 @@ import '../../../constants/app_radius.dart';
 import '../../../constants/app_spacing.dart';
 import '../../../constants/app_strings.dart';
 import '../../theme/app_colors.dart';
+import '../buttons/app_buttons.dart';
 
 class PresetColorRow extends StatelessWidget {
   const PresetColorRow({
@@ -66,21 +67,28 @@ class PresetColorRow extends StatelessWidget {
         return AlertDialog(
           backgroundColor: AppColors.darkNavy,
           content: SingleChildScrollView(
-            child: ColorPicker(
-              pickerColor: initial,
-              onColorChanged: (c) => temp = c,
-              enableAlpha: false,
-              displayThumbColor: true,
-              labelTypes: const [],
-              paletteType: PaletteType.hsl,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ColorPicker(
+                  pickerColor: initial,
+                  onColorChanged: (c) => temp = c,
+                  enableAlpha: false,
+                  displayThumbColor: true,
+                  labelTypes: const [],
+                  paletteType: PaletteType.hsl,
+                ),
+                Gaps.hMd,
+                SizedBox(
+                  width: 200,
+                  child: AppPrimaryButton(
+                    label: AppStrings.commonOk,
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                ),
+              ],
             ),
           ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text(AppStrings.commonOk),
-            ),
-          ],
         );
       },
     );

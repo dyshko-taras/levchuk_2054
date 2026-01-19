@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter/services.dart';
 
 import '../../../constants/app_icons.dart';
 import '../../../constants/app_sizes.dart';
@@ -18,6 +19,7 @@ class AppPillTextField extends StatelessWidget {
     this.enabled = true,
     this.readOnly = false,
     this.onTap,
+    this.inputFormatters,
   });
 
   final TextEditingController controller;
@@ -29,6 +31,7 @@ class AppPillTextField extends StatelessWidget {
   final bool enabled;
   final bool readOnly;
   final VoidCallback? onTap;
+  final List<TextInputFormatter>? inputFormatters;
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +44,7 @@ class AppPillTextField extends StatelessWidget {
       enabled: enabled,
       readOnly: readOnly,
       onTap: onTap,
+      inputFormatters: inputFormatters,
       showCursor: readOnly ? false : null,
       decoration: InputDecoration(
         hintText: hintText,
@@ -91,6 +95,7 @@ class AppTextAreaField extends StatelessWidget {
     this.suffixIconAsset = AppIcons.edit,
     this.maxLines = 4,
     this.enabled = true,
+    this.inputFormatters,
   });
 
   final TextEditingController controller;
@@ -98,6 +103,7 @@ class AppTextAreaField extends StatelessWidget {
   final String? suffixIconAsset;
   final int maxLines;
   final bool enabled;
+  final List<TextInputFormatter>? inputFormatters;
 
   @override
   Widget build(BuildContext context) {
@@ -105,6 +111,7 @@ class AppTextAreaField extends StatelessWidget {
       controller: controller,
       maxLines: maxLines,
       enabled: enabled,
+      inputFormatters: inputFormatters,
       style: Theme.of(context).textTheme.titleMedium,
       decoration: InputDecoration(
         hintText: hintText,

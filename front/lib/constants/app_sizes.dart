@@ -31,6 +31,7 @@ class AppSizes {
   static const double fieldsRegistryCardHeight = 140;
   static const double fieldsRegistryCardImageWidth = 190;
   static const double fieldFormPhotoSize = 86;
+  static const double fieldsRegistryEmptyButtonWidth = 200;
 
   static const double teamStudioPlayerNumberFieldWidth = 80;
   static const double teamsDirectoryRowButtonHeight = 40;

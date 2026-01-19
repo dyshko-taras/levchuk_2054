@@ -75,6 +75,10 @@ class AppStrings {
   static const String commonRequiredMarker = '*';
   static const String teamStudioNameRequiredError = 'Team name is required';
   static const String teamStudioNameNotUniqueError = 'Team name must be unique';
+  static const String teamStudioBadgeRequiredError = 'Badge icon is required';
+  static const String teamStudioPlayerNameRequired = 'Player name is required';
+  static const String teamStudioPlayerNumberRequired = 'Player # is required';
+  static const String teamStudioRosterAddPlayersHint = 'Add players…';
   static const String teamStudioDeleteNotAllowed =
       'Team can’t be deleted because it is used in matches.';
 
@@ -89,6 +93,8 @@ class AppStrings {
   static const String fieldsRegistryUseForMatch = 'Use for match';
   static const String fieldsRegistryOpen = 'Open';
   static const String fieldsRegistryTypePrefix = 'Grass:';
+  static const String fieldsRegistryMenuDeleteField = 'Delete field';
+  static const String fieldsRegistryMenuSetAsDefault = 'Set as default';
 
   static const String availabilityTitle = 'Availability';
   static const String availabilityFilterPeriod = 'Period';
