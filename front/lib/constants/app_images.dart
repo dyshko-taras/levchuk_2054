@@ -8,11 +8,11 @@ class AppImages {
       'assets/images/bg_match_center_header.jpg';
 
   static const String onboardingSlideTeamStudio =
-      'assets/images/img_onboarding_slide_team_studio.png';
+      'assets/images/img_onboarding_slide_team_studio.webp';
   static const String onboardingSlideFieldsRegistry =
-      'assets/images/img_onboarding_slide_fields_registry.png';
+      'assets/images/img_onboarding_slide_fields_registry.webp';
   static const String onboardingSlideAvailability =
-      'assets/images/img_onboarding_slide_availability.png';
+      'assets/images/img_onboarding_slide_availability.webp';
 
   static const String hubNextMatchCardBackground =
       'assets/images/img_hub_next_match_card_bg.jpg';
@@ -27,18 +27,18 @@ class AppImages {
       'assets/images/team_kit_template.svg';
 
   static const List<String> teamBadges = [
-    'assets/images/badge_01.png',
-    'assets/images/badge_02.png',
-    'assets/images/badge_03.png',
-    'assets/images/badge_04.png',
-    'assets/images/badge_05.png',
-    'assets/images/badge_06.png',
-    'assets/images/badge_07.png',
-    'assets/images/badge_08.png',
-    'assets/images/badge_09.png',
-    'assets/images/badge_10.png',
-    'assets/images/badge_11.png',
-    'assets/images/badge_12.png',
+    'assets/images/badge_01.webp',
+    'assets/images/badge_02.webp',
+    'assets/images/badge_03.webp',
+    'assets/images/badge_04.webp',
+    'assets/images/badge_05.webp',
+    'assets/images/badge_06.webp',
+    'assets/images/badge_07.webp',
+    'assets/images/badge_08.webp',
+    'assets/images/badge_09.webp',
+    'assets/images/badge_10.webp',
+    'assets/images/badge_11.webp',
+    'assets/images/badge_12.webp',
   ];
 
   static const String fieldsRegistryCardBackground =

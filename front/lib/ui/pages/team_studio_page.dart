@@ -538,6 +538,24 @@ class _DbRosterList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (players.isEmpty) {
+      return Container(
+        padding: Insets.allMd,
+        decoration: BoxDecoration(
+          color: AppColors.whiteOverlay10,
+          borderRadius: BorderRadius.circular(AppSpacing.lg),
+          border: Border.all(color: AppColors.whiteOverlay20),
+        ),
+        alignment: Alignment.center,
+        child: Text(
+          AppStrings.teamStudioRosterAddPlayersHint,
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            color: AppColors.whiteOverlay70,
+          ),
+        ),
+      );
+    }
+
     return Container(
       padding: Insets.allMd,
       decoration: BoxDecoration(

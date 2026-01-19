@@ -61,38 +61,65 @@ class PresetColorRow extends StatelessWidget {
     required ValueChanged<Color> onChanged,
   }) async {
     var temp = initial;
+    var confirmed = false;
     await showDialog<void>(
       context: context,
       builder: (context) {
-        return AlertDialog(
+        return Dialog(
           backgroundColor: AppColors.darkNavy,
-          content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                ColorPicker(
-                  pickerColor: initial,
-                  onColorChanged: (c) => temp = c,
-                  enableAlpha: false,
-                  displayThumbColor: true,
-                  labelTypes: const [],
-                  paletteType: PaletteType.hsl,
-                ),
-                Gaps.hMd,
-                SizedBox(
-                  width: 200,
-                  child: AppPrimaryButton(
-                    label: AppStrings.commonOk,
-                    onPressed: () => Navigator.of(context).pop(),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppSpacing.lg),
+            side: const BorderSide(color: AppColors.whiteOverlay20),
+          ),
+          child: Padding(
+            padding: Insets.allMd,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    AppStrings.teamStudioColorPickerTitle,
+                    style: Theme.of(context).textTheme.titleLarge,
                   ),
-                ),
-              ],
+                  Gaps.hMd,
+                  ColorPicker(
+                    pickerColor: initial,
+                    onColorChanged: (c) => temp = c,
+                    enableAlpha: false,
+                    displayThumbColor: true,
+                    labelTypes: const [],
+                    paletteType: PaletteType.hsl,
+                  ),
+                  Gaps.hMd,
+                  Row(
+                    children: [
+                      Expanded(
+                        child: AppSecondaryButton(
+                          label: AppStrings.commonCancel,
+                          onPressed: () => Navigator.of(context).pop(),
+                        ),
+                      ),
+                      Gaps.wSm,
+                      Expanded(
+                        child: AppPrimaryButton(
+                          label: AppStrings.commonOk,
+                          onPressed: () {
+                            confirmed = true;
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         );
       },
     );
-    onChanged(temp);
+    if (confirmed) onChanged(temp);
   }
 }
 

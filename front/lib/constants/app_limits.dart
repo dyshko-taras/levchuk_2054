@@ -13,4 +13,9 @@ class AppLimits {
   static const int matchTitleMax = 40;
   static const int matchNotesMax = 240;
   static const int matchScoreMaxDigits = 2;
+
+  static const int lineupSearchMax = 30;
+  static const int lineupNotesMax = 240;
+  static const int lineupDoDontMax = 80;
+  static const int lineupPitchFeeMax = 10;
 }

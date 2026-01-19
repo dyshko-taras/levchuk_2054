@@ -111,7 +111,10 @@ class _MatchComposerPageState extends State<MatchComposerPage> {
     final fields = context.read<FieldsProvider>().fields;
     _fieldController.text = _fieldId == null
         ? ''
-        : (fields.where((f) => f.id == _fieldId).firstOrNull?.name ?? '');
+        : _formatFieldLabel(
+              fields.where((f) => f.id == _fieldId).firstOrNull,
+            ) ??
+            '';
 
     final teams = context.read<TeamsProvider>().teams;
     _teamAController.text = _teamAId == null
@@ -237,7 +240,7 @@ class _MatchComposerPageState extends State<MatchComposerPage> {
       items: [
         for (final field in fields)
           _PickerOption(
-            label: field.name,
+            label: _formatFieldLabel(field) ?? field.name,
             value: field.id,
           ),
       ],
@@ -245,6 +248,13 @@ class _MatchComposerPageState extends State<MatchComposerPage> {
     if (result == null) return;
     setState(() => _fieldId = result);
     _syncDisplayControllers();
+  }
+
+  String? _formatFieldLabel(Field? field) {
+    if (field == null) return null;
+    final t = (field.type ?? '').trim();
+    if (t.isEmpty) return field.name;
+    return '${field.name} ($t)';
   }
 
   Future<void> _pickTeamA() async {
@@ -460,19 +470,50 @@ class _MatchComposerPageState extends State<MatchComposerPage> {
     final result = await showDialog<bool>(
       context: context,
       builder: (context) {
-        return AlertDialog(
-          title: const Text(AppStrings.matchComposerConflictTitle),
-          content: const Text(AppStrings.matchComposerConflictMessage),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: const Text(AppStrings.matchComposerConflictAdjust),
+        return Dialog(
+          backgroundColor: AppColors.darkNavy,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppSpacing.lg),
+            side: const BorderSide(color: AppColors.whiteOverlay20),
+          ),
+          child: Padding(
+            padding: Insets.allMd,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  AppStrings.matchComposerConflictTitle,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                Gaps.hSm,
+                Text(
+                  AppStrings.matchComposerConflictMessage,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: AppColors.whiteOverlay70,
+                  ),
+                ),
+                Gaps.hMd,
+                Row(
+                  children: [
+                    Expanded(
+                      child: AppSecondaryButton(
+                        label: AppStrings.matchComposerConflictAdjust,
+                        onPressed: () => Navigator.of(context).pop(false),
+                      ),
+                    ),
+                    Gaps.wSm,
+                    Expanded(
+                      child: AppPrimaryButton(
+                        label: AppStrings.matchComposerConflictSaveAnyway,
+                        onPressed: () => Navigator.of(context).pop(true),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(true),
-              child: const Text(AppStrings.matchComposerConflictSaveAnyway),
-            ),
-          ],
+          ),
         );
       },
     );
@@ -492,19 +533,50 @@ class _MatchComposerPageState extends State<MatchComposerPage> {
     final confirm = await showDialog<bool>(
       context: context,
       builder: (context) {
-        return AlertDialog(
-          title: const Text(AppStrings.matchComposerDeleteTitle),
-          content: const Text(AppStrings.matchComposerDeleteMessage),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: const Text(AppStrings.commonCancel),
+        return Dialog(
+          backgroundColor: AppColors.darkNavy,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppSpacing.lg),
+            side: const BorderSide(color: AppColors.whiteOverlay20),
+          ),
+          child: Padding(
+            padding: Insets.allMd,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  AppStrings.matchComposerDeleteTitle,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                Gaps.hSm,
+                Text(
+                  AppStrings.matchComposerDeleteMessage,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: AppColors.whiteOverlay70,
+                  ),
+                ),
+                Gaps.hMd,
+                Row(
+                  children: [
+                    Expanded(
+                      child: AppSecondaryButton(
+                        label: AppStrings.commonCancel,
+                        onPressed: () => Navigator.of(context).pop(false),
+                      ),
+                    ),
+                    Gaps.wSm,
+                    Expanded(
+                      child: AppDangerButton(
+                        label: AppStrings.commonDelete,
+                        onPressed: () => Navigator.of(context).pop(true),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(true),
-              child: const Text(AppStrings.commonDelete),
-            ),
-          ],
+          ),
         );
       },
     );

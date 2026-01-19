@@ -1,3 +1,5 @@
+import 'dart:developer' show log;
+
 import 'package:drift/drift.dart' show Value;
 import 'package:field_captain/constants/app_icons.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +8,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants/app_images.dart';
+import '../../constants/app_limits.dart';
 import '../../constants/app_radius.dart';
 import '../../constants/app_sizes.dart';
 import '../../constants/app_spacing.dart';
@@ -213,6 +216,8 @@ class _LineupTacticsBoardPageState extends State<LineupTacticsBoardPage> {
                             ),
                             _Tab.tactics => _TacticsTab(
                               match: match,
+                              teamA: teamA,
+                              teamB: teamB,
                               canEdit: canEdit,
                               pressing: _pressing,
                               width: _width,
@@ -320,20 +325,43 @@ class _LineupTacticsBoardPageState extends State<LineupTacticsBoardPage> {
 
     final discard = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (context) => Dialog(
         backgroundColor: AppColors.darkNavy,
-        title: const Text(AppStrings.lineupBoardDiscardTitle),
-        content: const SizedBox.shrink(),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: const Text(AppStrings.lineupBoardKeepEditing),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppSpacing.lg),
+          side: const BorderSide(color: AppColors.whiteOverlay20),
+        ),
+        child: Padding(
+          padding: Insets.allMd,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                AppStrings.lineupBoardDiscardTitle,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              Gaps.hMd,
+              Row(
+                children: [
+                  Expanded(
+                    child: AppPrimaryButton(
+                      label: AppStrings.lineupBoardKeepEditing,
+                      onPressed: () => Navigator.of(context).pop(false),
+                    ),
+                  ),
+                  Gaps.wSm,
+                  Expanded(
+                    child: AppDangerButton(
+                      label: AppStrings.lineupBoardDiscard,
+                      onPressed: () => Navigator.of(context).pop(true),
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            child: const Text(AppStrings.lineupBoardDiscard),
-          ),
-        ],
+        ),
       ),
     );
 
@@ -369,6 +397,18 @@ class _LineupTacticsBoardPageState extends State<LineupTacticsBoardPage> {
           teamId: teamId,
           formation: draft.formation,
         );
+        log(
+          '[LineupSave] upsertLineup matchId=${match.id} teamId=$teamId formation="${draft.formation}"',
+        );
+
+        log(
+          '[LineupSave] replaceLineupSlots matchId=${match.id} teamId=$teamId slots=${draft.positions.length}',
+        );
+        for (var i = 0; i < draft.positions.length; i++) {
+          log(
+            '[LineupSave]   slotIndex=$i position="${draft.positions[i]}" playerId=${draft.playerIds[i]}',
+          );
+        }
 
         await lineupProvider.replaceLineupSlots(
           matchId: match.id,
@@ -466,9 +506,17 @@ class _LineupTacticsBoardPageState extends State<LineupTacticsBoardPage> {
         _dirty = false;
         _saving = false;
       });
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text(AppStrings.commonSaved)),
+      );
     } catch (_) {
       if (!mounted) return;
       setState(() => _saving = false);
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text(AppStrings.commonSaveFailed)),
+      );
     }
   }
 
@@ -590,7 +638,7 @@ class _HeaderCard extends StatelessWidget {
             children: [
               Expanded(
                 child: SizedBox(
-                  height: AppSizes.hubPillButtonHeight,
+                  height: AppSizes.teamsDirectoryRowButtonHeight,
                   child: AppPillButton(
                     label: AppStrings.commonSave,
                     onPressed: canEdit && !saving ? onSave : () {},
@@ -602,7 +650,7 @@ class _HeaderCard extends StatelessWidget {
               Gaps.wSm,
               Expanded(
                 child: SizedBox(
-                  height: AppSizes.hubPillButtonHeight,
+                  height: AppSizes.teamsDirectoryRowButtonHeight,
                   child: AppPillButton(
                     label: AppStrings.onboardingBack,
                     onPressed: onBack,
@@ -665,6 +713,55 @@ class _DoDontDraft {
 
 int? offeredTeamId(Fixture match, {required _TeamSide teamSide}) =>
     teamSide == _TeamSide.a ? match.teamAId : match.teamBId;
+
+String? _fieldTypeForMatch(BuildContext context, Fixture match) {
+  final fieldId = match.fieldId;
+  if (fieldId == null) return null;
+  final fields = context.read<FieldsProvider>().fields;
+  return fields
+      .where((f) => f.id == fieldId)
+      .map((f) => f.type)
+      .cast<String?>()
+      .firstWhere((t) => t != null, orElse: () => null);
+}
+
+List<String> formationsForFieldType(String? fieldType) {
+  final t = (fieldType ?? '').trim();
+  if (t.isEmpty) {
+    return const [
+      AppStrings.lineupBoardFormation121,
+      AppStrings.lineupBoardFormation211,
+      AppStrings.lineupBoardFormation112,
+      AppStrings.lineupBoardFormation231,
+      AppStrings.lineupBoardFormation321,
+      AppStrings.lineupBoardFormation222,
+      AppStrings.lineupBoardFormation442,
+      AppStrings.lineupBoardFormation433,
+      AppStrings.lineupBoardFormation352,
+      AppStrings.lineupBoardFormation532,
+    ];
+  }
+  if (t == AppStrings.fieldType5v5) {
+    return const [
+      AppStrings.lineupBoardFormation121,
+      AppStrings.lineupBoardFormation211,
+      AppStrings.lineupBoardFormation112,
+    ];
+  }
+  if (t == AppStrings.fieldType7v7) {
+    return const [
+      AppStrings.lineupBoardFormation231,
+      AppStrings.lineupBoardFormation321,
+      AppStrings.lineupBoardFormation222,
+    ];
+  }
+  return const [
+    AppStrings.lineupBoardFormation442,
+    AppStrings.lineupBoardFormation433,
+    AppStrings.lineupBoardFormation352,
+    AppStrings.lineupBoardFormation532,
+  ];
+}
 
 extension<T> on Iterable<T> {
   T? get firstOrNull => isEmpty ? null : first;
@@ -739,15 +836,22 @@ class _LineupTab extends StatefulWidget {
 class _LineupTabState extends State<_LineupTab> {
   @override
   Widget build(BuildContext context) {
-    final teamId = offeredTeamId(widget.match, teamSide: widget.teamSide);
-    final effectiveTeamId = teamId ?? widget.match.teamAId;
-    if (effectiveTeamId == null) return const SizedBox.shrink();
+    final teamAId = widget.match.teamAId;
+    if (teamAId == null) return const SizedBox.shrink();
+
+    final teamBId = widget.match.teamBId;
 
     final teamBDisabled = widget.match.teamBId == null;
-    final kitColors = resolveKitColors(
+    final fieldType = _fieldTypeForMatch(context, widget.match);
+    final kitA = resolveKitColors(
       teamA: widget.teamA,
       teamB: widget.teamB,
-      side: widget.teamSide,
+      side: _TeamSide.a,
+    );
+    final kitB = resolveKitColors(
+      teamA: widget.teamA,
+      teamB: widget.teamB,
+      side: _TeamSide.b,
     );
 
     return Column(
@@ -773,188 +877,415 @@ class _LineupTabState extends State<_LineupTab> {
           ),
         ],
         Gaps.hMd,
-        StreamBuilder<Lineup?>(
-          stream: context.read<LineupProvider>().watchLineup(
-            widget.match.id,
-            effectiveTeamId,
+        _LineupBody(
+          matchId: widget.match.id,
+          activeSide: widget.teamSide,
+          canEdit: widget.canEdit,
+          teamAId: teamAId,
+          teamBId: teamBId,
+          fieldType: fieldType,
+          kitA: kitA,
+          kitB: kitB,
+          activeSlotIndex: widget.activeSlotIndex,
+          searchController: widget.searchController,
+          teamDrafts: widget.teamDrafts,
+          onDirty: widget.onDirty,
+          onActiveSlotChanged: widget.onActiveSlotChanged,
+        ),
+        Gaps.hXl,
+      ],
+    );
+  }
+}
+
+class _LineupBody extends StatefulWidget {
+  const _LineupBody({
+    required this.matchId,
+    required this.activeSide,
+    required this.canEdit,
+    required this.teamAId,
+    required this.teamBId,
+    required this.fieldType,
+    required this.kitA,
+    required this.kitB,
+    required this.activeSlotIndex,
+    required this.searchController,
+    required this.teamDrafts,
+    required this.onDirty,
+    required this.onActiveSlotChanged,
+  });
+
+  final int matchId;
+  final _TeamSide activeSide;
+  final bool canEdit;
+  final int teamAId;
+  final int? teamBId;
+  final String? fieldType;
+  final _KitColors kitA;
+  final _KitColors kitB;
+  final int? activeSlotIndex;
+  final TextEditingController searchController;
+  final Map<int, _TeamDraft> teamDrafts;
+  final VoidCallback onDirty;
+  final ValueChanged<int?> onActiveSlotChanged;
+
+  @override
+  State<_LineupBody> createState() => _LineupBodyState();
+}
+
+class _LineupBodyState extends State<_LineupBody> {
+  final Set<int> _touchedTeams = {};
+
+  @override
+  void initState() {
+    super.initState();
+    widget.searchController.addListener(_onSearchChanged);
+  }
+
+  @override
+  void didUpdateWidget(covariant _LineupBody oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.searchController == widget.searchController) return;
+    oldWidget.searchController.removeListener(_onSearchChanged);
+    widget.searchController.addListener(_onSearchChanged);
+  }
+
+  @override
+  void dispose() {
+    widget.searchController.removeListener(_onSearchChanged);
+    super.dispose();
+  }
+
+  void _onSearchChanged() {
+    if (!mounted) return;
+    setState(() {});
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final lineupProvider = context.read<LineupProvider>();
+    final teamsProvider = context.read<TeamsProvider>();
+
+    final activeTeamId = widget.activeSide == _TeamSide.a
+        ? widget.teamAId
+        : (widget.teamBId ?? widget.teamAId);
+
+    return StreamBuilder<Lineup?>(
+      stream: lineupProvider.watchLineup(widget.matchId, widget.teamAId),
+      builder: (context, lineupASnapshot) {
+        final formationA =
+            lineupASnapshot.data?.formation ??
+            AppStrings.lineupBoardFormation442;
+        return StreamBuilder<List<LineupSlot>>(
+          stream: lineupProvider.watchLineupSlots(
+            widget.matchId,
+            widget.teamAId,
           ),
-          builder: (context, lineupSnapshot) {
-            final formationFromDb =
-                lineupSnapshot.data?.formation ??
-                AppStrings.lineupBoardFormation442;
-
-            return StreamBuilder<List<LineupSlot>>(
-              stream: context.read<LineupProvider>().watchLineupSlots(
-                widget.match.id,
-                effectiveTeamId,
+          builder: (context, slotsASnapshot) {
+            final draftA = _normalizeDraft(
+              teamId: widget.teamAId,
+              draft: _ensureDraft(
+                teamId: widget.teamAId,
+                formationFromDb: formationA,
+                slotsFromDb: slotsASnapshot.data ?? const [],
+                teamDrafts: widget.teamDrafts,
               ),
-              builder: (context, slotSnapshot) {
-                final draft = _ensureDraft(
-                  teamId: effectiveTeamId,
-                  formationFromDb: formationFromDb,
-                  slotsFromDb: slotSnapshot.data ?? const [],
-                );
+            );
 
-                return StreamBuilder<List<Player>>(
-                  stream: context.read<TeamsProvider>().watchPlayersByTeam(
-                    effectiveTeamId,
+            final teamBId = widget.teamBId;
+            if (teamBId == null) {
+              return StreamBuilder<List<Player>>(
+                stream: teamsProvider.watchPlayersByTeam(activeTeamId),
+                builder: (context, rosterSnapshot) {
+                  final roster = rosterSnapshot.data ?? const <Player>[];
+                  return _buildLineupUi(
+                    activeTeamId: activeTeamId,
+                    activeDraft: draftA,
+                    roster: roster,
+                    otherDraft: null,
+                    otherRoster: const <Player>[],
+                    showBothTeams: false,
+                  );
+                },
+              );
+            }
+
+            return StreamBuilder<Lineup?>(
+              stream: lineupProvider.watchLineup(widget.matchId, teamBId),
+              builder: (context, lineupBSnapshot) {
+                final formationB =
+                    lineupBSnapshot.data?.formation ??
+                    AppStrings.lineupBoardFormation442;
+                return StreamBuilder<List<LineupSlot>>(
+                  stream: lineupProvider.watchLineupSlots(
+                    widget.matchId,
+                    teamBId,
                   ),
-                  builder: (context, rosterSnapshot) {
-                    final roster = rosterSnapshot.data ?? const <Player>[];
-                    final visibleRoster = _filterPlayers(
-                      roster,
-                      query: widget.searchController.text,
+                  builder: (context, slotsBSnapshot) {
+                    final draftB = _normalizeDraft(
+                      teamId: teamBId,
+                      draft: _ensureDraft(
+                        teamId: teamBId,
+                        formationFromDb: formationB,
+                        slotsFromDb: slotsBSnapshot.data ?? const [],
+                        teamDrafts: widget.teamDrafts,
+                      ),
                     );
 
-                    final assignedIds = draft.playerIds
-                        .whereType<int>()
-                        .toSet();
-                    final available = visibleRoster
-                        .where((p) => !assignedIds.contains(p.id))
-                        .toList();
+                    return StreamBuilder<List<Player>>(
+                      stream: teamsProvider.watchPlayersByTeam(widget.teamAId),
+                      builder: (context, rosterASnapshot) {
+                        final rosterA =
+                            rosterASnapshot.data ?? const <Player>[];
+                        return StreamBuilder<List<Player>>(
+                          stream: teamsProvider.watchPlayersByTeam(teamBId),
+                          builder: (context, rosterBSnapshot) {
+                            final rosterB =
+                                rosterBSnapshot.data ?? const <Player>[];
 
-                    final warnings = _lineupWarnings(draft);
+                            final activeDraft = widget.activeSide == _TeamSide.a
+                                ? draftA
+                                : draftB;
+                            final activeRoster =
+                                widget.activeSide == _TeamSide.a
+                                ? rosterA
+                                : rosterB;
+                            final otherDraft = widget.activeSide == _TeamSide.a
+                                ? draftB
+                                : draftA;
+                            final otherRoster = widget.activeSide == _TeamSide.a
+                                ? rosterB
+                                : rosterA;
 
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _FormationRow(
-                          formation: draft.formation,
-                          canEdit: widget.canEdit,
-                          onChanged: widget.canEdit
-                              ? (value) {
-                                  if (value == null) return;
-                                  _updateFormation(
-                                    teamId: effectiveTeamId,
-                                    formation: value,
-                                  );
-                                  widget.onDirty();
-                                }
-                              : null,
-                        ),
-                        Gaps.hSm,
-                        Text(
-                          AppStrings.lineupBoardFormationNote,
-                          style: Theme.of(context).textTheme.bodyMedium
-                              ?.copyWith(
-                                color: AppColors.whiteOverlay70,
-                              ),
-                        ),
-                        Gaps.hMd,
-                        _PitchBoard(
-                          positions: draft.positions,
-                          playerIds: draft.playerIds,
-                          roster: roster,
-                          kitColors: kitColors,
-                          activeSlotIndex: widget.activeSlotIndex,
-                          canEdit: widget.canEdit,
-                          onSlotTap: (index) {
-                            if (!widget.canEdit) return;
-                            final current = draft.playerIds[index];
-                            if (current != null) {
-                              _setSlotPlayer(
-                                teamId: effectiveTeamId,
-                                slotIndex: index,
-                                playerId: null,
-                              );
-                              widget.onActiveSlotChanged(null);
-                              widget.onDirty();
-                              return;
-                            }
-                            widget.onActiveSlotChanged(index);
+                            return _buildLineupUi(
+                              activeTeamId: activeTeamId,
+                              activeDraft: activeDraft,
+                              roster: activeRoster,
+                              otherDraft: otherDraft,
+                              otherRoster: otherRoster,
+                              showBothTeams: true,
+                            );
                           },
-                        ),
-                        if (warnings.isNotEmpty) ...[
-                          Gaps.hSm,
-                          for (final warning in warnings) ...[
-                            Text(
-                              warning,
-                              style: Theme.of(context).textTheme.bodyMedium
-                                  ?.copyWith(color: AppColors.statsScheduled),
-                            ),
-                            if (warning != warnings.last) Gaps.hXs,
-                          ],
-                        ],
-                        Gaps.hMd,
-                        Row(
-                          children: [
-                            Expanded(
-                              child: SizedBox(
-                                height: AppSizes.hubPillButtonHeight,
-                                child: AppPillButton(
-                                  label: AppStrings.lineupBoardAutoArrange,
-                                  onPressed: widget.canEdit
-                                      ? () {
-                                          _autoArrange(
-                                            teamId: effectiveTeamId,
-                                            roster: roster,
-                                          );
-                                          widget.onActiveSlotChanged(null);
-                                          widget.onDirty();
-                                        }
-                                      : () {},
-                                  backgroundColor: AppColors.limeGreen,
-                                  textColor: AppColors.darkNavy,
-                                ),
-                              ),
-                            ),
-                            Gaps.wSm,
-                            Expanded(
-                              child: SizedBox(
-                                height: AppSizes.hubPillButtonHeight,
-                                child: AppPillButton(
-                                  label: AppStrings.lineupBoardClearLineup,
-                                  onPressed: widget.canEdit
-                                      ? () {
-                                          _clearLineup(teamId: effectiveTeamId);
-                                          widget.onActiveSlotChanged(null);
-                                          widget.onDirty();
-                                        }
-                                      : () {},
-                                  backgroundColor: AppColors.darkRed,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Gaps.hMd,
-                        AppPillTextField(
-                          controller: widget.searchController,
-                          hintText: AppStrings.lineupBoardSearchPlayersHint,
-                          suffixIconAsset: AppIcons.search,
-                          enabled: widget.canEdit,
-                        ),
-                        Gaps.hMd,
-                        Text(
-                          AppStrings.lineupBoardAvailableTitle,
-                          style: Theme.of(context).textTheme.titleMedium,
-                        ),
-                        Gaps.hSm,
-                        _AvailablePlayersRow(
-                          players: available,
-                          onTap: widget.canEdit
-                              ? (player) {
-                                  final slot = widget.activeSlotIndex;
-                                  if (slot == null) return;
-                                  _setSlotPlayer(
-                                    teamId: effectiveTeamId,
-                                    slotIndex: slot,
-                                    playerId: player.id,
-                                  );
-                                  widget.onActiveSlotChanged(null);
-                                  widget.onDirty();
-                                }
-                              : null,
-                        ),
-                      ],
+                        );
+                      },
                     );
                   },
                 );
               },
             );
           },
+        );
+      },
+    );
+  }
+
+  Widget _buildLineupUi({
+    required int activeTeamId,
+    required _TeamDraft activeDraft,
+    required List<Player> roster,
+    required _TeamDraft? otherDraft,
+    required List<Player> otherRoster,
+    required bool showBothTeams,
+  }) {
+    final visibleRoster = _filterPlayers(
+      roster,
+      query: widget.searchController.text,
+    );
+    final assignedIds = activeDraft.playerIds.whereType<int>().toSet();
+    final available = visibleRoster
+        .where((p) => !assignedIds.contains(p.id))
+        .toList();
+
+    final warnings = _lineupWarnings(activeDraft);
+    final formations = formationsForFieldType(widget.fieldType);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _FormationRow(
+          formation: activeDraft.formation,
+          canEdit: widget.canEdit,
+          availableFormations: formations,
+          onChanged: widget.canEdit
+              ? (value) {
+                  if (value == null) return;
+                  _updateFormation(
+                    teamId: activeTeamId,
+                    formation: value,
+                    teamDrafts: widget.teamDrafts,
+                  );
+                  widget.onDirty();
+                }
+              : null,
         ),
-        Gaps.hXl,
+        Gaps.hSm,
+        Text(
+          AppStrings.lineupBoardFormationNote,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            color: AppColors.whiteOverlay70,
+          ),
+        ),
+        Gaps.hMd,
+        showBothTeams && otherDraft != null
+            ? _FullPitchBoard(
+                teamADraft: widget.activeSide == _TeamSide.a
+                    ? activeDraft
+                    : otherDraft,
+                teamBDraft: widget.activeSide == _TeamSide.a
+                    ? otherDraft
+                    : activeDraft,
+                rosterA: widget.activeSide == _TeamSide.a
+                    ? roster
+                    : otherRoster,
+                rosterB: widget.activeSide == _TeamSide.a
+                    ? otherRoster
+                    : roster,
+                kitA: widget.kitA,
+                kitB: widget.kitB,
+                activeSide: widget.activeSide,
+                activeSlotIndex: widget.activeSlotIndex,
+                canEdit: widget.canEdit,
+                onSlotTap: (side, index) {
+                  if (!widget.canEdit) return;
+                  if (side != widget.activeSide) return;
+
+                  final draft = side == _TeamSide.a
+                      ? (widget.activeSide == _TeamSide.a
+                            ? activeDraft
+                            : otherDraft)
+                      : (widget.activeSide == _TeamSide.a
+                            ? otherDraft
+                            : activeDraft);
+                  final current = draft.playerIds[index];
+                  if (current != null) {
+                    _setSlotPlayer(
+                      teamId: activeTeamId,
+                      slotIndex: index,
+                      playerId: null,
+                      teamDrafts: widget.teamDrafts,
+                    );
+                    widget.onActiveSlotChanged(null);
+                    widget.onDirty();
+                    return;
+                  }
+
+                  widget.onActiveSlotChanged(index);
+                },
+              )
+            : _PitchBoard(
+                positions: activeDraft.positions,
+                playerIds: activeDraft.playerIds,
+                roster: roster,
+                kitColors: widget.activeSide == _TeamSide.a
+                    ? widget.kitA
+                    : widget.kitB,
+                teamSide: widget.activeSide,
+                activeSlotIndex: widget.activeSlotIndex,
+                canEdit: widget.canEdit,
+                onSlotTap: (index) {
+                  if (!widget.canEdit) return;
+                  final current = activeDraft.playerIds[index];
+                  if (current != null) {
+                    _setSlotPlayer(
+                      teamId: activeTeamId,
+                      slotIndex: index,
+                      playerId: null,
+                      teamDrafts: widget.teamDrafts,
+                    );
+                    widget.onActiveSlotChanged(null);
+                    widget.onDirty();
+                    return;
+                  }
+                  widget.onActiveSlotChanged(index);
+                },
+              ),
+        if (warnings.isNotEmpty) ...[
+          Gaps.hSm,
+          for (final warning in warnings) ...[
+            Text(
+              warning,
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(color: AppColors.statsScheduled),
+            ),
+            if (warning != warnings.last) Gaps.hXs,
+          ],
+        ],
+        Gaps.hMd,
+        Row(
+          children: [
+            Expanded(
+              child: SizedBox(
+                height: AppSizes.teamsDirectoryRowButtonHeight,
+                child: AppPillButton(
+                  label: AppStrings.lineupBoardAutoArrange,
+                  onPressed: widget.canEdit
+                      ? () {
+                          _autoArrange(teamId: activeTeamId, roster: roster);
+                          widget.onActiveSlotChanged(null);
+                          widget.onDirty();
+                          setState(() {});
+                        }
+                      : () {},
+                  backgroundColor: AppColors.limeGreen,
+                  textColor: AppColors.darkNavy,
+                ),
+              ),
+            ),
+            Gaps.wSm,
+            Expanded(
+              child: SizedBox(
+                height: AppSizes.teamsDirectoryRowButtonHeight,
+                child: AppPillButton(
+                  label: AppStrings.lineupBoardClearLineup,
+                  onPressed: widget.canEdit
+                      ? () {
+                          _clearLineup(teamId: activeTeamId);
+                          widget.onActiveSlotChanged(null);
+                          widget.onDirty();
+                          setState(() {});
+                        }
+                      : () {},
+                  backgroundColor: AppColors.darkRed,
+                ),
+              ),
+            ),
+          ],
+        ),
+        Gaps.hMd,
+        AppPillTextField(
+          controller: widget.searchController,
+          hintText: AppStrings.lineupBoardSearchPlayersHint,
+          suffixIconAsset: AppIcons.search,
+          enabled: widget.canEdit,
+          inputFormatters: [
+            LengthLimitingTextInputFormatter(AppLimits.lineupSearchMax),
+          ],
+        ),
+        Gaps.hMd,
+        Text(
+          AppStrings.lineupBoardAvailableTitle,
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+        Gaps.hSm,
+        _AvailablePlayersRow(
+          players: available,
+          onTap: widget.canEdit
+              ? (player) {
+                  final slot = widget.activeSlotIndex;
+                  if (slot == null) return;
+                  _setSlotPlayer(
+                    teamId: activeTeamId,
+                    slotIndex: slot,
+                    playerId: player.id,
+                    teamDrafts: widget.teamDrafts,
+                  );
+                  widget.onActiveSlotChanged(null);
+                  widget.onDirty();
+                  setState(() {});
+                }
+              : null,
+        ),
       ],
     );
   }
@@ -963,10 +1294,8 @@ class _LineupTabState extends State<_LineupTab> {
     required int teamId,
     required String formationFromDb,
     required List<LineupSlot> slotsFromDb,
+    required Map<int, _TeamDraft> teamDrafts,
   }) {
-    final existing = widget.teamDrafts[teamId];
-    if (existing != null) return existing;
-
     final positions = formationToPositions(formationFromDb);
     final playerIds = List<int?>.filled(positions.length, null);
     for (final slot in slotsFromDb) {
@@ -974,17 +1303,61 @@ class _LineupTabState extends State<_LineupTab> {
       playerIds[slot.slotIndex] = slot.playerId;
     }
 
-    final created = _TeamDraft(
+    final fromDb = _TeamDraft(
       formation: formationFromDb,
       positions: positions,
       playerIds: playerIds,
     );
-    widget.teamDrafts[teamId] = created;
-    return created;
+
+    final existing = teamDrafts[teamId];
+    final shouldHydrate = existing == null || !_touchedTeams.contains(teamId);
+    if (shouldHydrate) {
+      teamDrafts[teamId] = fromDb;
+      return fromDb;
+    }
+
+    return existing;
   }
 
-  void _updateFormation({required int teamId, required String formation}) {
-    final draft = widget.teamDrafts[teamId];
+  _TeamDraft _normalizeDraft({
+    required int teamId,
+    required _TeamDraft draft,
+  }) {
+    final allowed = formationsForFieldType(widget.fieldType);
+    if (allowed.contains(draft.formation)) return draft;
+
+    final formation = allowed.first;
+    final positions = formationToPositions(formation);
+    final prev = draft.playerIds.whereType<int>().toList();
+    final used = <int>{};
+    final nextPlayerIds = List<int?>.filled(positions.length, null);
+    var cursor = 0;
+    for (var i = 0; i < nextPlayerIds.length; i++) {
+      while (cursor < prev.length && used.contains(prev[cursor])) {
+        cursor++;
+      }
+      if (cursor >= prev.length) break;
+      final id = prev[cursor++];
+      if (!used.add(id)) continue;
+      nextPlayerIds[i] = id;
+    }
+
+    final next = draft.copyWith(
+      formation: formation,
+      positions: positions,
+      playerIds: nextPlayerIds,
+    );
+    widget.teamDrafts[teamId] = next;
+    return next;
+  }
+
+  void _updateFormation({
+    required int teamId,
+    required String formation,
+    required Map<int, _TeamDraft> teamDrafts,
+  }) {
+    _touchedTeams.add(teamId);
+    final draft = teamDrafts[teamId];
     if (draft == null) return;
 
     final nextPositions = formationToPositions(formation);
@@ -1003,7 +1376,7 @@ class _LineupTabState extends State<_LineupTab> {
       }
     }
 
-    widget.teamDrafts[teamId] = draft.copyWith(
+    teamDrafts[teamId] = draft.copyWith(
       formation: formation,
       positions: nextPositions,
       playerIds: nextPlayerIds,
@@ -1015,8 +1388,10 @@ class _LineupTabState extends State<_LineupTab> {
     required int teamId,
     required int slotIndex,
     required int? playerId,
+    required Map<int, _TeamDraft> teamDrafts,
   }) {
-    final draft = widget.teamDrafts[teamId];
+    _touchedTeams.add(teamId);
+    final draft = teamDrafts[teamId];
     if (draft == null) return;
 
     final nextPlayerIds = [...draft.playerIds];
@@ -1027,11 +1402,12 @@ class _LineupTabState extends State<_LineupTab> {
     }
     nextPlayerIds[slotIndex] = playerId;
 
-    widget.teamDrafts[teamId] = draft.copyWith(playerIds: nextPlayerIds);
+    teamDrafts[teamId] = draft.copyWith(playerIds: nextPlayerIds);
     setState(() {});
   }
 
   void _autoArrange({required int teamId, required List<Player> roster}) {
+    _touchedTeams.add(teamId);
     final draft = widget.teamDrafts[teamId];
     if (draft == null) return;
 
@@ -1059,6 +1435,7 @@ class _LineupTabState extends State<_LineupTab> {
   }
 
   void _clearLineup({required int teamId}) {
+    _touchedTeams.add(teamId);
     final draft = widget.teamDrafts[teamId];
     if (draft == null) return;
     widget.teamDrafts[teamId] = draft.copyWith(
@@ -1167,11 +1544,13 @@ class _FormationRow extends StatelessWidget {
   const _FormationRow({
     required this.formation,
     required this.canEdit,
+    required this.availableFormations,
     required this.onChanged,
   });
 
   final String formation;
   final bool canEdit;
+  final List<String> availableFormations;
   final ValueChanged<String?>? onChanged;
 
   @override
@@ -1186,23 +1565,9 @@ class _FormationRow extends StatelessWidget {
               final selected = await _showPickerSheet<String>(
                 context,
                 title: AppStrings.lineupBoardFormationLabel,
-                items: const [
-                  _PickerOption(
-                    value: AppStrings.lineupBoardFormation442,
-                    label: AppStrings.lineupBoardFormation442,
-                  ),
-                  _PickerOption(
-                    value: AppStrings.lineupBoardFormation433,
-                    label: AppStrings.lineupBoardFormation433,
-                  ),
-                  _PickerOption(
-                    value: AppStrings.lineupBoardFormation352,
-                    label: AppStrings.lineupBoardFormation352,
-                  ),
-                  _PickerOption(
-                    value: AppStrings.lineupBoardFormation532,
-                    label: AppStrings.lineupBoardFormation532,
-                  ),
+                items: [
+                  for (final f in availableFormations)
+                    _PickerOption(value: f, label: f),
                 ],
               );
               onChanged?.call(selected);
@@ -1269,6 +1634,7 @@ class _PitchBoard extends StatelessWidget {
     required this.playerIds,
     required this.roster,
     required this.kitColors,
+    required this.teamSide,
     required this.activeSlotIndex,
     required this.canEdit,
     required this.onSlotTap,
@@ -1278,6 +1644,7 @@ class _PitchBoard extends StatelessWidget {
   final List<int?> playerIds;
   final List<Player> roster;
   final _KitColors kitColors;
+  final _TeamSide teamSide;
   final int? activeSlotIndex;
   final bool canEdit;
   final ValueChanged<int> onSlotTap;
@@ -1310,42 +1677,88 @@ class _PitchBoard extends StatelessWidget {
           fit: StackFit.expand,
           children: [
             Image.asset(AppImages.lineupBoardPitch, fit: BoxFit.cover),
-            Padding(
-              padding: Insets.allMd,
-              child: Column(
-                children: [
-                  _SlotRow(
-                    slots: slotsByPos['FW']!,
-                    kitColors: kitColors,
-                    activeSlotIndex: activeSlotIndex,
-                    canEdit: canEdit,
-                    onSlotTap: onSlotTap,
+            Align(
+              alignment: teamSide == _TeamSide.a
+                  ? Alignment.bottomCenter
+                  : Alignment.topCenter,
+              child: FractionallySizedBox(
+                heightFactor: 0.5,
+                widthFactor: 1,
+                child: Padding(
+                  padding: Insets.allSm,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: teamSide == _TeamSide.a
+                        ? [
+                            _SlotRow(
+                              slots: slotsByPos['FW']!,
+                              kitColors: kitColors,
+                              activeSlotIndex: activeSlotIndex,
+                              enabled: true,
+                              canEdit: canEdit,
+                              onSlotTap: onSlotTap,
+                            ),
+                            _SlotRow(
+                              slots: slotsByPos['MF']!,
+                              kitColors: kitColors,
+                              activeSlotIndex: activeSlotIndex,
+                              enabled: true,
+                              canEdit: canEdit,
+                              onSlotTap: onSlotTap,
+                            ),
+                            _SlotRow(
+                              slots: slotsByPos['DF']!,
+                              kitColors: kitColors,
+                              activeSlotIndex: activeSlotIndex,
+                              enabled: true,
+                              canEdit: canEdit,
+                              onSlotTap: onSlotTap,
+                            ),
+                            _SlotRow(
+                              slots: slotsByPos['GK']!,
+                              kitColors: kitColors,
+                              activeSlotIndex: activeSlotIndex,
+                              enabled: true,
+                              canEdit: canEdit,
+                              onSlotTap: onSlotTap,
+                            ),
+                          ]
+                        : [
+                            _SlotRow(
+                              slots: slotsByPos['GK']!,
+                              kitColors: kitColors,
+                              activeSlotIndex: activeSlotIndex,
+                              enabled: true,
+                              canEdit: canEdit,
+                              onSlotTap: onSlotTap,
+                            ),
+                            _SlotRow(
+                              slots: slotsByPos['DF']!,
+                              kitColors: kitColors,
+                              activeSlotIndex: activeSlotIndex,
+                              enabled: true,
+                              canEdit: canEdit,
+                              onSlotTap: onSlotTap,
+                            ),
+                            _SlotRow(
+                              slots: slotsByPos['MF']!,
+                              kitColors: kitColors,
+                              activeSlotIndex: activeSlotIndex,
+                              enabled: true,
+                              canEdit: canEdit,
+                              onSlotTap: onSlotTap,
+                            ),
+                            _SlotRow(
+                              slots: slotsByPos['FW']!,
+                              kitColors: kitColors,
+                              activeSlotIndex: activeSlotIndex,
+                              enabled: true,
+                              canEdit: canEdit,
+                              onSlotTap: onSlotTap,
+                            ),
+                          ],
                   ),
-                  const Spacer(),
-                  _SlotRow(
-                    slots: slotsByPos['MF']!,
-                    kitColors: kitColors,
-                    activeSlotIndex: activeSlotIndex,
-                    canEdit: canEdit,
-                    onSlotTap: onSlotTap,
-                  ),
-                  const Spacer(),
-                  _SlotRow(
-                    slots: slotsByPos['DF']!,
-                    kitColors: kitColors,
-                    activeSlotIndex: activeSlotIndex,
-                    canEdit: canEdit,
-                    onSlotTap: onSlotTap,
-                  ),
-                  const Spacer(),
-                  _SlotRow(
-                    slots: slotsByPos['GK']!,
-                    kitColors: kitColors,
-                    activeSlotIndex: activeSlotIndex,
-                    canEdit: canEdit,
-                    onSlotTap: onSlotTap,
-                  ),
-                ],
+                ),
               ),
             ),
           ],
@@ -1355,11 +1768,186 @@ class _PitchBoard extends StatelessWidget {
   }
 }
 
+class _FullPitchBoard extends StatelessWidget {
+  const _FullPitchBoard({
+    required this.teamADraft,
+    required this.teamBDraft,
+    required this.rosterA,
+    required this.rosterB,
+    required this.kitA,
+    required this.kitB,
+    required this.activeSide,
+    required this.activeSlotIndex,
+    required this.canEdit,
+    required this.onSlotTap,
+  });
+
+  final _TeamDraft teamADraft;
+  final _TeamDraft teamBDraft;
+  final List<Player> rosterA;
+  final List<Player> rosterB;
+  final _KitColors kitA;
+  final _KitColors kitB;
+  final _TeamSide activeSide;
+  final int? activeSlotIndex;
+  final bool canEdit;
+  final void Function(_TeamSide side, int slotIndex) onSlotTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final slotsA = _buildSlots(
+      positions: teamADraft.positions,
+      playerIds: teamADraft.playerIds,
+      roster: rosterA,
+    );
+    final slotsB = _buildSlots(
+      positions: teamBDraft.positions,
+      playerIds: teamBDraft.playerIds,
+      roster: rosterB,
+    );
+
+    final aEnabled = canEdit && activeSide == _TeamSide.a;
+    final bEnabled = canEdit && activeSide == _TeamSide.b;
+
+    return ClipRRect(
+      borderRadius: AppRadius.lg,
+      child: AspectRatio(
+        aspectRatio: AppSizes.lineupPitchAspectRatio,
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            Image.asset(AppImages.lineupBoardPitch, fit: BoxFit.cover),
+            Align(
+              alignment: Alignment.topCenter,
+              child: FractionallySizedBox(
+                heightFactor: 0.5,
+                widthFactor: 1,
+                child: Padding(
+                  padding: Insets.allSm,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      _SlotRow(
+                        slots: slotsB['GK']!,
+                        kitColors: kitB,
+                        activeSlotIndex: bEnabled ? activeSlotIndex : null,
+                        enabled: bEnabled,
+                        canEdit: canEdit,
+                        onSlotTap: (index) => onSlotTap(_TeamSide.b, index),
+                      ),
+                      _SlotRow(
+                        slots: slotsB['DF']!,
+                        kitColors: kitB,
+                        activeSlotIndex: bEnabled ? activeSlotIndex : null,
+                        enabled: bEnabled,
+                        canEdit: canEdit,
+                        onSlotTap: (index) => onSlotTap(_TeamSide.b, index),
+                      ),
+                      _SlotRow(
+                        slots: slotsB['MF']!,
+                        kitColors: kitB,
+                        activeSlotIndex: bEnabled ? activeSlotIndex : null,
+                        enabled: bEnabled,
+                        canEdit: canEdit,
+                        onSlotTap: (index) => onSlotTap(_TeamSide.b, index),
+                      ),
+                      _SlotRow(
+                        slots: slotsB['FW']!,
+                        kitColors: kitB,
+                        activeSlotIndex: bEnabled ? activeSlotIndex : null,
+                        enabled: bEnabled,
+                        canEdit: canEdit,
+                        onSlotTap: (index) => onSlotTap(_TeamSide.b, index),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: FractionallySizedBox(
+                heightFactor: 0.5,
+                widthFactor: 1,
+                child: Padding(
+                  padding: Insets.allSm,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      _SlotRow(
+                        slots: slotsA['FW']!,
+                        kitColors: kitA,
+                        activeSlotIndex: aEnabled ? activeSlotIndex : null,
+                        enabled: aEnabled,
+                        canEdit: canEdit,
+                        onSlotTap: (index) => onSlotTap(_TeamSide.a, index),
+                      ),
+                      _SlotRow(
+                        slots: slotsA['MF']!,
+                        kitColors: kitA,
+                        activeSlotIndex: aEnabled ? activeSlotIndex : null,
+                        enabled: aEnabled,
+                        canEdit: canEdit,
+                        onSlotTap: (index) => onSlotTap(_TeamSide.a, index),
+                      ),
+                      _SlotRow(
+                        slots: slotsA['DF']!,
+                        kitColors: kitA,
+                        activeSlotIndex: aEnabled ? activeSlotIndex : null,
+                        enabled: aEnabled,
+                        canEdit: canEdit,
+                        onSlotTap: (index) => onSlotTap(_TeamSide.a, index),
+                      ),
+                      _SlotRow(
+                        slots: slotsA['GK']!,
+                        kitColors: kitA,
+                        activeSlotIndex: aEnabled ? activeSlotIndex : null,
+                        enabled: aEnabled,
+                        canEdit: canEdit,
+                        onSlotTap: (index) => onSlotTap(_TeamSide.a, index),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Map<String, List<_SlotModel>> _buildSlots({
+    required List<String> positions,
+    required List<int?> playerIds,
+    required List<Player> roster,
+  }) {
+    final slotsByPos = <String, List<_SlotModel>>{
+      'GK': [],
+      'DF': [],
+      'MF': [],
+      'FW': [],
+    };
+
+    for (var i = 0; i < positions.length; i++) {
+      final pos = positions[i];
+      final playerId = playerIds[i];
+      final player = playerId == null
+          ? null
+          : roster.where((p) => p.id == playerId).cast<Player?>().firstOrNull;
+      slotsByPos[pos]?.add(_SlotModel(index: i, pos: pos, player: player));
+    }
+
+    return slotsByPos;
+  }
+}
+
 class _SlotRow extends StatelessWidget {
   const _SlotRow({
     required this.slots,
     required this.kitColors,
     required this.activeSlotIndex,
+    required this.enabled,
     required this.canEdit,
     required this.onSlotTap,
   });
@@ -1367,6 +1955,7 @@ class _SlotRow extends StatelessWidget {
   final List<_SlotModel> slots;
   final _KitColors kitColors;
   final int? activeSlotIndex;
+  final bool enabled;
   final bool canEdit;
   final ValueChanged<int> onSlotTap;
 
@@ -1377,12 +1966,15 @@ class _SlotRow extends StatelessWidget {
       children: [
         for (final slot in slots) ...[
           Expanded(
-            child: _PitchSlot(
-              slot: slot,
-              kitColors: kitColors,
-              isActive: activeSlotIndex == slot.index,
-              canEdit: canEdit,
-              onTap: () => onSlotTap(slot.index),
+            child: Opacity(
+              opacity: enabled ? 1.0 : 0.55,
+              child: _PitchSlot(
+                slot: slot,
+                kitColors: kitColors,
+                isActive: enabled && activeSlotIndex == slot.index,
+                canEdit: canEdit && enabled,
+                onTap: () => onSlotTap(slot.index),
+              ),
             ),
           ),
           if (slot != slots.last) Gaps.wSm,
@@ -1410,50 +2002,58 @@ class _PitchSlot extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final player = slot.player;
-    return InkWell(
+
+    final kitSize = AppSizes.lineupSlotKitSize - 6;
+
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: canEdit ? onTap : null,
-      borderRadius: AppRadius.card,
-      child: Container(
-        decoration: BoxDecoration(
-          color: isActive ? AppColors.whiteOverlay20 : AppColors.whiteOverlay10,
-          borderRadius: AppRadius.card,
-          border: Border.all(color: AppColors.whiteOverlay20),
-        ),
-        padding: Insets.allSm,
+      child: Center(
         child: player == null
-            ? Center(
-                child: Text(
-                  slot.pos,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.whiteOverlay70,
+            ? DecoratedBox(
+                decoration: BoxDecoration(
+                  color: AppColors.whiteOverlay10,
+                  borderRadius: AppRadius.pill,
+                  border: Border.all(
+                    color: isActive
+                        ? AppColors.primaryBlue
+                        : AppColors.whiteOverlay20,
+                    width: isActive ? 2 : 1,
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.sm,
+                    vertical: AppSpacing.xs,
+                  ),
+                  child: Text(
+                    slot.pos,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: AppColors.whiteOverlay70,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
               )
             : Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  _TintedKitIcon(
-                    colors: kitColors,
-                    size: AppSizes.lineupSlotKitSize,
-                  ),
-                  Gaps.hXs,
+                  _TintedKitIcon(colors: kitColors, size: kitSize),
+                  const SizedBox(height: 2),
                   Text(
-                    player.name,
+                    player.number == null
+                        ? player.name
+                        : '${player.number}. ${player.name}',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w700,
+                      shadows: const [
+                        Shadow(color: Colors.black54, blurRadius: 6),
+                      ],
                     ),
                   ),
-                  if (player.number != null) ...[
-                    Gaps.hXs,
-                    Text(
-                      '#${player.number}',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AppColors.whiteOverlay70,
-                      ),
-                    ),
-                  ],
                 ],
               ),
       ),
@@ -1611,6 +2211,36 @@ Future<T?> _showPickerSheet<T>(
 
 List<String> formationToPositions(String formation) {
   return switch (formation) {
+    AppStrings.lineupBoardFormation121 => const ['GK', 'DF', 'MF', 'MF', 'FW'],
+    AppStrings.lineupBoardFormation211 => const ['GK', 'DF', 'DF', 'MF', 'FW'],
+    AppStrings.lineupBoardFormation112 => const ['GK', 'DF', 'MF', 'FW', 'FW'],
+    AppStrings.lineupBoardFormation231 => const [
+      'GK',
+      'DF',
+      'DF',
+      'MF',
+      'MF',
+      'MF',
+      'FW',
+    ],
+    AppStrings.lineupBoardFormation321 => const [
+      'GK',
+      'DF',
+      'DF',
+      'DF',
+      'MF',
+      'MF',
+      'FW',
+    ],
+    AppStrings.lineupBoardFormation222 => const [
+      'GK',
+      'DF',
+      'DF',
+      'MF',
+      'MF',
+      'FW',
+      'FW',
+    ],
     AppStrings.lineupBoardFormation442 => const [
       'GK',
       'DF',
@@ -1786,6 +2416,8 @@ class _SectionCard extends StatelessWidget {
 class _TacticsTab extends StatefulWidget {
   const _TacticsTab({
     required this.match,
+    required this.teamA,
+    required this.teamB,
     required this.canEdit,
     required this.pressing,
     required this.width,
@@ -1803,6 +2435,8 @@ class _TacticsTab extends StatefulWidget {
   });
 
   final Fixture match;
+  final Team? teamA;
+  final Team? teamB;
   final bool canEdit;
   final String? pressing;
   final String? width;
@@ -1829,6 +2463,16 @@ class _TacticsTabState extends State<_TacticsTab> {
   @override
   Widget build(BuildContext context) {
     final provider = context.read<TacticsProvider>();
+    final kitA = resolveKitColors(
+      teamA: widget.teamA,
+      teamB: widget.teamB,
+      side: _TeamSide.a,
+    );
+    final kitB = resolveKitColors(
+      teamA: widget.teamA,
+      teamB: widget.teamB,
+      side: _TeamSide.b,
+    );
 
     return StreamBuilder<Tactic?>(
       stream: provider.watchTactics(widget.match.id),
@@ -1880,6 +2524,11 @@ class _TacticsTabState extends State<_TacticsTab> {
                         controller: widget.cornersController,
                         hintText: AppStrings.lineupBoardNotesHint,
                         enabled: widget.canEdit,
+                        inputFormatters: [
+                          LengthLimitingTextInputFormatter(
+                            AppLimits.lineupNotesMax,
+                          ),
+                        ],
                       ),
                       Gaps.hMd,
                       Text(
@@ -1891,9 +2540,19 @@ class _TacticsTabState extends State<_TacticsTab> {
                         controller: widget.freeKicksController,
                         hintText: AppStrings.lineupBoardNotesHint,
                         enabled: widget.canEdit,
+                        inputFormatters: [
+                          LengthLimitingTextInputFormatter(
+                            AppLimits.lineupNotesMax,
+                          ),
+                        ],
                       ),
                     ],
                   ),
+                ),
+                Gaps.hMd,
+                _SectionCard(
+                  title: AppStrings.lineupBoardKitClashTitle,
+                  child: _KitClashDetector(kitA: kitA, kitB: kitB),
                 ),
                 Gaps.hMd,
                 _SectionCard(
@@ -1910,6 +2569,11 @@ class _TacticsTabState extends State<_TacticsTab> {
                         controller: widget.keyMatchupsController,
                         hintText: AppStrings.lineupBoardNotesHint,
                         enabled: widget.canEdit,
+                        inputFormatters: [
+                          LengthLimitingTextInputFormatter(
+                            AppLimits.lineupNotesMax,
+                          ),
+                        ],
                       ),
                       Gaps.hMd,
                       Row(
@@ -1920,7 +2584,7 @@ class _TacticsTabState extends State<_TacticsTab> {
                           ),
                           const Spacer(),
                           SizedBox(
-                            height: AppSizes.hubPillButtonHeight,
+                            height: AppSizes.teamsDirectoryRowButtonHeight,
                             child: AppPillButton(
                               label: AppStrings.commonAdd,
                               onPressed: widget.canEdit ? _addDoDont : () {},
@@ -2003,27 +2667,56 @@ class _TacticsTabState extends State<_TacticsTab> {
     final controller = TextEditingController();
     final result = await showDialog<String>(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (context) => Dialog(
         backgroundColor: AppColors.darkNavy,
-        title: const Text(AppStrings.lineupBoardAddDoDontTitle),
-        content: AppPillTextField(
-          controller: controller,
-          hintText: AppStrings.lineupBoardAddDoDontHint,
-          suffixIconAsset: null,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppSpacing.lg),
+          side: const BorderSide(color: AppColors.whiteOverlay20),
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text(AppStrings.commonCancel),
+        child: Padding(
+          padding: Insets.allMd,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                AppStrings.lineupBoardAddDoDontTitle,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              Gaps.hMd,
+              AppPillTextField(
+                controller: controller,
+                hintText: AppStrings.lineupBoardAddDoDontHint,
+                suffixIconAsset: null,
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(AppLimits.lineupDoDontMax),
+                ],
+              ),
+              Gaps.hMd,
+              Row(
+                children: [
+                  Expanded(
+                    child: AppSecondaryButton(
+                      label: AppStrings.commonCancel,
+                      onPressed: () => Navigator.of(context).pop(),
+                    ),
+                  ),
+                  Gaps.wSm,
+                  Expanded(
+                    child: AppPrimaryButton(
+                      label: AppStrings.commonAdd,
+                      onPressed: () =>
+                          Navigator.of(context).pop(controller.text.trim()),
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(controller.text.trim()),
-            child: const Text(AppStrings.commonAdd),
-          ),
-        ],
+        ),
       ),
     );
-    controller.dispose();
+    WidgetsBinding.instance.addPostFrameCallback((_) => controller.dispose());
 
     final text = result?.trim() ?? '';
     if (text.isEmpty) return;
@@ -2432,6 +3125,14 @@ class _LogisticsTabState extends State<_LogisticsTab> {
                             suffixIconAsset: null,
                             keyboardType: TextInputType.number,
                             enabled: widget.canEdit,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(
+                                RegExp(r'[0-9.,]'),
+                              ),
+                              LengthLimitingTextInputFormatter(
+                                AppLimits.lineupPitchFeeMax,
+                              ),
+                            ],
                           ),
                           Gaps.hMd,
                           Row(
@@ -2556,6 +3257,11 @@ class _LogisticsTabState extends State<_LogisticsTab> {
                             controller: widget.crewNotesController,
                             hintText: AppStrings.lineupBoardCrewNotesHint,
                             enabled: widget.canEdit,
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(
+                                AppLimits.lineupNotesMax,
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -2709,6 +3415,50 @@ class _AttendanceRow extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _KitClashDetector extends StatelessWidget {
+  const _KitClashDetector({required this.kitA, required this.kitB});
+
+  final _KitColors kitA;
+  final _KitColors kitB;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: Row(
+            children: [
+              _TintedKitIcon(colors: kitA, size: AppSizes.matchCenterBadgeSize),
+              Gaps.wSm,
+              Expanded(
+                child: Text(
+                  AppStrings.lineupBoardKitClashTeamAKit,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+              ),
+            ],
+          ),
+        ),
+        Gaps.wSm,
+        Expanded(
+          child: Row(
+            children: [
+              _TintedKitIcon(colors: kitB, size: AppSizes.matchCenterBadgeSize),
+              Gaps.wSm,
+              Expanded(
+                child: Text(
+                  AppStrings.lineupBoardKitClashTeamBKit,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

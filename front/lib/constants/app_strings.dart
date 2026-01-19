@@ -69,6 +69,8 @@ class AppStrings {
   static const String commonCancel = 'Cancel';
   static const String commonAdd = 'Add';
   static const String commonSave = 'Save';
+  static const String commonSaved = 'Saved.';
+  static const String commonSaveFailed = 'Save failed.';
   static const String commonDelete = 'Delete';
   static const String commonOk = 'OK';
   static const String commonPlaceholderDash = '—';
@@ -79,6 +81,7 @@ class AppStrings {
   static const String teamStudioPlayerNameRequired = 'Player name is required';
   static const String teamStudioPlayerNumberRequired = 'Player # is required';
   static const String teamStudioRosterAddPlayersHint = 'Add players…';
+  static const String teamStudioColorPickerTitle = 'Pick color';
   static const String teamStudioDeleteNotAllowed =
       'Team can’t be deleted because it is used in matches.';
 
@@ -179,8 +182,7 @@ class AppStrings {
   static String lineupBoardSubline({
     required String kickOff,
     required String fieldName,
-  }) =>
-      'Kick-off: $kickOff · Field: $fieldName';
+  }) => 'Kick-off: $kickOff · Field: $fieldName';
 
   static const String lineupBoardDiscardTitle = 'Discard changes?';
   static const String lineupBoardKeepEditing = 'Keep editing';
@@ -191,6 +193,12 @@ class AppStrings {
   static const String lineupBoardFormation433 = '4-3-3';
   static const String lineupBoardFormation352 = '3-5-2';
   static const String lineupBoardFormation532 = '5-3-2';
+  static const String lineupBoardFormation211 = '2-1-1';
+  static const String lineupBoardFormation121 = '1-2-1';
+  static const String lineupBoardFormation112 = '1-1-2';
+  static const String lineupBoardFormation231 = '2-3-1';
+  static const String lineupBoardFormation321 = '3-2-1';
+  static const String lineupBoardFormation222 = '2-2-2';
   static const String lineupBoardFormationNote = 'Slots update with formation';
   static const String lineupBoardAutoArrange = 'Auto-arrange';
   static const String lineupBoardClearLineup = 'Clear lineup';
@@ -234,6 +242,9 @@ class AppStrings {
   static const String lineupBoardPitchFeeTotalHint = r'$0';
   static const String lineupBoardSplitConfirmedOnly = 'confirmed only';
   static const String lineupBoardSplitAllRoster = 'All roster';
+  static const String lineupBoardKitClashTitle = 'Kit Clash Detector';
+  static const String lineupBoardKitClashTeamAKit = 'Team A kit';
+  static const String lineupBoardKitClashTeamBKit = 'Team B kit';
   static String lineupBoardPerPlayer(double? value) => value == null
       ? 'Per player: ${AppStrings.commonPlaceholderDash}'
       : 'Per player: \$${value.toStringAsFixed(2)}';
@@ -263,7 +274,8 @@ class AppStrings {
   static String lineupBoardSummaryFeePerPlayer(double? value) => value == null
       ? 'Per player: ${AppStrings.commonPlaceholderDash}'
       : 'Per player: \$${value.toStringAsFixed(2)}';
-  static String lineupBoardSummaryCrewNotes(String value) => 'Crew notes: $value';
+  static String lineupBoardSummaryCrewNotes(String value) =>
+      'Crew notes: $value';
 
   static const String statsTitle = 'Stats';
   static const String statsTabTeams = 'Teams';

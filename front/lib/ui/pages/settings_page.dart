@@ -264,30 +264,67 @@ class SettingsPage extends StatelessWidget {
                             final confirm = await showDialog<bool>(
                               context: context,
                               builder: (context) {
-                                return AlertDialog(
-                                  title: const Text(
-                                    AppStrings.settingsClearAllDataConfirmTitle,
-                                  ),
-                                  content: const Text(
-                                    AppStrings
-                                        .settingsClearAllDataConfirmMessage,
-                                  ),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () =>
-                                          Navigator.of(context).pop(false),
-                                      child: const Text(
-                                        AppStrings.commonCancel,
-                                      ),
+                                return Dialog(
+                                  backgroundColor: AppColors.darkNavy,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(
+                                      AppSpacing.lg,
                                     ),
-                                    TextButton(
-                                      onPressed: () =>
-                                          Navigator.of(context).pop(true),
-                                      child: const Text(
-                                        AppStrings.commonDelete,
-                                      ),
+                                    side: const BorderSide(
+                                      color: AppColors.whiteOverlay20,
                                     ),
-                                  ],
+                                  ),
+                                  child: Padding(
+                                    padding: Insets.allMd,
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          AppStrings
+                                              .settingsClearAllDataConfirmTitle,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleLarge,
+                                        ),
+                                        Gaps.hSm,
+                                        Text(
+                                          AppStrings
+                                              .settingsClearAllDataConfirmMessage,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium
+                                              ?.copyWith(
+                                                color:
+                                                    AppColors.whiteOverlay70,
+                                              ),
+                                        ),
+                                        Gaps.hMd,
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                              child: AppSecondaryButton(
+                                                label: AppStrings.commonCancel,
+                                                onPressed: () =>
+                                                    Navigator.of(context)
+                                                        .pop(false),
+                                              ),
+                                            ),
+                                            Gaps.wSm,
+                                            Expanded(
+                                              child: AppDangerButton(
+                                                label: AppStrings.commonDelete,
+                                                onPressed: () =>
+                                                    Navigator.of(context)
+                                                        .pop(true),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 );
                               },
                             );
