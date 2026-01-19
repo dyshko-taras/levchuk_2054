@@ -128,8 +128,11 @@ class _TeamStudioPageState extends State<TeamStudioPage> {
         awayPrimaryColor: _awayPrimary.toARGB32(),
         awaySecondaryColor: _awaySecondary.toARGB32(),
       );
-      await context.read<SettingsProvider>().setDefaultTeamId(id);
-      await teamsProvider.setDefaultTeamFlag(id);
+      final settings = context.read<SettingsProvider>();
+      if (settings.defaultTeamId == null) {
+        await settings.setDefaultTeamId(id);
+        await teamsProvider.setDefaultTeamFlag(id);
+      }
       _editingTeamId = id;
     } else {
       final Team? current = teamsProvider.teams
@@ -163,7 +166,7 @@ class _TeamStudioPageState extends State<TeamStudioPage> {
     if (!mounted) return;
     await showModalBottomSheet<void>(
       context: context,
-      backgroundColor: Colors.transparent,
+      backgroundColor: AppColors.darkNavy,
       builder: (context) {
         return Padding(
           padding: Insets.allMd,

@@ -628,7 +628,7 @@ class _MatchComposerPageState extends State<MatchComposerPage> {
   }) async {
     final result = await showModalBottomSheet<T>(
       context: context,
-      backgroundColor: Colors.transparent,
+      backgroundColor: AppColors.darkNavy,
       builder: (context) {
         return Padding(
           padding: Insets.allMd,

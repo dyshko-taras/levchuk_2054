@@ -12,6 +12,7 @@ import '../../constants/app_spacing.dart';
 import '../../constants/app_strings.dart';
 import '../../data/local/database/app_database.dart';
 import '../../providers/fields_provider.dart';
+import '../../providers/settings_provider.dart';
 import '../theme/app_colors.dart';
 import '../widgets/buttons/app_buttons.dart';
 import '../widgets/inputs/app_text_fields.dart';
@@ -118,7 +119,7 @@ class _FieldFormPageState extends State<FieldFormPage> {
 
     final provider = context.read<FieldsProvider>();
     if (_editingFieldId == null) {
-      await provider.createField(
+      final id = await provider.createField(
         name: name,
         address: address,
         type: _type,
@@ -127,6 +128,10 @@ class _FieldFormPageState extends State<FieldFormPage> {
         lon: lon,
         photoPath: _photoPath,
       );
+      final settings = context.read<SettingsProvider>();
+      if (settings.defaultFieldId == null) {
+        await settings.setDefaultFieldId(id);
+      }
     } else {
       final Field? current = provider.fields
           .where((f) => f.id == _editingFieldId)
@@ -163,7 +168,7 @@ class _FieldFormPageState extends State<FieldFormPage> {
     if (!mounted) return;
     await showModalBottomSheet<void>(
       context: context,
-      backgroundColor: Colors.transparent,
+      backgroundColor: AppColors.darkNavy,
       builder: (context) {
         return Padding(
           padding: Insets.allMd,
@@ -216,7 +221,7 @@ class _FieldFormPageState extends State<FieldFormPage> {
   Future<void> _openPhotoMenu() async {
     await showModalBottomSheet<void>(
       context: context,
-      backgroundColor: Colors.transparent,
+      backgroundColor: AppColors.darkNavy,
       builder: (context) {
         return Padding(
           padding: Insets.allMd,

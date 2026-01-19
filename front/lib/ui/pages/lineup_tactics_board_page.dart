@@ -1569,7 +1569,7 @@ Future<T?> _showPickerSheet<T>(
 }) {
   return showModalBottomSheet<T>(
     context: context,
-    backgroundColor: Colors.transparent,
+    backgroundColor: AppColors.darkNavy,
     builder: (context) {
       return Padding(
         padding: Insets.allMd,

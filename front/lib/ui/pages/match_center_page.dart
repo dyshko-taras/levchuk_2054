@@ -775,7 +775,7 @@ Future<int?> _pickTeam(
 }) async {
   final result = await showModalBottomSheet<int>(
     context: context,
-    backgroundColor: Colors.transparent,
+    backgroundColor: AppColors.darkNavy,
     builder: (context) {
       return Padding(
         padding: Insets.allMd,

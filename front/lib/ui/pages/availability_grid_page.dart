@@ -231,7 +231,7 @@ class _AvailabilityGridPageState extends State<AvailabilityGridPage> {
   Future<void> _openPeriodPicker() async {
     await showModalBottomSheet<void>(
       context: context,
-      backgroundColor: Colors.transparent,
+      backgroundColor: AppColors.darkNavy,
       builder: (context) {
         return Padding(
           padding: Insets.allMd,
@@ -261,7 +261,7 @@ class _AvailabilityGridPageState extends State<AvailabilityGridPage> {
   Future<void> _openTeamPicker({required int? defaultTeamId}) async {
     await showModalBottomSheet<void>(
       context: context,
-      backgroundColor: Colors.transparent,
+      backgroundColor: AppColors.darkNavy,
       builder: (context) {
         return Padding(
           padding: Insets.allMd,
@@ -295,7 +295,7 @@ class _AvailabilityGridPageState extends State<AvailabilityGridPage> {
   Future<void> _openFieldPicker({required List<Field> fields}) async {
     await showModalBottomSheet<void>(
       context: context,
-      backgroundColor: Colors.transparent,
+      backgroundColor: AppColors.darkNavy,
       builder: (context) {
         return Padding(
           padding: Insets.allMd,

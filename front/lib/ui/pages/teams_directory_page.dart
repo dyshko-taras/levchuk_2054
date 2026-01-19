@@ -122,8 +122,8 @@ class _TeamsList extends StatelessWidget {
           return Row(
             children: [
               SizedBox(
-                width: 44,
-                height: 44,
+                width: AppSizes.iconButtonSize,
+                height: AppSizes.iconButtonSize,
                 child: badgeAsset == null
                     ? const DecoratedBox(
                         decoration: BoxDecoration(
@@ -152,6 +152,8 @@ class _TeamsList extends StatelessWidget {
                     Text(
                       item.team.name,
                       style: Theme.of(context).textTheme.titleMedium,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                     Gaps.hXs,
                     Text(
@@ -159,12 +161,14 @@ class _TeamsList extends StatelessWidget {
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: AppColors.whiteOverlay70,
                       ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),
               ),
               SizedBox(
-                height: 40,
+                height: AppSizes.teamsDirectoryRowButtonHeight,
                 child: AppPillButton(
                   label: AppStrings.hubActionOpen,
                   onPressed: () => Navigator.of(context).pushNamed(
@@ -192,7 +196,7 @@ class _TeamsList extends StatelessWidget {
                   if (!context.mounted) return;
                   await showModalBottomSheet<void>(
                     context: context,
-                    backgroundColor: Colors.transparent,
+                    backgroundColor: AppColors.darkNavy,
                     builder: (context) {
                       return Padding(
                         padding: Insets.allMd,
@@ -296,7 +300,7 @@ class _EmptyState extends StatelessWidget {
           ),
           Gaps.hMd,
           SizedBox(
-            width: 200,
+            width: AppSizes.teamsDirectoryEmptyButtonWidth,
             child: AppPrimaryButton(
               label: AppStrings.teamsDirectoryNewTeam,
               onPressed: onCreate,
