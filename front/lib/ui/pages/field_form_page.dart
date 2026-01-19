@@ -2,11 +2,13 @@ import 'dart:io';
 
 import 'package:drift/drift.dart' show Value;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants/app_icons.dart';
+import '../../constants/app_limits.dart';
 import '../../constants/app_sizes.dart';
 import '../../constants/app_spacing.dart';
 import '../../constants/app_strings.dart';
@@ -111,6 +113,13 @@ class _FieldFormPageState extends State<FieldFormPage> {
       return;
     }
 
+    if (_type == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text(AppStrings.fieldFormTypeRequiredError)),
+      );
+      return;
+    }
+
     setState(() => _saving = true);
 
     final notes = _notesController.text.trim();
@@ -196,6 +205,10 @@ class _FieldFormPageState extends State<FieldFormPage> {
                           await context.read<FieldsProvider>().deleteFieldById(
                             fieldId,
                           );
+                          final settings = context.read<SettingsProvider>();
+                          if (settings.defaultFieldId == fieldId) {
+                            await settings.setDefaultFieldId(null);
+                          }
                           if (!this.context.mounted) return;
                           Navigator.of(this.context).pop();
                         }
@@ -355,6 +368,11 @@ class _FieldFormPageState extends State<FieldFormPage> {
                           AppPillTextField(
                             controller: _nameController,
                             hintText: AppStrings.fieldFormNameHint,
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(
+                                AppLimits.fieldNameMax,
+                              ),
+                            ],
                           ),
                           Gaps.hMd,
                           const _RequiredLabel(
@@ -364,11 +382,15 @@ class _FieldFormPageState extends State<FieldFormPage> {
                           AppPillTextField(
                             controller: _addressController,
                             hintText: AppStrings.fieldFormAddressHint,
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(
+                                AppLimits.fieldAddressMax,
+                              ),
+                            ],
                           ),
                           Gaps.hMd,
-                          Text(
-                            AppStrings.fieldFormTypeLabel,
-                            style: Theme.of(context).textTheme.titleLarge,
+                          const _RequiredLabel(
+                            label: AppStrings.fieldFormTypeLabel,
                           ),
                           Gaps.hSm,
                           _TypeDropdown(
@@ -384,6 +406,11 @@ class _FieldFormPageState extends State<FieldFormPage> {
                           AppTextAreaField(
                             controller: _notesController,
                             hintText: AppStrings.fieldFormNotesHint,
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(
+                                AppLimits.fieldNotesMax,
+                              ),
+                            ],
                           ),
                           Gaps.hMd,
                           Row(
@@ -399,6 +426,11 @@ class _FieldFormPageState extends State<FieldFormPage> {
                                           signed: true,
                                           decimal: true,
                                         ),
+                                    inputFormatters: [
+                                      LengthLimitingTextInputFormatter(
+                                        AppLimits.fieldLatLonMax,
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
@@ -414,6 +446,11 @@ class _FieldFormPageState extends State<FieldFormPage> {
                                           signed: true,
                                           decimal: true,
                                         ),
+                                    inputFormatters: [
+                                      LengthLimitingTextInputFormatter(
+                                        AppLimits.fieldLatLonMax,
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),

@@ -308,6 +308,7 @@ class AppStrings {
       'Field can’t be deleted because it is used in scheduled matches.';
   static const String fieldFormNameRequiredError = 'Name is required';
   static const String fieldFormAddressRequiredError = 'Address is required';
+  static const String fieldFormTypeRequiredError = 'Type is required';
 
   static const String fieldType5v5 = '5v5';
   static const String fieldType7v7 = '7v7';
