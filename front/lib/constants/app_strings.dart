@@ -137,6 +137,11 @@ class AppStrings {
       'Date & Time is required';
   static const String matchComposerErrorFieldRequired = 'Field is required';
   static const String matchComposerErrorTeamARequired = 'Team A is required';
+  static const String matchComposerErrorTeamBRequired = 'Team B is required';
+  static const String matchComposerErrorTeamsMustDiffer =
+      'Team A and Team B must be different';
+  static const String matchComposerErrorTeamBNoOptions =
+      'Create another team to select Team B.';
   static const String matchComposerConflictTitle = 'Time conflict detected';
   static const String matchComposerConflictMessage =
       'This match conflicts with another match for the same team or field.';

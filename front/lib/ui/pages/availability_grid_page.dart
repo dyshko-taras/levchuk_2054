@@ -10,6 +10,7 @@ import '../../constants/app_routes.dart';
 import '../../constants/app_sizes.dart';
 import '../../constants/app_spacing.dart';
 import '../../constants/app_strings.dart';
+import '../../constants/app_time_slots.dart';
 import '../../data/local/database/app_database.dart';
 import '../../providers/fields_provider.dart';
 import '../../providers/matches_provider.dart';
@@ -840,27 +841,7 @@ List<Fixture> _filterMatches({
 
 Map<int, _SlotStatus> _buildSlotStatuses(List<Fixture> matches) {
   final statuses = <int, _SlotStatus>{};
-  for (final hour in const [
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    16,
-    17,
-    18,
-    19,
-    20,
-    21,
-    22,
-    23,
-    24,
-  ]) {
+  for (final hour in AppTimeSlots.availabilityHours) {
     final overlapping = matches.where((m) => _overlapsHour(m, hour)).toList();
     if (overlapping.isEmpty) {
       statuses[hour] = _SlotStatus.free;

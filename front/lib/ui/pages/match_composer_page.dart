@@ -1,14 +1,17 @@
 import 'package:drift/drift.dart' show Value;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants/app_durations.dart';
 import '../../constants/app_icons.dart';
+import '../../constants/app_limits.dart';
 import '../../constants/app_routes.dart';
 import '../../constants/app_sizes.dart';
 import '../../constants/app_spacing.dart';
 import '../../constants/app_strings.dart';
+import '../../constants/app_time_slots.dart';
 import '../../data/local/database/app_database.dart';
 import '../../providers/fields_provider.dart';
 import '../../providers/matches_provider.dart';
@@ -134,21 +137,96 @@ class _MatchComposerPageState extends State<MatchComposerPage> {
     if (date == null) return;
 
     if (!mounted) return;
-    final time = await showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.fromDateTime(initial),
+    final hour = await _pickHour(
+      initialHour: (_startAt ?? initial).hour,
     );
-    if (time == null) return;
+    if (hour == null) return;
 
     final startAt = DateTime(
       date.year,
       date.month,
       date.day,
-      time.hour,
-      time.minute,
+      hour == 24 ? 0 : hour,
+      0,
     );
     setState(() => _startAt = startAt);
     _syncDisplayControllers();
+  }
+
+  Future<int?> _pickHour({required int initialHour}) async {
+    final initial = AppTimeSlots.availabilityHours.contains(initialHour)
+        ? initialHour
+        : AppTimeSlots.availabilityHours.first;
+
+    final result = await showModalBottomSheet<int>(
+      context: context,
+      backgroundColor: AppColors.darkNavy,
+      builder: (context) {
+        return Padding(
+          padding: Insets.allMd,
+          child: Container(
+            decoration: BoxDecoration(
+              color: AppColors.whiteOverlay10,
+              borderRadius: BorderRadius.circular(AppSpacing.lg),
+              border: Border.all(color: AppColors.whiteOverlay20),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Padding(
+                  padding: Insets.allMd,
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      AppStrings.matchComposerDateTimeLabel,
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                  ),
+                ),
+                const Divider(height: 1, color: AppColors.whiteOverlay20),
+                Flexible(
+                  child: ListView.separated(
+                    shrinkWrap: true,
+                    itemCount: AppTimeSlots.availabilityHours.length,
+                    separatorBuilder: (_, __) => const Divider(
+                      height: 1,
+                      color: AppColors.whiteOverlay20,
+                    ),
+                    itemBuilder: (context, index) {
+                      final hour = AppTimeSlots.availabilityHours[index];
+                      final time = TimeOfDay(
+                        hour: hour == 24 ? 0 : hour,
+                        minute: 0,
+                      );
+                      final label = MaterialLocalizations.of(
+                        context,
+                      ).formatTimeOfDay(
+                        time,
+                        alwaysUse24HourFormat: true,
+                      );
+
+                      final selected = hour == initial;
+                      return ListTile(
+                        title: Text(
+                          label,
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                        trailing: selected
+                            ? const Icon(Icons.check, color: AppColors.white)
+                            : null,
+                        onTap: () => Navigator.of(context).pop(hour),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+
+    return result;
   }
 
   Future<void> _pickFieldFromSheet() async {
@@ -172,10 +250,14 @@ class _MatchComposerPageState extends State<MatchComposerPage> {
   Future<void> _pickTeamA() async {
     if (!_editingEnabled) return;
     final teams = context.read<TeamsProvider>().teams;
+    final excluded = _teamBId;
+    final availableTeams = excluded == null
+        ? teams
+        : teams.where((t) => t.id != excluded).toList();
     final result = await _showPickerSheet<int>(
       title: AppStrings.matchComposerTeamALabel,
       items: [
-        for (final team in teams)
+        for (final team in availableTeams)
           _PickerOption(
             label: team.name,
             value: team.id,
@@ -190,21 +272,28 @@ class _MatchComposerPageState extends State<MatchComposerPage> {
   Future<void> _pickTeamB() async {
     if (!_editingEnabled) return;
     final teams = context.read<TeamsProvider>().teams;
-    final result = await _showPickerSheet<int?>(
+    final excluded = _teamAId;
+    final availableTeams = excluded == null
+        ? teams
+        : teams.where((t) => t.id != excluded).toList();
+    if (availableTeams.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text(AppStrings.matchComposerErrorTeamBNoOptions)),
+      );
+      return;
+    }
+
+    final result = await _showPickerSheet<int>(
       title: AppStrings.matchComposerTeamBLabel,
       items: [
-        const _PickerOption(
-          label: AppStrings.commonPlaceholderDash,
-          value: null,
-        ),
-        for (final team in teams)
+        for (final team in availableTeams)
           _PickerOption(
             label: team.name,
             value: team.id,
           ),
       ],
     );
-    if (result == null && _teamBId == null) return;
+    if (result == null) return;
     setState(() => _teamBId = result);
     _syncDisplayControllers();
   }
@@ -297,6 +386,23 @@ class _MatchComposerPageState extends State<MatchComposerPage> {
     }
 
     final teamBId = _teamBId;
+    if (teamBId == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(AppStrings.matchComposerErrorTeamBRequired),
+        ),
+      );
+      return;
+    }
+
+    if (teamBId == teamAId) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(AppStrings.matchComposerErrorTeamsMustDiffer),
+        ),
+      );
+      return;
+    }
 
     final hasConflict = _hasTimeConflict(
       startAt: startAt,
@@ -487,6 +593,11 @@ class _MatchComposerPageState extends State<MatchComposerPage> {
                             controller: _titleController,
                             hintText: AppStrings.matchComposerTitleHint,
                             enabled: _editingEnabled,
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(
+                                AppLimits.matchTitleMax,
+                              ),
+                            ],
                           ),
                           Gaps.hMd,
                           const _RequiredLabel(
@@ -502,9 +613,8 @@ class _MatchComposerPageState extends State<MatchComposerPage> {
                             suffixIconAsset: AppIcons.calendar,
                           ),
                           Gaps.hMd,
-                          Text(
-                            AppStrings.matchComposerFieldLabel,
-                            style: Theme.of(context).textTheme.titleLarge,
+                          const _RequiredLabel(
+                            label: AppStrings.matchComposerFieldLabel,
                           ),
                           Gaps.hSm,
                           AppPillTextField(
@@ -576,7 +686,7 @@ class _MatchComposerPageState extends State<MatchComposerPage> {
                               Expanded(
                                 child: _LabeledField(
                                   label: AppStrings.matchComposerTeamBLabel,
-                                  isRequired: false,
+                                  isRequired: true,
                                   child: AppPillTextField(
                                     controller: _teamBController,
                                     hintText: AppStrings.matchComposerTeamHint,
@@ -598,6 +708,11 @@ class _MatchComposerPageState extends State<MatchComposerPage> {
                             controller: _notesController,
                             hintText: AppStrings.matchComposerNotesHint,
                             enabled: _editingEnabled,
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(
+                                AppLimits.matchNotesMax,
+                              ),
+                            ],
                           ),
                         ],
                       ),

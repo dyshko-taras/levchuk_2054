@@ -9,4 +9,7 @@ class AppLimits {
   static const int fieldAddressMax = 80;
   static const int fieldNotesMax = 240;
   static const int fieldLatLonMax = 16;
+
+  static const int matchTitleMax = 40;
+  static const int matchNotesMax = 240;
 }
