@@ -43,8 +43,6 @@ class AppImages {
 
   static const String fieldsRegistryCardBackground =
       'assets/images/img_fields_registry_card_bg.jpg';
-  static const String fieldPhotoPlaceholder =
-      'assets/images/img_field_photo_placeholder.webp';
 
   static const String lineupBoardPitch =
       'assets/images/img_lineup_board_pitch.jpg';

@@ -5,6 +5,14 @@
     <uses-permission android:name="com.huawei.appmarket.service.commondata.permission.GET_COMMON_DATA" tools:node="remove"/>
     <uses-permission android:name="com.samsung.android.mapsagent.permission.READ_APP_INFO" tools:node="remove"/>
 
+    <!-- Notifications -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+
+    <!-- WorkManager -->
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+
     <application
         android:label="${appName}"
         android:icon="@mipmap/ic_launcher">

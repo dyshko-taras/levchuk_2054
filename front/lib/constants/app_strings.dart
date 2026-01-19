@@ -286,6 +286,12 @@ class AppStrings {
   static const String settingsRowDefaultField = 'Default field';
   static const String settingsSectionNotifications = 'Notifications:';
   static const String settingsRowLocalMatchReminders = 'Local match reminders';
+  static const String settingsRowTestNotification = 'Test notification';
+  static const String notificationsTestTitle = 'Test notification';
+  static const String notificationsTestBody = 'Notifications are working.';
+  static const String notificationsPermissionDenied =
+      'Allow notifications in system settings to enable reminders.';
+  static const String notificationsOpenSettings = 'Open settings';
   static const String settingsSectionAbout = 'About:';
   static const String settingsRowVersion = 'Version';
   static const String settingsRowPrivacy = 'Privacy';

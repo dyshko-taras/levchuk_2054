@@ -148,6 +148,13 @@ class _TeamsTab extends StatelessWidget {
       stream: context.watch<TeamsProvider>().watchTeamsDirectory(),
       builder: (context, snapshot) {
         final items = snapshot.data ?? const [];
+        if (items.isEmpty) {
+          return const _ListCard(
+            children: [
+              _EmptyListMessage(text: AppStrings.teamsDirectoryEmpty),
+            ],
+          );
+        }
         return _ListCard(
           children: [
             for (var i = 0; i < items.length; i++) ...[
@@ -431,12 +438,20 @@ class _FieldsTab extends StatelessWidget {
         ),
     ]..sort((a, b) => b.usageCount.compareTo(a.usageCount));
 
+    if (items.isEmpty) {
+      return const _ListCard(
+        children: [
+          _EmptyListMessage(text: AppStrings.fieldsRegistryEmpty),
+        ],
+      );
+    }
+
     return _ListCard(
       children: [
         for (var i = 0; i < items.length; i++) ...[
           _ListRow(
             leading: _CircleImage(
-              path: items[i].field.photoPath ?? AppImages.fieldPhotoPlaceholder,
+              path: items[i].field.photoPath ?? AppImages.onboardingSlideFieldsRegistry,
             ),
             title: items[i].field.name,
             subtitle: items[i].lastMatch == null
@@ -542,6 +557,28 @@ class _ListCard extends StatelessWidget {
         border: Border.all(color: AppColors.whiteOverlay20),
       ),
       child: Column(children: children),
+    );
+  }
+}
+
+class _EmptyListMessage extends StatelessWidget {
+  const _EmptyListMessage({required this.text});
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
+      child: Center(
+        child: Text(
+          text,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            color: AppColors.whiteOverlay70,
+          ),
+          textAlign: TextAlign.center,
+        ),
+      ),
     );
   }
 }

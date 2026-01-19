@@ -13,6 +13,16 @@ ThemeData get appTheme => ThemeData(
     error: AppColors.darkRed,
     surface: AppColors.darkNavy,
   ),
+  switchTheme: SwitchThemeData(
+    trackColor: WidgetStateProperty.resolveWith((states) {
+      return AppColors.whiteOverlay20;
+    }),
+    thumbColor: WidgetStateProperty.resolveWith((states) {
+      if (states.contains(WidgetState.selected)) return AppColors.limeGreen;
+      return AppColors.whiteOverlay70;
+    }),
+    trackOutlineColor: const WidgetStatePropertyAll(AppColors.whiteOverlay20),
+  ),
   textTheme: const TextTheme(
     displayLarge: TextStyle(
       fontFamily: AppFonts.family,

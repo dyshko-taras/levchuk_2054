@@ -13,6 +13,7 @@ import '../../data/local/database/app_database.dart';
 import '../../providers/fields_provider.dart';
 import '../../providers/settings_provider.dart';
 import '../../providers/teams_provider.dart';
+import '../../services/notifications/notification_service.dart';
 import '../../utils/app_version.dart';
 import '../privacy/privacy_actions.dart';
 import '../theme/app_colors.dart';
@@ -20,6 +21,11 @@ import '../widgets/buttons/app_buttons.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
+
+  static DateTime? _lastNotificationsDeniedSnackAt;
+  static const Duration _notificationsDeniedSnackCooldown = Duration(
+    seconds: 6,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -71,152 +77,238 @@ class SettingsPage extends StatelessWidget {
                   ],
                 ),
                 Gaps.hMd,
-                _Card(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const _SectionTitle(
-                        text: AppStrings.settingsSectionDefaults,
-                      ),
-                      Gaps.hSm,
-                      _RowButton(
-                        label: AppStrings.settingsRowDefaultTeam,
-                        trailingText: defaultTeamName,
-                        onTap: () async {
-                          final selectedId = await _pickDefaultTeamId(
-                            context,
-                            teams: teams,
-                            currentId: settings.defaultTeamId,
-                          );
-                          if (selectedId == null) return;
-                          if (selectedId == 0) {
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        _Card(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const _SectionTitle(
+                                text: AppStrings.settingsSectionDefaults,
+                              ),
+                              Gaps.hSm,
+                              _RowButton(
+                                label: AppStrings.settingsRowDefaultTeam,
+                                trailingText: defaultTeamName,
+                                onTap: () async {
+                                  final selectedId = await _pickDefaultTeamId(
+                                    context,
+                                    teams: teams,
+                                    currentId: settings.defaultTeamId,
+                                  );
+                                  if (selectedId == null) return;
+                                  if (selectedId == 0) {
+                                    await context
+                                        .read<TeamsProvider>()
+                                        .clearDefaultTeamFlag();
+                                    await settings.setDefaultTeamId(null);
+                                    return;
+                                  }
+                                  await settings.setDefaultTeamId(selectedId);
+                                  await context
+                                      .read<TeamsProvider>()
+                                      .setDefaultTeamFlag(selectedId);
+                                },
+                              ),
+                              Gaps.hSm,
+                              _RowButton(
+                                label: AppStrings.settingsRowDefaultField,
+                                trailingText: defaultFieldName,
+                                onTap: () async {
+                                  final selectedId = await _pickDefaultFieldId(
+                                    context,
+                                    fields: fields,
+                                    currentId: settings.defaultFieldId,
+                                  );
+                                  if (selectedId == null) return;
+                                  if (selectedId == 0) {
+                                    await settings.setDefaultFieldId(null);
+                                    return;
+                                  }
+                                  await settings.setDefaultFieldId(selectedId);
+                                },
+                              ),
+                              Gaps.hMd,
+                              const _SectionTitle(
+                                text: AppStrings.settingsSectionNotifications,
+                              ),
+                              Gaps.hSm,
+                              _RowSwitch(
+                                label:
+                                    AppStrings.settingsRowLocalMatchReminders,
+                                value: settings.localRemindersEnabled,
+                                onChanged: (value) async {
+                                  if (!value) {
+                                    await settings.setLocalRemindersEnabled(
+                                      false,
+                                    );
+                                    await NotificationService.setMatchRemindersEnabled(
+                                      false,
+                                    );
+                                    return;
+                                  }
+
+                                  final granted =
+                                      await NotificationService.ensureNotificationPermission();
+                                  if (!context.mounted) return;
+
+                                  if (!granted) {
+                                    await settings.setLocalRemindersEnabled(
+                                      false,
+                                    );
+                                    await NotificationService.setMatchRemindersEnabled(
+                                      false,
+                                    );
+
+                                    final now = DateTime.now();
+                                    final last =
+                                        _lastNotificationsDeniedSnackAt;
+                                    final canShow =
+                                        last == null ||
+                                        now.difference(last) >
+                                            _notificationsDeniedSnackCooldown;
+                                    if (canShow) {
+                                      _lastNotificationsDeniedSnackAt = now;
+                                      final messenger = ScaffoldMessenger.of(
+                                        context,
+                                      );
+                                      messenger.hideCurrentSnackBar();
+                                      messenger.showSnackBar(
+                                        SnackBar(
+                                          content: const Text(
+                                            AppStrings
+                                                .notificationsPermissionDenied,
+                                          ),
+                                          duration: const Duration(seconds: 4),
+                                          showCloseIcon: true,
+                                          action: SnackBarAction(
+                                            label: AppStrings
+                                                .notificationsOpenSettings,
+                                            onPressed: () {
+                                              messenger.hideCurrentSnackBar();
+                                              NotificationService.openAppNotificationSettings();
+                                            },
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                    return;
+                                  }
+
+                                  await settings.setLocalRemindersEnabled(true);
+                                  await NotificationService.setMatchRemindersEnabled(
+                                    true,
+                                  );
+                                },
+                              ),
+                              Gaps.hMd,
+                              const _SectionTitle(
+                                text: AppStrings.settingsSectionAbout,
+                              ),
+                              Gaps.hSm,
+                              FutureBuilder<String>(
+                                future: AppVersion.load(),
+                                builder: (context, snapshot) {
+                                  final versionText =
+                                      snapshot.data ??
+                                      AppStrings.commonPlaceholderDash;
+                                  return _RowButton(
+                                    label: AppStrings.settingsRowVersion,
+                                    trailingText: versionText,
+                                    onTap: () {
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        SnackBar(content: Text(versionText)),
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
+                              Gaps.hSm,
+                              FutureBuilder<String>(
+                                future: AppVersion.load(),
+                                builder: (context, snapshot) {
+                                  final versionText =
+                                      snapshot.data ??
+                                      AppStrings.commonPlaceholderDash;
+                                  return _RowButton(
+                                    label: AppStrings
+                                        .settingsRowOpenSourceLicenses,
+                                    trailingText: null,
+                                    onTap: () {
+                                      showLicensePage(
+                                        context: context,
+                                        applicationName: AppConfig.appName,
+                                        applicationVersion: versionText,
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
+                              Gaps.hSm,
+                              _RowButton(
+                                label: AppStrings.settingsRowPrivacy,
+                                trailingText: null,
+                                onTap: () => openPrivacy(context),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Gaps.hMd,
+                        AppDangerButton(
+                          label: AppStrings.settingsClearAllData,
+                          onPressed: () async {
+                            final confirm = await showDialog<bool>(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: const Text(
+                                    AppStrings.settingsClearAllDataConfirmTitle,
+                                  ),
+                                  content: const Text(
+                                    AppStrings
+                                        .settingsClearAllDataConfirmMessage,
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () =>
+                                          Navigator.of(context).pop(false),
+                                      child: const Text(
+                                        AppStrings.commonCancel,
+                                      ),
+                                    ),
+                                    TextButton(
+                                      onPressed: () =>
+                                          Navigator.of(context).pop(true),
+                                      child: const Text(
+                                        AppStrings.commonDelete,
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+
+                            if (confirm != true) return;
                             await context
-                                .read<TeamsProvider>()
-                                .clearDefaultTeamFlag();
-                            await settings.setDefaultTeamId(null);
-                            return;
-                          }
-                          await settings.setDefaultTeamId(selectedId);
-                          await context
-                              .read<TeamsProvider>()
-                              .setDefaultTeamFlag(selectedId);
-                        },
-                      ),
-                      Gaps.hSm,
-                      _RowButton(
-                        label: AppStrings.settingsRowDefaultField,
-                        trailingText: defaultFieldName,
-                        onTap: () async {
-                          final selectedId = await _pickDefaultFieldId(
-                            context,
-                            fields: fields,
-                            currentId: settings.defaultFieldId,
-                          );
-                          if (selectedId == null) return;
-                          if (selectedId == 0) {
-                            await settings.setDefaultFieldId(null);
-                            return;
-                          }
-                          await settings.setDefaultFieldId(selectedId);
-                        },
-                      ),
-                      Gaps.hMd,
-                      const _SectionTitle(
-                        text: AppStrings.settingsSectionNotifications,
-                      ),
-                      Gaps.hSm,
-                      _RowSwitch(
-                        label: AppStrings.settingsRowLocalMatchReminders,
-                        value: settings.localRemindersEnabled,
-                        onChanged: (value) =>
-                            settings.setLocalRemindersEnabled(value),
-                      ),
-                      Gaps.hMd,
-                      const _SectionTitle(
-                        text: AppStrings.settingsSectionAbout,
-                      ),
-                      Gaps.hSm,
-                      FutureBuilder<String>(
-                        future: AppVersion.load(),
-                        builder: (context, snapshot) {
-                          final versionText =
-                              snapshot.data ?? AppStrings.commonPlaceholderDash;
-                          return _RowButton(
-                            label: AppStrings.settingsRowVersion,
-                            trailingText: versionText,
-                            onTap: () {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text(versionText)),
-                              );
-                            },
-                          );
-                        },
-                      ),
-                      Gaps.hSm,
-
-                      FutureBuilder<String>(
-                        future: AppVersion.load(),
-                        builder: (context, snapshot) {
-                          final versionText =
-                              snapshot.data ?? AppStrings.commonPlaceholderDash;
-                          return _RowButton(
-                            label: AppStrings.settingsRowOpenSourceLicenses,
-                            trailingText: null,
-                            onTap: () {
-                              showLicensePage(
-                                context: context,
-                                applicationName: AppConfig.appName,
-                                applicationVersion: versionText,
-                              );
-                            },
-                          );
-                        },
-                      ),
-                      Gaps.hSm,
-                      _RowButton(
-                        label: AppStrings.settingsRowPrivacy,
-                        trailingText: null,
-                        onTap: () => openPrivacy(context),
-                      ),
-                    ],
+                                .read<SettingsProvider>()
+                                .clearAllData();
+                            await NotificationService.setMatchRemindersEnabled(
+                              false,
+                            );
+                            if (!context.mounted) return;
+                            await Navigator.of(context).pushNamedAndRemoveUntil(
+                              AppRoutes.splash,
+                              (route) => false,
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                const Spacer(),
-                AppDangerButton(
-                  label: AppStrings.settingsClearAllData,
-                  onPressed: () async {
-                    final confirm = await showDialog<bool>(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          title: const Text(
-                            AppStrings.settingsClearAllDataConfirmTitle,
-                          ),
-                          content: const Text(
-                            AppStrings.settingsClearAllDataConfirmMessage,
-                          ),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.of(context).pop(false),
-                              child: const Text(AppStrings.commonCancel),
-                            ),
-                            TextButton(
-                              onPressed: () => Navigator.of(context).pop(true),
-                              child: const Text(AppStrings.commonDelete),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-
-                    if (confirm != true) return;
-                    await context.read<SettingsProvider>().clearAllData();
-                    if (!context.mounted) return;
-                    await Navigator.of(context).pushNamedAndRemoveUntil(
-                      AppRoutes.splash,
-                      (route) => false,
-                    );
-                  },
                 ),
               ],
             ),
@@ -357,8 +449,6 @@ class _RowSwitch extends StatelessWidget {
           Switch.adaptive(
             value: value,
             onChanged: onChanged,
-            activeTrackColor: AppColors.limeGreen,
-            activeThumbColor: AppColors.limeGreen,
           ),
         ],
       ),
