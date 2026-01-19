@@ -225,7 +225,7 @@ class _MatchesTab extends StatelessWidget {
     final scheduled = matches.where((m) => m.status == 'planned').length;
     final finished = matches.where((m) => m.status == 'finished').length;
 
-    final series = _buildMonthSeries(matches);
+    final series = _buildWeekSeries(matches);
 
     final maxY = series.isEmpty
         ? 1.0
@@ -233,6 +233,13 @@ class _MatchesTab extends StatelessWidget {
                   .map((m) => (m.created + m.scheduled + m.finished).toDouble())
                   .reduce((a, b) => a > b ? a : b) +
               1);
+
+    final hasAny = series.any(
+      (w) => w.created != 0 || w.scheduled != 0 || w.finished != 0,
+    );
+    final rangeText = series.isEmpty
+        ? null
+        : _formatWeeksRange(context, series);
 
     return Column(
       children: [
@@ -263,61 +270,101 @@ class _MatchesTab extends StatelessWidget {
               ),
             ),
             const Divider(height: 1, color: AppColors.whiteOverlay20),
+            Padding(
+              padding: Insets.allMd,
+              child: Row(
+                children: [
+                  Text(
+                    AppStrings.statsMatchesLast8Weeks,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const Spacer(),
+                  if (rangeText != null)
+                    Text(
+                      rangeText,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: AppColors.whiteOverlay70,
+                      ),
+                    ),
+                ],
+              ),
+            ),
             SizedBox(
               height: AppSizes.statsChartHeight,
               child: Padding(
                 padding: Insets.allMd,
-                child: BarChart(
-                  BarChartData(
-                    barTouchData: const BarTouchData(enabled: false),
-                    titlesData: const FlTitlesData(show: false),
-                    gridData: const FlGridData(show: false),
-                    borderData: FlBorderData(show: false),
-                    maxY: maxY,
-                    alignment: BarChartAlignment.spaceAround,
-                    barGroups: [
-                      for (var i = 0; i < series.length; i++)
-                        BarChartGroupData(
-                          x: i,
-                          barRods: [
-                            BarChartRodData(
-                              toY:
-                                  (series[i].created +
-                                          series[i].scheduled +
-                                          series[i].finished)
-                                      .toDouble(),
-                              width: AppSizes.statsChartBarWidth,
-                              borderRadius: BorderRadius.circular(
-                                AppSizes.statsChartBarRadius,
+                child: hasAny
+                    ? BarChart(
+                        BarChartData(
+                          barTouchData: const BarTouchData(enabled: false),
+                          titlesData: const FlTitlesData(show: false),
+                          gridData: const FlGridData(show: false),
+                          borderData: FlBorderData(show: false),
+                          maxY: maxY,
+                          alignment: BarChartAlignment.spaceAround,
+                          barGroups: [
+                            for (var i = 0; i < series.length; i++)
+                              BarChartGroupData(
+                                x: i,
+                                barRods: [
+                                  BarChartRodData(
+                                    toY:
+                                        (series[i].created +
+                                                series[i].scheduled +
+                                                series[i].finished)
+                                            .toDouble(),
+                                    width: AppSizes.statsChartBarWidth,
+                                    borderRadius: BorderRadius.circular(
+                                      AppSizes.statsChartBarRadius,
+                                    ),
+                                    rodStackItems: [
+                                      BarChartRodStackItem(
+                                        0,
+                                        series[i].finished.toDouble(),
+                                        AppColors.statsFinished,
+                                      ),
+                                      BarChartRodStackItem(
+                                        series[i].finished.toDouble(),
+                                        (series[i].finished +
+                                                series[i].scheduled)
+                                            .toDouble(),
+                                        AppColors.statsScheduled,
+                                      ),
+                                      BarChartRodStackItem(
+                                        (series[i].finished +
+                                                series[i].scheduled)
+                                            .toDouble(),
+                                        (series[i].finished +
+                                                series[i].scheduled +
+                                                series[i].created)
+                                            .toDouble(),
+                                        AppColors.statsCreated,
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
-                              rodStackItems: [
-                                BarChartRodStackItem(
-                                  0,
-                                  series[i].finished.toDouble(),
-                                  AppColors.statsFinished,
-                                ),
-                                BarChartRodStackItem(
-                                  series[i].finished.toDouble(),
-                                  (series[i].finished + series[i].scheduled)
-                                      .toDouble(),
-                                  AppColors.statsScheduled,
-                                ),
-                                BarChartRodStackItem(
-                                  (series[i].finished + series[i].scheduled)
-                                      .toDouble(),
-                                  (series[i].finished +
-                                          series[i].scheduled +
-                                          series[i].created)
-                                      .toDouble(),
-                                  AppColors.statsCreated,
-                                ),
-                              ],
+                          ],
+                        ),
+                      )
+                    : Center(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              AppStrings.statsMatchesChartEmptyTitle,
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                            Gaps.hXs,
+                            Text(
+                              AppStrings.statsMatchesChartEmptySubtitle,
+                              style: Theme.of(context).textTheme.bodyMedium
+                                  ?.copyWith(color: AppColors.whiteOverlay70),
+                              textAlign: TextAlign.center,
                             ),
                           ],
                         ),
-                    ],
-                  ),
-                ),
+                      ),
               ),
             ),
           ],
@@ -326,27 +373,31 @@ class _MatchesTab extends StatelessWidget {
     );
   }
 
-  List<_MonthBucket> _buildMonthSeries(List<Fixture> matches) {
+  List<_WeekBucket> _buildWeekSeries(List<Fixture> matches) {
     final now = DateTime.now();
-    final months = <DateTime>[
-      for (var i = 7; i >= 0; i--) DateTime(now.year, now.month - i),
+    final thisWeekStart = _startOfWeek(now);
+
+    final weeks = <DateTime>[
+      for (var i = 7; i >= 0; i--)
+        thisWeekStart.subtract(Duration(days: i * 7)),
     ];
 
     return [
-      for (final month in months)
-        _MonthBucket(
-          month: month,
+      for (final weekStart in weeks)
+        _WeekBucket(
+          weekStart: weekStart,
           created: matches
-              .where((m) => _isSameMonth(m.createdAt, month))
+              .where((m) => _isInWeek(m.createdAt, weekStart))
               .length,
           scheduled: matches
               .where(
-                (m) => m.status == 'planned' && _isSameMonth(m.startAt, month),
+                (m) => m.status == 'planned' && _isInWeek(m.startAt, weekStart),
               )
               .length,
           finished: matches
               .where(
-                (m) => m.status == 'finished' && _isSameMonth(m.startAt, month),
+                (m) =>
+                    m.status == 'finished' && _isInWeek(m.startAt, weekStart),
               )
               .length,
         ),
@@ -413,15 +464,15 @@ class _FieldStatsItem {
   final Fixture? lastMatch;
 }
 
-class _MonthBucket {
-  const _MonthBucket({
-    required this.month,
+class _WeekBucket {
+  const _WeekBucket({
+    required this.weekStart,
     required this.created,
     required this.scheduled,
     required this.finished,
   });
 
-  final DateTime month;
+  final DateTime weekStart;
   final int created;
   final int scheduled;
   final int finished;
@@ -442,7 +493,7 @@ class _SummaryMetric extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
             label,
@@ -600,8 +651,24 @@ class _CircleImage extends StatelessWidget {
 bool _matchHasTeam(Fixture match, int teamId) =>
     match.teamAId == teamId || match.teamBId == teamId;
 
-bool _isSameMonth(DateTime value, DateTime month) =>
-    value.year == month.year && value.month == month.month;
+DateTime _startOfWeek(DateTime value) {
+  final day = DateTime(value.year, value.month, value.day);
+  return day.subtract(Duration(days: day.weekday - DateTime.monday));
+}
+
+bool _isInWeek(DateTime value, DateTime weekStart) {
+  final start = DateTime(weekStart.year, weekStart.month, weekStart.day);
+  final end = start.add(const Duration(days: 7));
+  return !value.isBefore(start) && value.isBefore(end);
+}
+
+String _formatWeeksRange(BuildContext context, List<_WeekBucket> series) {
+  final start = series.first.weekStart;
+  final end = series.last.weekStart.add(const Duration(days: 6));
+  final startText = MaterialLocalizations.of(context).formatShortDate(start);
+  final endText = MaterialLocalizations.of(context).formatShortDate(end);
+  return '$startText – $endText';
+}
 
 String _formatDateTime(BuildContext context, DateTime value) {
   final date = MaterialLocalizations.of(context).formatMediumDate(value);

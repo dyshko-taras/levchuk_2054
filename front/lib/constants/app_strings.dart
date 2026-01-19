@@ -269,6 +269,10 @@ class AppStrings {
   static const String statsTabTeams = 'Teams';
   static const String statsTabMatches = 'Matches';
   static const String statsTabFields = 'Fields';
+  static const String statsMatchesLast8Weeks = 'Last 8 weeks';
+  static const String statsMatchesChartEmptyTitle = 'No matches yet.';
+  static const String statsMatchesChartEmptySubtitle =
+      'Create matches to see weekly stats.';
   static const String statsTeamsPlayersPrefix = 'Players:';
   static const String statsTeamsAvgRosterLabel = 'Avg rt. sz:';
   static const String statsMatchesCreated = 'Created';
