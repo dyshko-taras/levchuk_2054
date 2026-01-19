@@ -1,12 +1,14 @@
-import 'package:drift/drift.dart' show Value;
 import 'dart:io';
 
+import 'package:drift/drift.dart' show Value;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants/app_icons.dart';
 import '../../constants/app_images.dart';
+import '../../constants/app_limits.dart';
 import '../../constants/app_radius.dart';
 import '../../constants/app_routes.dart';
 import '../../constants/app_sizes.dart';
@@ -31,7 +33,6 @@ class MatchCenterPage extends StatefulWidget {
 class _MatchCenterPageState extends State<MatchCenterPage> {
   bool _finalizing = false;
 
-  String? _result; // team_a | team_b | draw
   final TextEditingController _scoreAController = TextEditingController();
   final TextEditingController _scoreBController = TextEditingController();
 
@@ -57,10 +58,19 @@ class _MatchCenterPageState extends State<MatchCenterPage> {
               .firstOrNull;
 
     if (match == null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        Navigator.of(context).maybePop();
+      });
+
       return const Scaffold(
         body: ColoredBox(
           color: AppColors.darkNavy,
-          child: SafeArea(child: SizedBox.shrink()),
+          child: SafeArea(
+            child: Center(
+              child: Text(AppStrings.matchCenterMatchNotFound),
+            ),
+          ),
         ),
       );
     }
@@ -91,12 +101,9 @@ class _MatchCenterPageState extends State<MatchCenterPage> {
 
     final isFinished = match.status == 'finished';
 
-    final showFinalize = _finalizing || (isFinished && match.result != null);
+    final showFinalize = _finalizing || isFinished;
 
-    if (showFinalize &&
-        _result == null &&
-        (match.result != null || _finalizing)) {
-      _result ??= match.result;
+    if (showFinalize && isFinished) {
       if (_scoreAController.text.isEmpty) {
         _scoreAController.text = match.scoreA?.toString() ?? '';
       }
@@ -105,7 +112,8 @@ class _MatchCenterPageState extends State<MatchCenterPage> {
       }
     }
 
-    final backgroundPath = field?.photoPath ?? AppImages.fieldPhotoPlaceholder;
+    final backgroundPath =
+        field?.photoPath ?? AppImages.fieldsRegistryCardBackground;
 
     return Scaffold(
       body: ColoredBox(
@@ -155,41 +163,6 @@ class _MatchCenterPageState extends State<MatchCenterPage> {
                         title: teamA?.name ?? AppStrings.matchCenterTeamATbd,
                         infoRow: infoRow,
                       ),
-                      Gaps.hSm,
-                      _ActionsBar(
-                        canJoinTeamB: match.teamBId == null,
-                        canOpenLineup: !isFinished,
-                        onEditMatch: () => Navigator.of(context).pushNamed(
-                          AppRoutes.matchComposer,
-                          arguments: MatchComposerArgs(matchId: match.id),
-                        ),
-                        onJoinTeamB: match.teamBId == null
-                            ? () async {
-                                final selectedId = await _pickTeam(
-                                  context,
-                                  teams: teams,
-                                );
-                                if (selectedId == null) return;
-                                await context
-                                    .read<MatchesProvider>()
-                                    .updateMatch(
-                                      match.copyWith(
-                                        teamBId: Value(selectedId),
-                                        updatedAt: Value(DateTime.now()),
-                                      ),
-                                    );
-                              }
-                            : null,
-                        onMarkFinished: isFinished
-                            ? null
-                            : () => setState(() => _finalizing = true),
-                        onOpenLineup: !isFinished
-                            ? () => Navigator.of(context).pushNamed(
-                                AppRoutes.lineupTactics,
-                                arguments: LineupTacticsArgs(matchId: match.id),
-                              )
-                            : null,
-                      ),
                       Gaps.hMd,
                       Text(
                         AppStrings.matchCenterRostersPreviewB,
@@ -203,31 +176,13 @@ class _MatchCenterPageState extends State<MatchCenterPage> {
                         title: teamB?.name ?? AppStrings.matchCenterTeamBTbd,
                         infoRow: infoRow,
                       ),
-                      Gaps.hSm,
+                      Gaps.hMd,
                       _ActionsBar(
-                        canJoinTeamB: match.teamBId == null,
                         canOpenLineup: !isFinished,
                         onEditMatch: () => Navigator.of(context).pushNamed(
                           AppRoutes.matchComposer,
                           arguments: MatchComposerArgs(matchId: match.id),
                         ),
-                        onJoinTeamB: match.teamBId == null
-                            ? () async {
-                                final selectedId = await _pickTeam(
-                                  context,
-                                  teams: teams,
-                                );
-                                if (selectedId == null) return;
-                                await context
-                                    .read<MatchesProvider>()
-                                    .updateMatch(
-                                      match.copyWith(
-                                        teamBId: Value(selectedId),
-                                        updatedAt: Value(DateTime.now()),
-                                      ),
-                                    );
-                              }
-                            : null,
                         onMarkFinished: isFinished
                             ? null
                             : () => setState(() => _finalizing = true),
@@ -250,17 +205,15 @@ class _MatchCenterPageState extends State<MatchCenterPage> {
                               teamA?.name ?? AppStrings.matchCenterTeamATbd,
                           teamBName:
                               teamB?.name ?? AppStrings.matchCenterTeamBTbd,
-                          selectedResult: _result,
-                          onSelectResult: (value) =>
-                              setState(() => _result = value),
                           scoreAController: _scoreAController,
                           scoreBController: _scoreBController,
+                          enabled: _finalizing,
                         ),
                       ],
                     ],
                   ),
                 ),
-                if (showFinalize) ...[
+                if (_finalizing) ...[
                   Gaps.hMd,
                   AppPrimaryButton(
                     label: AppStrings.matchCenterFinalizeSave,
@@ -273,7 +226,6 @@ class _MatchCenterPageState extends State<MatchCenterPage> {
                     label: AppStrings.matchCenterFinalizeCancel,
                     onPressed: () => setState(() {
                       _finalizing = false;
-                      _result = null;
                       _scoreAController.clear();
                       _scoreBController.clear();
                     }),
@@ -290,18 +242,20 @@ class _MatchCenterPageState extends State<MatchCenterPage> {
   Future<void> _saveFinalize(BuildContext context, Fixture match) async {
     if (_savingFinalize) return;
 
-    final result = _result;
-    if (result == null) {
+    final scoreA = int.tryParse(_scoreAController.text.trim());
+    final scoreB = int.tryParse(_scoreBController.text.trim());
+    if (scoreA == null || scoreB == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text(AppStrings.matchCenterFinalizeWinRequired),
+          content: Text(AppStrings.matchCenterFinalizeScoreRequired),
         ),
       );
       return;
     }
 
-    final scoreA = int.tryParse(_scoreAController.text.trim());
-    final scoreB = int.tryParse(_scoreBController.text.trim());
+    final result = scoreA == scoreB
+        ? 'draw'
+        : (scoreA > scoreB ? 'team_a' : 'team_b');
 
     setState(() => _savingFinalize = true);
     await context.read<MatchesProvider>().updateMatch(
@@ -337,47 +291,51 @@ class _MatchSummaryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: AppRadius.xl,
-      child: Stack(
-        children: [
-          Positioned.fill(
-            child: _AnyImage(path: backgroundPath),
-          ),
-          Positioned.fill(
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    AppColors.darkNavy.withValues(alpha: 0.15),
-                    AppColors.darkNavy.withValues(alpha: 0.70),
-                  ],
+      child: SizedBox(
+        height: AppSizes.matchCenterHeaderHeight,
+        width: double.infinity,
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: _AnyImage(path: backgroundPath),
+            ),
+            Positioned.fill(
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      AppColors.darkNavy.withValues(alpha: 0.15),
+                      AppColors.darkNavy.withValues(alpha: 0.70),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-          Padding(
-            padding: Insets.allMd,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: Theme.of(context).textTheme.titleLarge,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                Gaps.hXs,
-                Text(
-                  infoRow,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.whiteOverlay70,
+            Padding(
+              padding: Insets.allMd,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: Theme.of(context).textTheme.titleLarge,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                ),
-              ],
+                  Gaps.hXs,
+                  Text(
+                    infoRow,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: AppColors.whiteOverlay70,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -477,18 +435,14 @@ class _RosterCard extends StatelessWidget {
 
 class _ActionsBar extends StatelessWidget {
   const _ActionsBar({
-    required this.canJoinTeamB,
     required this.canOpenLineup,
     required this.onEditMatch,
-    required this.onJoinTeamB,
     required this.onMarkFinished,
     required this.onOpenLineup,
   });
 
-  final bool canJoinTeamB;
   final bool canOpenLineup;
   final VoidCallback onEditMatch;
-  final VoidCallback? onJoinTeamB;
   final VoidCallback? onMarkFinished;
   final VoidCallback? onOpenLineup;
 
@@ -499,10 +453,6 @@ class _ActionsBar extends StatelessWidget {
         label: AppStrings.matchCenterActionEditMatch,
         onPressed: onEditMatch,
         isPrimary: true,
-      ),
-      _ActionItem(
-        label: AppStrings.matchCenterActionJoinTeamB,
-        onPressed: canJoinTeamB ? onJoinTeamB : null,
       ),
       _ActionItem(
         label: AppStrings.matchCenterActionMarkFinished,
@@ -578,18 +528,16 @@ class _FinalizeCard extends StatelessWidget {
   const _FinalizeCard({
     required this.teamAName,
     required this.teamBName,
-    required this.selectedResult,
-    required this.onSelectResult,
     required this.scoreAController,
     required this.scoreBController,
+    required this.enabled,
   });
 
   final String teamAName;
   final String teamBName;
-  final String? selectedResult;
-  final ValueChanged<String> onSelectResult;
   final TextEditingController scoreAController;
   final TextEditingController scoreBController;
+  final bool enabled;
 
   @override
   Widget build(BuildContext context) {
@@ -604,138 +552,99 @@ class _FinalizeCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            AppStrings.matchCenterFinalizeWinLabel,
-            style: Theme.of(context).textTheme.titleMedium,
+            AppStrings.matchCenterFinalizeEnterResultLabel,
+            style: Theme.of(context).textTheme.titleLarge,
           ),
-          Gaps.hSm,
+          Gaps.hMd,
           Row(
             children: [
               Expanded(
-                child: _ResultOption(
-                  label: teamBName,
-                  value: 'team_b',
-                  groupValue: selectedResult,
-                  onSelect: onSelectResult,
-                ),
-              ),
-              Expanded(
-                child: _ResultOption(
+                child: _LabeledScoreField(
                   label: teamAName,
-                  value: 'team_a',
-                  groupValue: selectedResult,
-                  onSelect: onSelectResult,
+                  controller: scoreAController,
+                  enabled: enabled,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+                child: Text(
+                  '–',
+                  style: Theme.of(context).textTheme.titleLarge,
                 ),
               ),
               Expanded(
-                child: _ResultOption(
-                  label: AppStrings.matchCenterFinalizeDraw,
-                  value: 'draw',
-                  groupValue: selectedResult,
-                  onSelect: onSelectResult,
+                child: _LabeledScoreField(
+                  label: teamBName,
+                  controller: scoreBController,
+                  enabled: enabled,
                 ),
               ),
             ],
           ),
-          const Divider(height: 20, color: AppColors.whiteOverlay20),
-          Center(
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                _ScoreField(controller: scoreAController),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.md,
-                  ),
-                  child: Text(
-                    '–',
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                ),
-                _ScoreField(controller: scoreBController),
-              ],
-            ),
-          ),
         ],
       ),
     );
   }
 }
 
-class _ResultOption extends StatelessWidget {
-  const _ResultOption({
+class _LabeledScoreField extends StatelessWidget {
+  const _LabeledScoreField({
     required this.label,
-    required this.value,
-    required this.groupValue,
-    required this.onSelect,
+    required this.controller,
+    required this.enabled,
   });
 
   final String label;
-  final String value;
-  final String? groupValue;
-  final ValueChanged<String> onSelect;
+  final TextEditingController controller;
+  final bool enabled;
 
   @override
   Widget build(BuildContext context) {
-    final selected = groupValue == value;
-    return InkWell(
-      onTap: () => onSelect(value),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            width: AppSizes.matchCenterResultIndicatorSize,
-            height: AppSizes.matchCenterResultIndicatorSize,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: selected ? AppColors.white : AppColors.whiteOverlay70,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: Theme.of(context).textTheme.titleMedium,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+        Gaps.hXs,
+        Container(
+          height: AppSizes.hubPillButtonHeight,
+          decoration: BoxDecoration(
+            color: AppColors.whiteOverlay10,
+            borderRadius: AppRadius.pill,
+            border: Border.all(color: AppColors.whiteOverlay20),
+          ),
+          alignment: Alignment.center,
+          child: SizedBox(
+            width: AppSizes.matchCenterScoreFieldWidth,
+            child: TextField(
+              controller: controller,
+              enabled: enabled,
+              keyboardType: TextInputType.number,
+              textAlign: TextAlign.center,
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+                LengthLimitingTextInputFormatter(AppLimits.matchScoreMaxDigits),
+              ],
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                fontSize: AppSizes.matchCenterScoreFontSize,
+              ),
+              decoration: InputDecoration(
+                isDense: true,
+                border: InputBorder.none,
+                hintText: '0',
+                hintStyle: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  fontSize: AppSizes.matchCenterScoreFontSize,
+                  color: AppColors.whiteOverlay70,
+                ),
               ),
             ),
-            child: selected
-                ? const Center(
-                    child: Icon(
-                      Icons.check,
-                      size: AppSizes.matchCenterResultIndicatorCheckSize,
-                      color: AppColors.white,
-                    ),
-                  )
-                : null,
           ),
-          Gaps.wSm,
-          Flexible(
-            child: Text(
-              label,
-              style: Theme.of(context).textTheme.bodyMedium,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _ScoreField extends StatelessWidget {
-  const _ScoreField({required this.controller});
-
-  final TextEditingController controller;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: AppSizes.matchCenterScoreFieldWidth,
-      child: TextField(
-        controller: controller,
-        keyboardType: TextInputType.number,
-        textAlign: TextAlign.center,
-        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-          fontSize: AppSizes.matchCenterScoreFontSize,
         ),
-        decoration: const InputDecoration(
-          isDense: true,
-          border: InputBorder.none,
-        ),
-      ),
+      ],
     );
   }
 }
@@ -767,45 +676,6 @@ String _buildInfoRow(
       ? AppStrings.availabilityStatusFinished
       : AppStrings.availabilityMatchPlanned;
   return '${AppStrings.availabilityMatchCardTime(date, time)} • $field • $status';
-}
-
-Future<int?> _pickTeam(
-  BuildContext context, {
-  required List<Team> teams,
-}) async {
-  final result = await showModalBottomSheet<int>(
-    context: context,
-    backgroundColor: AppColors.darkNavy,
-    builder: (context) {
-      return Padding(
-        padding: Insets.allMd,
-        child: Container(
-          decoration: BoxDecoration(
-            color: AppColors.whiteOverlay10,
-            borderRadius: BorderRadius.circular(AppSpacing.lg),
-            border: Border.all(color: AppColors.whiteOverlay20),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              for (final team in teams) ...[
-                ListTile(
-                  title: Text(
-                    team.name,
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                  onTap: () => Navigator.of(context).pop(team.id),
-                ),
-                if (team != teams.last)
-                  const Divider(height: 1, color: AppColors.whiteOverlay20),
-              ],
-            ],
-          ),
-        ),
-      );
-    },
-  );
-  return result;
 }
 
 extension<T> on Iterable<T> {

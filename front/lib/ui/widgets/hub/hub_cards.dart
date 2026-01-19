@@ -285,38 +285,40 @@ class _NextMatchContent extends StatelessWidget {
         children: [
           Align(
             alignment: Alignment.topRight,
-            child: Container(
-              height: AppSizes.hubStatusChipHeight,
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
-              decoration: BoxDecoration(
-                color: AppColors.whiteOverlay10,
-                borderRadius: AppRadius.pill,
-                border: Border.all(
-                  color: isFinished
-                      ? AppColors.statsScheduled
-                      : AppColors.limeGreen,
+            child: IntrinsicWidth(
+              child: Container(
+                height: AppSizes.hubStatusChipHeight,
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+                decoration: BoxDecoration(
+                  color: AppColors.whiteOverlay10,
+                  borderRadius: AppRadius.pill,
+                  border: Border.all(
+                    color: isFinished
+                        ? AppColors.statsScheduled
+                        : AppColors.limeGreen,
+                  ),
                 ),
-              ),
-              alignment: Alignment.center,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    height: AppSizes.hubStatusDotSize,
-                    width: AppSizes.hubStatusDotSize,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: AppColors.white,
+                alignment: Alignment.center,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      height: AppSizes.hubStatusDotSize,
+                      width: AppSizes.hubStatusDotSize,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AppColors.white,
+                      ),
                     ),
-                  ),
-                  Gaps.wSm,
-                  Text(
-                    statusLabel,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.w600,
+                    Gaps.wSm,
+                    Text(
+                      statusLabel,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

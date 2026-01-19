@@ -218,7 +218,7 @@ class _AvailabilityGridPageState extends State<AvailabilityGridPage> {
     final controller = _calendarPageController;
     if (controller == null || !controller.hasClients) return;
     controller.previousPage(
-      duration: AppDurations.slow,
+      duration: AppDurations.normal,
       curve: Curves.easeInOut,
     );
   }
@@ -226,7 +226,7 @@ class _AvailabilityGridPageState extends State<AvailabilityGridPage> {
   void _nextCalendarPage() {
     final controller = _calendarPageController;
     if (controller == null || !controller.hasClients) return;
-    controller.nextPage(duration: AppDurations.slow, curve: Curves.easeInOut);
+    controller.nextPage(duration: AppDurations.normal, curve: Curves.easeInOut);
   }
 
   Future<void> _openPeriodPicker() async {
@@ -785,10 +785,9 @@ class _SelectedMatchCard extends StatelessWidget {
                       color: AppColors.whiteOverlay10,
                       borderRadius: AppRadius.pill,
                       border: Border.all(
-                        color:
-                            isFinished
-                                ? AppColors.statsScheduled
-                                : AppColors.limeGreen,
+                        color: isFinished
+                            ? AppColors.statsScheduled
+                            : AppColors.limeGreen,
                       ),
                     ),
                     alignment: Alignment.center,
@@ -806,9 +805,10 @@ class _SelectedMatchCard extends StatelessWidget {
                         Gaps.wSm,
                         Text(
                           statusLabel,
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
+                                fontWeight: FontWeight.w600,
+                              ),
                         ),
                       ],
                     ),
@@ -886,8 +886,8 @@ bool _overlapsHour(Fixture match, int hour) {
   final slotStart = _startAtFor(day, hour);
   final slotEnd = slotStart.add(AppDurations.availabilitySlot);
 
-  final matchEnd =
-      (match.endAt ?? match.startAt.add(AppDurations.matchDefault)).add(
+  final matchEnd = (match.endAt ?? match.startAt.add(AppDurations.matchDefault))
+      .add(
         AppDurations.matchBufferAfter,
       );
   return _intervalsOverlap(slotStart, slotEnd, match.startAt, matchEnd);
@@ -911,10 +911,9 @@ Fixture? _findFirstMatchForHour(
   final slotEnd = slotStart.add(AppDurations.availabilitySlot);
 
   final overlapping = matches.where((m) {
-    final matchEnd =
-        (m.endAt ?? m.startAt.add(AppDurations.matchDefault)).add(
-          AppDurations.matchBufferAfter,
-        );
+    final matchEnd = (m.endAt ?? m.startAt.add(AppDurations.matchDefault)).add(
+      AppDurations.matchBufferAfter,
+    );
     return _intervalsOverlap(slotStart, slotEnd, m.startAt, matchEnd);
   }).toList()..sort((a, b) => a.startAt.compareTo(b.startAt));
 

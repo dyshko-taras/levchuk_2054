@@ -157,15 +157,16 @@ class AppStrings {
   static const String matchCenterTeamATbd = 'Team A';
   static const String matchCenterTeamBTbd = 'Team B / TBD';
   static const String matchCenterActionEditMatch = 'Edit match';
-  static const String matchCenterActionJoinTeamB = 'Join Team B';
   static const String matchCenterActionMarkFinished = 'Mark finished';
   static const String matchCenterActionOpenLineup = 'Open Lineup & Tactics';
   static const String matchCenterFinalizeTitle = 'Finalize Match';
-  static const String matchCenterFinalizeWinLabel = 'Win';
+  static const String matchCenterFinalizeEnterResultLabel =
+      'Enter match result';
   static const String matchCenterFinalizeDraw = 'Draw';
   static const String matchCenterFinalizeSave = 'Save';
   static const String matchCenterFinalizeCancel = 'Cancel';
-  static const String matchCenterFinalizeWinRequired = 'Select winner';
+  static const String matchCenterFinalizeScoreRequired = 'Enter the score';
+  static const String matchCenterMatchNotFound = 'Match not found.';
 
   static const String lineupBoardTopTitle = 'Lineup & Tactics Board';
   static const String lineupBoardTabLineup = 'Lineup';

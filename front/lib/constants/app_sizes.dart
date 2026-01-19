@@ -45,6 +45,7 @@ class AppSizes {
   static const double availabilityCalendarMarkerBottomMargin = 4;
 
   static const double matchCenterBadgeSize = 44;
+  static const double matchCenterHeaderHeight = 140;
   static const double matchCenterResultIndicatorSize = 18;
   static const double matchCenterResultIndicatorCheckSize = 14;
   static const double matchCenterScoreFieldWidth = 52;

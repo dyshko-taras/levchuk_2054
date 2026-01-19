@@ -12,4 +12,5 @@ class AppLimits {
 
   static const int matchTitleMax = 40;
   static const int matchNotesMax = 240;
+  static const int matchScoreMaxDigits = 2;
 }
